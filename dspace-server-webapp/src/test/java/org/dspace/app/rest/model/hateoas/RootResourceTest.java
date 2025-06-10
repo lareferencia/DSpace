@@ -7,12 +7,11 @@
  */
 package org.dspace.app.rest.model.hateoas;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.dspace.app.rest.model.RootRest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class' purpose is to test the RootResource class
@@ -21,14 +20,16 @@ public class RootResourceTest {
 
     private RootRest rootRest;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         rootRest = new RootRest();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorWithNullThrowsException() throws Exception {
-        RootResource rootResource = new RootResource(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            RootResource rootResource = new RootResource(null);
+        });
     }
 
 

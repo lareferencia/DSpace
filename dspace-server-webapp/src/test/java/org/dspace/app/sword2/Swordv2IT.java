@@ -10,9 +10,10 @@ package org.dspace.app.sword2;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -27,11 +28,10 @@ import org.dspace.content.Item;
 import org.dspace.content.WorkspaceItem;
 import org.dspace.services.ConfigurationService;
 import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ContentDisposition;
@@ -78,19 +78,22 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
      * Create a global temporary upload folder which will be cleaned up automatically by JUnit.
      * NOTE: As a ClassRule, this temp folder is shared by ALL tests below.
      **/
-    @ClassRule
-    public static final TemporaryFolder uploadTempFolder = new TemporaryFolder();
+    @TempDir
+    public static File uploadTempFolder;
 
-    @Before
+    @BeforeEach
     public void onlyRunIfConfigExists() {
         // These integration tests REQUIRE that SWORDv2WebConfig is found/available (as this class deploys SWORDv2)
         // If this class is not available, the below "Assume" will cause all tests to be SKIPPED
         // NOTE: SWORDv2WebConfig is provided by the 'dspace-swordv2' module
-        try {
-            Class.forName("org.dspace.app.configuration.SWORDv2WebConfig");
-        } catch (ClassNotFoundException ce) {
-            Assume.assumeNoException(ce);
-        }
+        Assumptions.assumeTrue(() -> {
+            try {
+                Class.forName("org.dspace.app.configuration.SWORDv2WebConfig");
+                return true;
+            } catch (ClassNotFoundException e) {
+                return false;
+            }
+        }, "SWORDv2WebConfig class not found - skipping SWORD v2 tests");
 
         // Ensure SWORDv2 URL configurations are set correctly (based on our integration test server's paths)
         // SWORDv2 validates requests against these configs, and throws a 404 if they don't match the request path
@@ -101,11 +104,11 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         // Override default value of SWORD upload directory to point at our JUnit TemporaryFolder (see above).
         // This ensures uploaded files are saved in a place where JUnit can clean them up automatically.
         configurationService.setProperty("swordv2-server.upload.tempdir",
-                                         uploadTempFolder.getRoot().getAbsolutePath());
+                uploadTempFolder.getAbsolutePath());
 
         // MUST be set to allow DELETE requests on Items which are in the archive.  (This isn't enabled by default)
         configurationService.setProperty("plugin.single.org.dspace.sword2.WorkflowManager",
-                                         "org.dspace.sword2.WorkflowManagerUnrestricted");
+                "org.dspace.sword2.WorkflowManagerUnrestricted");
     }
 
     @Test
@@ -120,7 +123,7 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
     public void serviceDocumentTest() throws Exception {
         // Attempt to GET the ServiceDocument as any user account
         ResponseEntity<String> response = getResponseAsString(SERVICE_DOC_PATH,
-                                                              eperson.getEmail(), password);
+                eperson.getEmail(), password);
         // Expect a 200 response code, and an ATOM service document
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ATOM_SERVICE_CONTENT_TYPE, response.getHeaders().getContentType().toString());
@@ -149,18 +152,18 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         context.setCurrentUser(eperson);
         // Create a top level community and one Collection
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                                 .withName("Test SWORDv2 Collection")
-                                                 .build();
+                .withName("Test SWORDv2 Collection")
+                .build();
 
         // Add one Item into that Collection.
         String itemTitle = "Test SWORDv2 Item";
         Item item = ItemBuilder.createItem(context, collection)
-                               .withTitle(itemTitle)
-                               .withAuthor("Smith, Sam")
-                               .build();
+                .withTitle(itemTitle)
+                .withAuthor("Smith, Sam")
+                .build();
 
         // Above changes MUST be committed to the database for SWORDv2 to see them.
         context.commit();
@@ -169,7 +172,7 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         // This Collection should exist on the /collection endpoint via its handle.
         // Authenticate as the same user we used to create the test content above.
         ResponseEntity<String> response = getResponseAsString(COLLECTION_PATH + "/" + collection.getHandle(),
-                                                              eperson.getEmail(), password);
+                eperson.getEmail(), password);
 
         // Expect a 200 response code, and an ATOM feed document
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -202,13 +205,13 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         context.turnOffAuthorisationSystem();
         // Create a top level community and one Collection
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         // Make sure our Collection allows the "eperson" user to submit into it
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                                 .withName("Test SWORDv2 Collection")
-                                                 .withSubmitterGroup(eperson)
-                                                 .build();
+                .withName("Test SWORDv2 Collection")
+                .withSubmitterGroup(eperson)
+                .build();
         // Above changes MUST be committed to the database for SWORDv2 to see them.
         context.commit();
         context.restoreAuthSystemState();
@@ -216,7 +219,7 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         // Add file
         LinkedMultiValueMap<Object, Object> multipart = new LinkedMultiValueMap<>();
         multipart.add("file", new FileSystemResource(Path.of("src", "test", "resources",
-                                                             "org", "dspace", "app", "sword2", "example.zip")));
+                "org", "dspace", "app", "sword2", "example.zip")));
         // Add required headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -229,8 +232,8 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         //----
         // Send POST to upload Zip file via SWORD
         ResponseEntity<String> response = postResponseAsString(COLLECTION_PATH + "/" + collection.getHandle(),
-                                                               eperson.getEmail(), password,
-                                                               new HttpEntity<>(multipart, headers));
+                eperson.getEmail(), password,
+                new HttpEntity<>(multipart, headers));
 
         // Expect a 201 CREATED response with ATOM "entry" content returned
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -250,9 +253,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         HttpHeaders authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         RequestEntity request = RequestEntity.get(editLink)
-                                             .accept(MediaType.valueOf("application/atom+xml"))
-                                             .headers(authHeaders)
-                                             .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
 
         // Expect a 200 response with ATOM feed content returned
@@ -276,9 +279,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         String newTitle = "This is a new title updated via PUT";
         String newTitleEntry = "<entry xmlns=\"http://www.w3.org/2005/Atom\"><title>" + newTitle + "</title></entry>";
         request = RequestEntity.put(editLink)
-                               .headers(authHeaders)
-                               .contentType(MediaType.APPLICATION_ATOM_XML)
-                               .body(newTitleEntry);
+                .headers(authHeaders)
+                .contentType(MediaType.APPLICATION_ATOM_XML)
+                .body(newTitleEntry);
         response = responseAsString(request);
         // Expect a 200 OK response
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -290,9 +293,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         request = RequestEntity.get(editLink)
-                               .accept(MediaType.valueOf("application/atom+xml"))
-                               .headers(authHeaders)
-                               .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Verify the new Item title is now included in the response body
@@ -307,8 +310,8 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(admin.getEmail(), password);
         request = RequestEntity.delete(editLink)
-                               .headers(authHeaders)
-                               .build();
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         // Expect a 204 No Content response
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -317,9 +320,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         request = RequestEntity.get(editLink)
-                               .accept(MediaType.valueOf("application/atom+xml"))
-                               .headers(authHeaders)
-                               .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         // Expect a 404 response as content was deleted
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -330,18 +333,18 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         context.turnOffAuthorisationSystem();
         // Create a top level community and one Collection
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                                 .withName("Test SWORDv2 Collection")
-                                                 .withSubmitterGroup(eperson)
-                                                 .build();
+                .withName("Test SWORDv2 Collection")
+                .withSubmitterGroup(eperson)
+                .build();
 
         String titleOfItem = "This is a test SWORD workspace item";
         WorkspaceItem wsi = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-                                                .withSubmitter(eperson)
-                                                .withTitle(titleOfItem)
-                                                .build();
+                .withSubmitter(eperson)
+                .withTitle(titleOfItem)
+                .build();
 
         // Above changes MUST be committed to the database for SWORDv2 to see them.
         context.commit();
@@ -356,9 +359,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         HttpHeaders authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         RequestEntity request = RequestEntity.get(editLink)
-                                             .accept(MediaType.valueOf("application/atom+xml"))
-                                             .headers(authHeaders)
-                                             .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         ResponseEntity<String> response = responseAsString(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Verify the new Item title is now included in the response body
@@ -370,8 +373,8 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         request = RequestEntity.delete(editLink)
-                               .headers(authHeaders)
-                               .build();
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         // Expect a 204 No Content response
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -380,9 +383,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         request = RequestEntity.get(editLink)
-                               .accept(MediaType.valueOf("application/atom+xml"))
-                               .headers(authHeaders)
-                               .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         // Expect a 404 response as content was deleted
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -394,21 +397,21 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         context.turnOffAuthorisationSystem();
         // Create a top level community and one Collection
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         // Create a Collection with a workflow step enabled
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                                 .withName("Test SWORDv2 Workflow Collection")
-                                                 .withSubmitterGroup(eperson)
-                                                 .withWorkflowGroup(1, admin)
-                                                 .build();
+                .withName("Test SWORDv2 Workflow Collection")
+                .withSubmitterGroup(eperson)
+                .withWorkflowGroup(1, admin)
+                .build();
 
         String titleOfItem = "This is a test SWORD workflow item";
         XmlWorkflowItem workflowItem = WorkflowItemBuilder.createWorkflowItem(context, collection)
-                                                          .withSubmitter(eperson)
-                                                          .withTitle(titleOfItem)
-                                                          .withIssueDate("2017-10-17")
-                                                          .build();
+                .withSubmitter(eperson)
+                .withTitle(titleOfItem)
+                .withIssueDate("2017-10-17")
+                .build();
         // Above changes MUST be committed to the database for SWORDv2 to see them.
         context.commit();
         context.restoreAuthSystemState();
@@ -422,9 +425,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         HttpHeaders authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         RequestEntity request = RequestEntity.get(editLink)
-                                             .accept(MediaType.valueOf("application/atom+xml"))
-                                             .headers(authHeaders)
-                                             .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         ResponseEntity<String> response = responseAsString(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Verify the new Item title is now included in the response body
@@ -437,8 +440,8 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(admin.getEmail(), password);
         request = RequestEntity.delete(editLink)
-                               .headers(authHeaders)
-                               .build();
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         // Expect a 204 No Content response
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -447,9 +450,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         authHeaders = new HttpHeaders();
         authHeaders.setBasicAuth(eperson.getEmail(), password);
         request = RequestEntity.get(editLink)
-                               .accept(MediaType.valueOf("application/atom+xml"))
-                               .headers(authHeaders)
-                               .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         response = responseAsString(request);
         // Expect a 404 response as content was deleted
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -483,19 +486,19 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         context.setCurrentUser(eperson);
         // Create a top level community and one Collection
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                                 .withName("Test SWORDv2 Collection")
-                                                 .build();
+                .withName("Test SWORDv2 Collection")
+                .build();
 
         // Add one Item into that Collection.
         String itemTitle = "Test SWORDv2 Item";
         String itemAuthor = "Smith, Samantha";
         Item item = ItemBuilder.createItem(context, collection)
-                               .withTitle(itemTitle)
-                               .withAuthor(itemAuthor)
-                               .build();
+                .withTitle(itemTitle)
+                .withAuthor(itemAuthor)
+                .build();
 
         // Above changes MUST be committed to the database for SWORDv2 to see them.
         context.commit();
@@ -506,9 +509,9 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
         // GET call to /statement MUST include an "Accept" header that matches one of the formats
         // supported by 'SwordStatementDisseminator' (configured in swordv2-server.cfg)
         RequestEntity request = RequestEntity.get(getURL(STATEMENT_PATH + "/" + item.getID().toString()))
-                                             .accept(MediaType.valueOf("application/atom+xml"))
-                                             .headers(authHeaders)
-                                             .build();
+                .accept(MediaType.valueOf("application/atom+xml"))
+                .headers(authHeaders)
+                .build();
         ResponseEntity<String> response = responseAsString(request);
 
         // Expect a 200 response with ATOM feed content returned
@@ -518,14 +521,13 @@ public class Swordv2IT extends AbstractWebClientIntegrationTest {
 
         // Body should include the statement path of the Item, as well as the title & author information
         assertThat(response.getBody(),
-                   containsString(STATEMENT_PATH + "/" + item.getID().toString()));
+                containsString(STATEMENT_PATH + "/" + item.getID().toString()));
         assertThat(response.getBody(),
-                   containsString("<title type=\"text\">" + itemTitle + "</title>"));
+                containsString("<title type=\"text\">" + itemTitle + "</title>"));
         assertThat(response.getBody(),
-                   containsString("<author><name>" + itemAuthor + "</name></author>"));
+                containsString("<author><name>" + itemAuthor + "</name></author>"));
         // Also verify Item is in "archived" state
         assertThat(response.getBody(),
-                   containsString("<category term=\"http://dspace.org/state/archived\""));
+                containsString("<category term=\"http://dspace.org/state/archived\""));
     }
 }
-

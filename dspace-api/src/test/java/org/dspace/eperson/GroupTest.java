@@ -10,10 +10,11 @@ package org.dspace.eperson;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,9 +30,9 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.eperson.factory.EPersonServiceFactory;
 import org.dspace.eperson.service.EPersonService;
 import org.dspace.eperson.service.GroupService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the Group class
@@ -59,7 +60,7 @@ public class GroupTest extends AbstractUnitTest {
      * Other methods can be annotated with @Before here or in subclasses
      * but no execution order is guaranteed
      */
-    @Before
+    @BeforeEach
     @Override
     public void init() {
         super.init();
@@ -88,7 +89,7 @@ public class GroupTest extends AbstractUnitTest {
         }
     }
 
-    @After
+    @AfterEach
     @Override
     public void destroy() {
         try {
@@ -134,10 +135,12 @@ public class GroupTest extends AbstractUnitTest {
         }
     }
 
-    @Test(expected = AuthorizeException.class)
-    public void createGroupUnAuthorized() throws SQLException, AuthorizeException {
-        context.setCurrentUser(null);
-        groupService.create(context);
+    @Test
+    public void createGroupUnAuthorized() {
+        assertThrows(AuthorizeException.class, () -> {
+            context.setCurrentUser(null);
+            groupService.create(context);
+        });
     }
 
     @Test
@@ -173,7 +176,7 @@ public class GroupTest extends AbstractUnitTest {
     public void findAll() throws SQLException {
         List<Group> groups = groupService.findAll(context, null);
         assertThat("findAll 1", groups, notNullValue());
-        assertTrue("findAll 2", 0 < groups.size());
+        assertTrue(0 < groups.size(), "findAll 2");
     }
 
     //No longer possible, wouldn't make sense since we are using UUID'S
@@ -230,14 +233,14 @@ public class GroupTest extends AbstractUnitTest {
         assertThat("search 1", groups, notNullValue());
         assertThat("search 2", groups.size(), equalTo(1));
         String firstGroupName = groups.iterator().next().getName();
-        assertTrue("search 3", firstGroupName.equals("level1Group") || firstGroupName.equals("level2Group"));
+        assertTrue(firstGroupName.equals("level1Group") || firstGroupName.equals("level2Group"), "search 3");
 
         //Retrieve the second group
         groups = groupService.search(context, "level", 1, 2);
         assertThat("search 1", groups, notNullValue());
         assertThat("search 2", groups.size(), equalTo(1));
         String secondGroupName = groups.iterator().next().getName();
-        assertTrue("search 3", secondGroupName.equals("level1Group") || secondGroupName.equals("level2Group"));
+        assertTrue(secondGroupName.equals("level1Group") || secondGroupName.equals("level2Group"), "search 3");
     }
 
     @Test
@@ -261,7 +264,7 @@ public class GroupTest extends AbstractUnitTest {
             groupService.update(context, topGroup);
 
             assertThat("addMemberEPerson 1", topGroup.getMembers().size(), equalTo(1));
-            assertTrue("addMemberEPerson 2", topGroup.getMembers().contains(ePerson));
+            assertTrue(topGroup.getMembers().contains(ePerson), "addMemberEPerson 2");
         } finally {
             if (ePerson != null) {
                 context.turnOffAuthorisationSystem();
@@ -287,7 +290,7 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void deleteGroupEPersonMembers()
-        throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
+            throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
         EPerson ePerson = null;
         context.turnOffAuthorisationSystem();
         try {
@@ -307,7 +310,7 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void deleteGroupGroupMembers()
-        throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
+            throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
         //Delete parent first
         Group parentGroup = createGroup("toDeleteParent");
         Group childGroup = createGroup("toDeleteChild");
@@ -329,22 +332,22 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void isMemberGroup() throws SQLException {
-        assertTrue("isMemberGroup 1", groupService.isMember(topGroup, level1Group));
-        assertTrue("isMemberGroup 2", groupService.isMember(level1Group, level2Group));
-        assertFalse("isMemberGroup 3", groupService.isMember(level1Group, topGroup));
-        assertFalse("isMemberGroup 4", groupService.isMember(level2Group, level1Group));
+        assertTrue(groupService.isMember(topGroup, level1Group), "isMemberGroup 1");
+        assertTrue(groupService.isMember(level1Group, level2Group), "isMemberGroup 2");
+        assertFalse(groupService.isMember(level1Group, topGroup), "isMemberGroup 3");
+        assertFalse(groupService.isMember(level2Group, level1Group), "isMemberGroup 4");
     }
 
     @Test
     public void isSubgroupOf() throws SQLException {
-        assertTrue("isMemberGroup 1", groupService.isParentOf(context, topGroup, level1Group));
-        assertTrue("isMemberGroup 2", groupService.isParentOf(context, level1Group, level2Group));
-        assertFalse("isMemberGroup 3", groupService.isParentOf(context, level1Group, topGroup));
-        assertFalse("isMemberGroup 4", groupService.isParentOf(context, level2Group, level1Group));
+        assertTrue(groupService.isParentOf(context, topGroup, level1Group), "isMemberGroup 1");
+        assertTrue(groupService.isParentOf(context, level1Group, level2Group), "isMemberGroup 2");
+        assertFalse(groupService.isParentOf(context, level1Group, topGroup), "isMemberGroup 3");
+        assertFalse(groupService.isParentOf(context, level2Group, level1Group), "isMemberGroup 4");
 
         //Also check ancestor relations
-        assertTrue("isMemberGroup 5", groupService.isParentOf(context, topGroup, level2Group));
-        assertFalse("isMemberGroup 6", groupService.isParentOf(context, level2Group, topGroup));
+        assertTrue(groupService.isParentOf(context, topGroup, level2Group), "isMemberGroup 5");
+        assertFalse(groupService.isParentOf(context, level2Group, topGroup), "isMemberGroup 6");
     }
 
     @Test
@@ -383,7 +386,7 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void isMemberContextGroupId()
-        throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
+            throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
         EPerson ePerson = null;
         try {
             ePerson = createEPersonAndAddToGroup("isMemberContextGroupId@dspace.org", level2Group);
@@ -401,7 +404,7 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void isMemberContextSpecialGroup()
-        throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
+            throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
         EPerson ePerson = null;
         Group specialGroup = null;
         try {
@@ -433,7 +436,7 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void isMemberContextSpecialGroupOtherUser()
-        throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
+            throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
         EPerson ePerson1 = null;
         EPerson ePerson2 = null;
         Group specialGroup = null;
@@ -476,7 +479,7 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void isMemberContextSpecialGroupDbMembership()
-        throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
+            throws SQLException, AuthorizeException, EPersonDeletionException, IOException {
         EPerson ePerson = null;
         Group specialGroup = null;
         try {
@@ -508,22 +511,22 @@ public class GroupTest extends AbstractUnitTest {
 
     @Test
     public void isPermanent()
-        throws SQLException {
+            throws SQLException {
         Group anonymousGroup = groupService.findByName(context, Group.ANONYMOUS);
-        assertTrue("Anonymous group should be 'permanent'", anonymousGroup.isPermanent());
-        assertFalse("topGroup should *not* be 'permanent'", topGroup.isPermanent());
+        assertTrue(anonymousGroup.isPermanent(), "Anonymous group should be 'permanent'");
+        assertFalse(topGroup.isPermanent(), "topGroup should *not* be 'permanent'");
     }
 
     @Test
     public void setPermanent()
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         Group permaGroup = new Group();
         permaGroup.setPermanent(true);
-        assertTrue("setPermanent(true) should be reflected in the group's state",
-                   permaGroup.isPermanent());
+        assertTrue(permaGroup.isPermanent(),
+                "setPermanent(true) should be reflected in the group's state");
         permaGroup.setPermanent(false);
-        assertFalse("setPermanent(false) should be reflected in the group's state",
-                    permaGroup.isPermanent());
+        assertFalse(permaGroup.isPermanent(),
+                "setPermanent(false) should be reflected in the group's state");
     }
 
     @Test
@@ -576,7 +579,7 @@ public class GroupTest extends AbstractUnitTest {
         EPerson ePerson = createEPersonAndAddToGroup("allMemberGroups@dspace.org", level1Group);
         try {
             assertTrue(
-                groupService.allMemberGroups(context, ePerson).containsAll(Arrays.asList(topGroup, level1Group)));
+                    groupService.allMemberGroups(context, ePerson).containsAll(Arrays.asList(topGroup, level1Group)));
         } finally {
             context.turnOffAuthorisationSystem();
             ePersonService.delete(context, ePerson);
@@ -665,8 +668,8 @@ public class GroupTest extends AbstractUnitTest {
             // NOTE: isEqualCollection() must be used for comparison because Hibernate's "PersistentBag" cannot be
             // compared directly to a List. See https://stackoverflow.com/a/57399383/3750035
             assertTrue(
-                CollectionUtils.isEqualCollection(parentGroup.getMemberGroups(),
-                                                  groupService.findByParent(context, parentGroup, -1, -1)));
+                    CollectionUtils.isEqualCollection(parentGroup.getMemberGroups(),
+                            groupService.findByParent(context, parentGroup, -1, -1)));
             // Assert countBy parent is the same as the size of group members
             assertEquals(parentGroup.getMemberGroups().size(), groupService.countByParent(context, parentGroup));
         } finally {
@@ -703,7 +706,7 @@ public class GroupTest extends AbstractUnitTest {
         try {
             // Assert that all Groups *not* in parent group match an empty search
             List<Group> notInParent = Arrays.asList(studentsNotInParentGroup, otherStudentsNotInParentGroup,
-                                                    someOtherStudentsNotInParentGroup);
+                    someOtherStudentsNotInParentGroup);
             List<Group> nonMembersSearch = groupService.searchNonMembers(context, "", parentGroup, -1, -1);
             // NOTE: Because others unit tests create groups, this search will return an undetermined number of results.
             // Therefore, we just verify that our expected groups are included and others are NOT included.
@@ -722,14 +725,14 @@ public class GroupTest extends AbstractUnitTest {
             //Verify an existing member group with "Students" in its name does NOT get returned
             assertFalse(nonMembersSearch.contains(someStudentsGroup));
             assertEquals(nonMembersSearch.size(),
-                         groupService.searchNonMembersCount(context, "Students", parentGroup));
+                    groupService.searchNonMembersCount(context, "Students", parentGroup));
 
 
             // Assert a search on "other" matches just two groups
             // (this also tests search is case insensitive)
             nonMembersSearch = groupService.searchNonMembers(context, "other", parentGroup, -1, -1);
             assertTrue(nonMembersSearch.containsAll(
-                Arrays.asList(otherStudentsNotInParentGroup, someOtherStudentsNotInParentGroup)));
+                    Arrays.asList(otherStudentsNotInParentGroup, someOtherStudentsNotInParentGroup)));
             // Verify an existing member group with "Other" in its name does NOT get returned
             assertFalse(nonMembersSearch.contains(someStaffGroup));
             assertEquals(nonMembersSearch.size(), groupService.searchNonMembersCount(context, "other", parentGroup));
@@ -743,32 +746,32 @@ public class GroupTest extends AbstractUnitTest {
 
             // Assert a UUID search matching a non-member group will return just that one group
             nonMembersSearch = groupService.searchNonMembers(context,
-                                                             someOtherStudentsNotInParentGroup.getID().toString(),
-                                                             parentGroup, -1, -1);
+                    someOtherStudentsNotInParentGroup.getID().toString(),
+                    parentGroup, -1, -1);
             assertEquals(1, nonMembersSearch.size());
             assertTrue(nonMembersSearch.contains(someOtherStudentsNotInParentGroup));
             assertEquals(nonMembersSearch.size(),
-                         groupService.searchNonMembersCount(context,
-                                                            someOtherStudentsNotInParentGroup.getID().toString(),
-                                                            parentGroup));
+                    groupService.searchNonMembersCount(context,
+                            someOtherStudentsNotInParentGroup.getID().toString(),
+                            parentGroup));
 
             // Assert a UUID search matching an EXISTING member will return NOTHING
             // (as this group is excluded from the search)
             nonMembersSearch = groupService.searchNonMembers(context, someStudentsGroup.getID().toString(),
-                                                             parentGroup,-1, -1);
+                    parentGroup,-1, -1);
             assertEquals(0, nonMembersSearch.size());
             assertEquals(nonMembersSearch.size(),
-                         groupService.searchNonMembersCount(context, someStudentsGroup.getID().toString(),
-                                                            parentGroup));
+                    groupService.searchNonMembersCount(context, someStudentsGroup.getID().toString(),
+                            parentGroup));
 
             // Assert a UUID search matching Parent Group *itself* will return NOTHING
             // (as this group is excluded from the search)
             nonMembersSearch = groupService.searchNonMembers(context, parentGroup.getID().toString(),
-                                                             parentGroup,-1, -1);
+                    parentGroup,-1, -1);
             assertEquals(0, nonMembersSearch.size());
             assertEquals(nonMembersSearch.size(),
-                         groupService.searchNonMembersCount(context, parentGroup.getID().toString(),
-                                                            parentGroup));
+                    groupService.searchNonMembersCount(context, parentGroup.getID().toString(),
+                            parentGroup));
         } finally {
             // Clean up our data
             context.turnOffAuthorisationSystem();

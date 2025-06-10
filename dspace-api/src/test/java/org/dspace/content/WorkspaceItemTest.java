@@ -11,15 +11,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
+import static org.springframework.test.util.AssertionErrors.assertFalse;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -41,9 +41,9 @@ import org.dspace.eperson.EPerson;
 import org.dspace.eperson.factory.EPersonServiceFactory;
 import org.dspace.eperson.service.EPersonService;
 import org.dspace.workflow.MockWorkflowItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -87,7 +87,7 @@ public class WorkspaceItemTest extends AbstractUnitTest {
      * Other methods can be annotated with @Before here or in subclasses
      * but no execution order is guaranteed
      */
-    @Before
+    @BeforeEach
     @Override
     public void init() {
         super.init();
@@ -125,7 +125,7 @@ public class WorkspaceItemTest extends AbstractUnitTest {
      * Other methods can be annotated with @After here or in subclasses
      * but no execution order is guaranteed
      */
-    @After
+    @AfterEach
     @Override
     public void destroy() {
         wi = null;
@@ -189,10 +189,12 @@ public class WorkspaceItemTest extends AbstractUnitTest {
     /**
      * Test of create method, of class WorkspaceItem.
      */
-    @Test(expected = AuthorizeException.class)
+    @Test
     public void testCreateNoAuth() throws Exception {
-        workspaceItemService.create(context, collection, false);
-        fail("Exception expected");
+        assertThrows(AuthorizeException.class, () -> {
+            workspaceItemService.create(context, collection, false);
+            fail("Exception expected");
+        });
     }
 
     /**
@@ -307,32 +309,34 @@ public class WorkspaceItemTest extends AbstractUnitTest {
     /**
      * Test of update method, of class WorkspaceItem with no WRITE auth.
      */
-    @Test(expected = AuthorizeException.class)
+    @Test
     public void testUpdateNoAuth() throws Exception {
-        // Create a new Eperson to be the current user
-        context.turnOffAuthorisationSystem();
-        EPerson eperson = ePersonService.create(context);
-        eperson.setEmail("jane@smith.org");
-        eperson.setFirstName(context, "Jane");
-        eperson.setLastName(context, "Smith");
-        ePersonService.update(context, eperson);
+        assertThrows(AuthorizeException.class, () -> {
+            // Create a new Eperson to be the current user
+            context.turnOffAuthorisationSystem();
+            EPerson eperson = ePersonService.create(context);
+            eperson.setEmail("jane@smith.org");
+            eperson.setFirstName(context, "Jane");
+            eperson.setLastName(context, "Smith");
+            ePersonService.update(context, eperson);
 
-        // Update our session to be logged in as new users
-        EPerson currentUser = context.getCurrentUser();
-        context.setCurrentUser(eperson);
-        context.restoreAuthSystemState();
+            // Update our session to be logged in as new users
+            EPerson currentUser = context.getCurrentUser();
+            context.setCurrentUser(eperson);
+            context.restoreAuthSystemState();
 
-        // Try and update the workspace item. A different EPerson should have no rights
-        try {
-            boolean pBefore = wi.isPublishedBefore();
-            wi.setPublishedBefore(!pBefore);
-            workspaceItemService.update(context, wi);
-        } finally {
-            // Restore the current user
-            context.setCurrentUser(currentUser);
-        }
+            // Try and update the workspace item. A different EPerson should have no rights
+            try {
+                boolean pBefore = wi.isPublishedBefore();
+                wi.setPublishedBefore(!pBefore);
+                workspaceItemService.update(context, wi);
+            } finally {
+                // Restore the current user
+                context.setCurrentUser(currentUser);
+            }
 
-        fail("Exception expected");
+            fail("Exception expected");
+        });
     }
 
     /**
@@ -385,13 +389,15 @@ public class WorkspaceItemTest extends AbstractUnitTest {
     /**
      * Test of deleteWrapper method, of class WorkspaceItem.
      */
-    @Test(expected = AuthorizeException.class)
+    @Test
     public void testDeleteWrapperNoAuth() throws Exception {
-        // Disallow Item WRITE perms
-        doThrow(new AuthorizeException()).when(authorizeServiceSpy)
-                                         .authorizeAction(context, wi.getItem(), Constants.WRITE);
-        workspaceItemService.deleteWrapper(context, wi);
-        fail("Exception expected");
+        assertThrows(AuthorizeException.class, () -> {
+            // Disallow Item WRITE perms
+            doThrow(new AuthorizeException()).when(authorizeServiceSpy)
+                    .authorizeAction(context, wi.getItem(), Constants.WRITE);
+            workspaceItemService.deleteWrapper(context, wi);
+            fail("Exception expected");
+        });
     }
 
     /**

@@ -7,17 +7,15 @@
  */
 package org.dspace.xmlworkflow.state;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.dspace.AbstractUnitTest;
 import org.dspace.utils.DSpace;
 import org.dspace.xmlworkflow.WorkflowConfigurationException;
 import org.dspace.xmlworkflow.state.actions.WorkflowActionConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests that check that the spring beans (of type {@link Step}) in workflow.xml get created correctly

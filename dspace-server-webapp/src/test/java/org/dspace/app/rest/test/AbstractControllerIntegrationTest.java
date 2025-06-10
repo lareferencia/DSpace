@@ -7,6 +7,7 @@
  */
 package org.dspace.app.rest.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,8 +31,7 @@ import org.dspace.app.rest.model.patch.Operation;
 import org.dspace.app.rest.security.DSpaceCsrfTokenRepository;
 import org.dspace.app.rest.utils.DSpaceConfigurationInitializer;
 import org.dspace.app.rest.utils.DSpaceKernelInitializer;
-import org.junit.Assert;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.servlet.support.ErrorPageFilter;
@@ -43,7 +43,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -68,10 +67,6 @@ import org.springframework.web.context.WebApplicationContext;
  * @see org.dspace.app.rest.test.AbstractWebClientIntegrationTest
  */
 // Run tests with JUnit and Spring TestContext Framework
-@RunWith(SpringRunner.class)
-// Specify main class to use to load Spring ApplicationContext
-// NOTE: By default, Spring caches and reuses ApplicationContext for each integration test (to speed up tests)
-// See: https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#integration-testing
 @SpringBootTest(classes = TestApplication.class)
 // Load DSpace initializers in Spring ApplicationContext (to initialize DSpace Kernel & Configuration)
 @ContextConfiguration(initializers = { DSpaceKernelInitializer.class, DSpaceConfigurationInitializer.class })
@@ -116,8 +111,7 @@ public class AbstractControllerIntegrationTest extends AbstractIntegrationTestWi
         this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
             hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
 
-        Assert.assertNotNull("the JSON message converter must not be null",
-                             this.mappingJackson2HttpMessageConverter);
+        assertNotNull(this.mappingJackson2HttpMessageConverter, "the JSON message converter must not be null");
     }
 
     /**

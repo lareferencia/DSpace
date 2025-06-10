@@ -40,10 +40,9 @@ import org.dspace.handle.factory.HandleServiceFactory;
 import org.dspace.handle.service.HandleService;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 
 
 /**
@@ -73,7 +72,7 @@ public class RequestItemEmailNotifierTest
         super();
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         AbstractBuilder.init(); // AbstractUnitTest doesn't do this for us.
 
@@ -99,7 +98,7 @@ public class RequestItemEmailNotifierTest
         requestItemEmailNotifier.requestItemService = requestItemService;
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() throws Exception {
         // AbstractUnitTest doesn't do this for us.
         AbstractBuilder.cleanupObjects();
@@ -110,7 +109,7 @@ public class RequestItemEmailNotifierTest
      * Test of sendRequest method, of class RequestItemEmailNotifier.
      * @throws Exception passed through.
      */
-    @Ignore
+    @Disabled
     @Test
     public void testSendRequest() throws Exception {
     }
@@ -313,7 +312,7 @@ public class RequestItemEmailNotifierTest
      * Test of requestOpenAccess method, of class RequestItemEmailNotifier.
      * @throws Exception passed through.
      */
-    @Ignore
+    @Disabled
     @Test
     public void testRequestOpenAccess() throws Exception {
     }

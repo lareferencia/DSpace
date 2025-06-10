@@ -9,8 +9,10 @@ package org.dspace.content;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.dspace.authorize.AuthorizeException;
+import org.junit.jupiter.api.Test;
 
 /**
  * 
@@ -39,10 +41,12 @@ public class MetadataFieldNameTest {
         assertNull("Incorrect qualifier", instance.qualifier);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public void testConstructNull() {
-        new MetadataFieldName("one", null);
+        assertThrows(NullPointerException.class, () -> {
+            new MetadataFieldName("one", null);
+        });
     }
 
     /**
@@ -70,26 +74,32 @@ public class MetadataFieldNameTest {
     /**
      * Test of parse method using an illegal 1-part name.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void TestParse1() {
-        MetadataFieldName.parse("one");
+        assertThrows(IllegalArgumentException.class, () -> {
+            MetadataFieldName.parse("one");
+        });
     }
 
     /**
      * Test of parse method using an illegal 0-part (empty) name.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void TestParse0() {
-        MetadataFieldName.parse("");
+        assertThrows(IllegalArgumentException.class, () -> {
+            MetadataFieldName.parse("");
+        });
     }
 
     /**
      * Test of parse method using an illegal null name.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     @SuppressWarnings("null")
     public void TestParseNull() {
-        MetadataFieldName.parse(null);
+        assertThrows(NullPointerException.class, () -> {
+            MetadataFieldName.parse(null);
+        });
     }
 
     /**

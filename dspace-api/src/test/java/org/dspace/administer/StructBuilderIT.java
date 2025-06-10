@@ -7,8 +7,8 @@
  */
 package org.dspace.administer;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,10 +33,10 @@ import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.CollectionService;
 import org.dspace.content.service.CommunityService;
 import org.dspace.handle.Handle;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 import org.xmlunit.builder.DiffBuilder;
@@ -63,11 +63,11 @@ public class StructBuilderIT
     public StructBuilderIT() {
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
 
@@ -78,7 +78,7 @@ public class StructBuilderIT
      * @throws AuthorizeException passed through.
      * @throws IOException passed through.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         // Clear out all communities and collections.
@@ -98,60 +98,60 @@ public class StructBuilderIT
     /** Test structure document. */
     private static final String IMPORT_DOCUMENT =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<import_structure>\n" +
-            "  <community identifier='" + COMMUNITY_0_HANDLE + "'>\n" +
-            "    <name>Top Community 0</name>\n" +
-            "    <description>A top level community</description>\n" +
-            "    <intro>Testing 1 2 3</intro>\n" +
-            "    <copyright>1969</copyright>\n" +
-            "    <sidebar>A sidebar</sidebar>\n" +
-            "    <community identifier='" + COMMUNITY_0_0_HANDLE + "'>\n" +
-            "      <name>Sub Community 0.0</name>\n" +
-            "      <description>A sub community</description>\n" +
-            "      <intro>Live from New York....</intro>\n" +
-            "      <copyright>1957</copyright>\n" +
-            "      <sidebar>Another sidebar</sidebar>\n" +
-            "      <collection identifier='" + COLLECTION_0_0_0_HANDLE + "'>\n" +
-            "        <name>Collection 0.0.0</name>\n" +
-            "        <description>A collection</description>\n" +
-            "        <intro>Our next guest needs no introduction</intro>\n" +
-            "        <copyright>1776</copyright>\n" +
-            "        <sidebar>Yet another sidebar</sidebar>\n" +
-            "        <license>MIT</license>\n" +
-            "        <provenance>Testing</provenance>\n" +
-            "      </collection>\n" +
-            "    </community>\n" +
-            "    <community>\n" +
-            "      <name>Sub Community 0.1</name>\n" +
-            "      <description>A sub community with no handle</description>\n" +
-            "      <intro>Stop me if you've heard this one</intro>\n" +
-            "      <copyright>2525</copyright>\n" +
-            "      <sidebar>One more sidebar</sidebar>\n" +
-            "    </community>\n" +
-            "    <collection identifier='" + COLLECTION_0_1_HANDLE + "'>\n" +
-            "      <name>Collection 0.1</name>\n" +
-            "      <description>Another collection</description>\n" +
-            "      <intro>Fourscore and seven years ago</intro>\n" +
-            "      <copyright>1863</copyright>\n" +
-            "      <sidebar>No sidebar</sidebar>\n" +
-            "      <license>Public domain</license>\n" +
-            "      <provenance>Testing again</provenance>\n" +
-            "    </collection>\n" +
-            "  </community>\n" +
-            "</import_structure>\n";
+                    "<import_structure>\n" +
+                    "  <community identifier='" + COMMUNITY_0_HANDLE + "'>\n" +
+                    "    <name>Top Community 0</name>\n" +
+                    "    <description>A top level community</description>\n" +
+                    "    <intro>Testing 1 2 3</intro>\n" +
+                    "    <copyright>1969</copyright>\n" +
+                    "    <sidebar>A sidebar</sidebar>\n" +
+                    "    <community identifier='" + COMMUNITY_0_0_HANDLE + "'>\n" +
+                    "      <name>Sub Community 0.0</name>\n" +
+                    "      <description>A sub community</description>\n" +
+                    "      <intro>Live from New York....</intro>\n" +
+                    "      <copyright>1957</copyright>\n" +
+                    "      <sidebar>Another sidebar</sidebar>\n" +
+                    "      <collection identifier='" + COLLECTION_0_0_0_HANDLE + "'>\n" +
+                    "        <name>Collection 0.0.0</name>\n" +
+                    "        <description>A collection</description>\n" +
+                    "        <intro>Our next guest needs no introduction</intro>\n" +
+                    "        <copyright>1776</copyright>\n" +
+                    "        <sidebar>Yet another sidebar</sidebar>\n" +
+                    "        <license>MIT</license>\n" +
+                    "        <provenance>Testing</provenance>\n" +
+                    "      </collection>\n" +
+                    "    </community>\n" +
+                    "    <community>\n" +
+                    "      <name>Sub Community 0.1</name>\n" +
+                    "      <description>A sub community with no handle</description>\n" +
+                    "      <intro>Stop me if you've heard this one</intro>\n" +
+                    "      <copyright>2525</copyright>\n" +
+                    "      <sidebar>One more sidebar</sidebar>\n" +
+                    "    </community>\n" +
+                    "    <collection identifier='" + COLLECTION_0_1_HANDLE + "'>\n" +
+                    "      <name>Collection 0.1</name>\n" +
+                    "      <description>Another collection</description>\n" +
+                    "      <intro>Fourscore and seven years ago</intro>\n" +
+                    "      <copyright>1863</copyright>\n" +
+                    "      <sidebar>No sidebar</sidebar>\n" +
+                    "      <license>Public domain</license>\n" +
+                    "      <provenance>Testing again</provenance>\n" +
+                    "    </collection>\n" +
+                    "  </community>\n" +
+                    "</import_structure>\n";
 
     private static final String EXPORT_DOCUMENT =
             "<?xml version='1.0' encoding='UTF-8'?>\n" +
-            "<import_structure>\n" +
-            "  <community>\n" +
-            "    <name>Top Community 0</name>\n" +
-            "    <description/><intro/><copyright/><sidebar/>\n" +
-            "    <collection>\n" +
-            "      <name>Collection 0.0</name>\n" +
-            "      <description/><intro/><copyright/><sidebar/><license/>\n" +
-            "    </collection>\n" +
-            "  </community>\n" +
-            "</import_structure>\n";
+                    "<import_structure>\n" +
+                    "  <community>\n" +
+                    "    <name>Top Community 0</name>\n" +
+                    "    <description/><intro/><copyright/><sidebar/>\n" +
+                    "    <collection>\n" +
+                    "      <name>Collection 0.0</name>\n" +
+                    "      <description/><intro/><copyright/><sidebar/><license/>\n" +
+                    "    </collection>\n" +
+                    "  </community>\n" +
+                    "</import_structure>\n";
 
     /**
      * Test of importStructure method, of class StructBuilder.
@@ -197,7 +197,7 @@ public class StructBuilderIT
             System.err.println(difference.toString(formatter));
         }
         // Test for *significant* differences.
-        assertFalse("Output does not match input.", isDifferent(myDiff));
+        assertFalse(isDifferent(myDiff), "Output does not match input.");
 
         // TODO spot-check some objects.
     }
@@ -235,7 +235,7 @@ public class StructBuilderIT
                 }
             }
         }
-        assertTrue("A community should have its specified handle", found);
+        assertTrue(found, "A community should have its specified handle");
 
         // Check a chosen Collection for the right Handle.
         found = false;
@@ -247,7 +247,7 @@ public class StructBuilderIT
                 }
             }
         }
-        assertTrue("A collection should have its specified handle", found);
+        assertTrue(found, "A collection should have its specified handle");
 
         // Compare import's output with its input.
         // N.B. here we rely on StructBuilder to emit communities and
@@ -272,7 +272,7 @@ public class StructBuilderIT
             System.err.println(difference.toString(formatter));
         }
         // Test for *significant* differences.
-        assertFalse("Output does not match input.", isDifferent(myDiff));
+        assertFalse(isDifferent(myDiff), "Output does not match input.");
 
         // TODO spot-check some objects.
     }
@@ -323,7 +323,7 @@ public class StructBuilderIT
             System.err.println(difference.toString(formatter));
         }
         // Test for *significant* differences.
-        assertFalse("Output does not match input.", myDiff.hasDifferences());
+        assertFalse(myDiff.hasDifferences(), "Output does not match input.");
     }
 
     /**

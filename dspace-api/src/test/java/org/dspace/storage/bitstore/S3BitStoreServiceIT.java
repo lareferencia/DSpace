@@ -18,10 +18,10 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,10 +59,9 @@ import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -85,7 +84,7 @@ public class S3BitStoreServiceIT extends AbstractIntegrationTestWithDatabase {
     private ConfigurationService configurationService = DSpaceServicesFactory.getInstance().getConfigurationService();
 
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
 
         configurationService.setProperty("assetstore.s3.enabled", "true");
@@ -103,15 +102,15 @@ public class S3BitStoreServiceIT extends AbstractIntegrationTestWithDatabase {
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-            .build();
+                .build();
 
         collection = CollectionBuilder.createCollection(context, parentCommunity)
-            .build();
+                .build();
 
         context.restoreAuthSystemState();
     }
 
-    @After
+    @AfterEach
     public void cleanUp() throws IOException {
         FileUtils.deleteDirectory(s3Directory);
         s3Mock.shutdown();
@@ -392,13 +391,13 @@ public class S3BitStoreServiceIT extends AbstractIntegrationTestWithDatabase {
     @Test
     public void givenBitStreamIdentifierWithSlashesWhenSanitizedThenSlashesMustBeRemoved() {
         String sInternalId = new StringBuilder("01")
-                                .append(File.separator)
-                                .append("22")
-                                .append(File.separator)
-                                .append("33")
-                                .append(File.separator)
-                                .append("4455")
-                                .toString();
+                .append(File.separator)
+                .append("22")
+                .append(File.separator)
+                .append("33")
+                .append(File.separator)
+                .append("4455")
+                .toString();
         String computedPath = this.s3BitStoreService.sanitizeIdentifier(sInternalId);
         assertThat(computedPath, Matchers.not(Matchers.startsWith(File.separator)));
         assertThat(computedPath, Matchers.not(Matchers.endsWith(File.separator)));
@@ -428,22 +427,22 @@ public class S3BitStoreServiceIT extends AbstractIntegrationTestWithDatabase {
 
     private AmazonS3 createAmazonS3Client() {
         return AmazonS3ClientBuilder.standard()
-            .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
-            .withEndpointConfiguration(new EndpointConfiguration("http://127.0.0.1:8001", DEFAULT_REGION.getName()))
-            .build();
+                .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
+                .withEndpointConfiguration(new EndpointConfiguration("http://127.0.0.1:8001", DEFAULT_REGION.getName()))
+                .build();
     }
 
     private Item createItem() {
         return ItemBuilder.createItem(context, collection)
-            .withTitle("Test item")
-            .build();
+                .withTitle("Test item")
+                .build();
     }
 
     private Bitstream createBitstream(String content) {
         try {
             return BitstreamBuilder
-                .createBitstream(context, createItem(), toInputStream(content))
-                .build();
+                    .createBitstream(context, createItem(), toInputStream(content))
+                    .build();
         } catch (SQLException | AuthorizeException | IOException e) {
             throw new RuntimeException(e);
         }

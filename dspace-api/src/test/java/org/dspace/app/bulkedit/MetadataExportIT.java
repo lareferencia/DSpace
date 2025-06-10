@@ -8,6 +8,7 @@
 package org.dspace.app.bulkedit;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +35,7 @@ import org.dspace.scripts.service.ScriptService;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
 public class MetadataExportIT
@@ -74,35 +75,37 @@ public class MetadataExportIT
         assertTrue(fileContent.contains(String.valueOf(item.getID())));
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void metadataExportWithoutFileParameter()
         throws IllegalAccessException, InstantiationException, ParseException {
-        context.turnOffAuthorisationSystem();
-        Community community = CommunityBuilder.createCommunity(context)
-                                              .build();
-        Collection collection = CollectionBuilder.createCollection(context, community)
-                                                 .build();
-        Item item = ItemBuilder.createItem(context, collection)
-                               .withAuthor("Donald, Smith")
-                               .build();
-        context.restoreAuthSystemState();
+        assertThrows(ParseException.class, () -> {
+            context.turnOffAuthorisationSystem();
+            Community community = CommunityBuilder.createCommunity(context)
+                    .build();
+            Collection collection = CollectionBuilder.createCollection(context, community)
+                    .build();
+            Item item = ItemBuilder.createItem(context, collection)
+                    .withAuthor("Donald, Smith")
+                    .build();
+            context.restoreAuthSystemState();
 
-        String[] args = new String[] {"metadata-export",
-            "-i", String.valueOf(item.getHandle())};
-        TestDSpaceRunnableHandler testDSpaceRunnableHandler = new TestDSpaceRunnableHandler();
+            String[] args = new String[]{"metadata-export",
+                    "-i", String.valueOf(item.getHandle())};
+            TestDSpaceRunnableHandler testDSpaceRunnableHandler = new TestDSpaceRunnableHandler();
 
-        ScriptService scriptService = ScriptServiceFactory.getInstance().getScriptService();
-        ScriptConfiguration scriptConfiguration = scriptService.getScriptConfiguration(args[0]);
+            ScriptService scriptService = ScriptServiceFactory.getInstance().getScriptService();
+            ScriptConfiguration scriptConfiguration = scriptService.getScriptConfiguration(args[0]);
 
-        DSpaceRunnable script = null;
-        if (scriptConfiguration != null) {
-            script = scriptService.createDSpaceRunnableForScriptConfiguration(scriptConfiguration);
-        }
-        if (script != null) {
-            if (DSpaceRunnable.StepResult.Continue.equals(script.initialize(args, testDSpaceRunnableHandler, null))) {
-                script.run();
+            DSpaceRunnable script = null;
+            if (scriptConfiguration != null) {
+                script = scriptService.createDSpaceRunnableForScriptConfiguration(scriptConfiguration);
             }
-        }
+            if (script != null) {
+                if (DSpaceRunnable.StepResult.Continue.equals(script.initialize(args, testDSpaceRunnableHandler, null))) {
+                    script.run();
+                }
+            }
+        });
     }
 
     @Test

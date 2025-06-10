@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -28,11 +29,7 @@ import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 import org.dspace.core.Context;
@@ -58,18 +55,21 @@ import org.dspace.discovery.utils.parameter.QueryBuilderSearchFilter;
 import org.dspace.services.ConfigurationService;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 
 /**
  * Unit tests for {@link DiscoverQueryBuilder}
  */
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.WARN)
+@ExtendWith(MockitoExtension.class)
 public class DiscoverQueryBuilderTest {
 
     @InjectMocks
@@ -101,7 +101,7 @@ public class DiscoverQueryBuilderTest {
     private QueryBuilderSearchFilter searchFilter;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         queryBuilder.setIndexableFactories(Collections.singletonList(indexFactory));
 
@@ -275,38 +275,46 @@ public class DiscoverQueryBuilderTest {
         ));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidDSOType() throws Exception {
-        queryBuilder
-                .buildQuery(context, scope, discoveryConfiguration, query, Collections.singletonList(searchFilter),
+        assertThrows(IllegalArgumentException.class, () -> {
+            queryBuilder
+                    .buildQuery(context, scope, discoveryConfiguration, query, Collections.singletonList(searchFilter),
                             "TEST", pageSize, offset, sortProperty, sortDirection);
+        });
     }
 
-    @Test(expected = SearchServiceException.class)
+    @Test
     public void testInvalidSortField() throws Exception {
-        queryBuilder
-                .buildQuery(context, scope, discoveryConfiguration, query, Collections.singletonList(searchFilter),
+        assertThrows(SearchServiceException.class, () -> {
+            queryBuilder
+                    .buildQuery(context, scope, discoveryConfiguration, query, Collections.singletonList(searchFilter),
                             "ITEM", pageSize, 20L, "test", sortDirection);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidSearchFilter1() throws Exception {
-        searchFilter = new QueryBuilderSearchFilter("test", "equals", "Smith, Donald");
+        assertThrows(IllegalArgumentException.class, () -> {
+            searchFilter = new QueryBuilderSearchFilter("test", "equals", "Smith, Donald");
 
-        queryBuilder
-                .buildQuery(context, scope, discoveryConfiguration, query, Arrays.asList(searchFilter), "ITEM",
+            queryBuilder
+                    .buildQuery(context, scope, discoveryConfiguration, query, Arrays.asList(searchFilter), "ITEM",
                             pageSize, offset, sortProperty, sortDirection);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidSearchFilter2() throws Exception {
-        when(searchService.toFilterQuery(any(Context.class), any(String.class), any(String.class), any(String.class),
-                                         any(DiscoveryConfiguration.class)))
-                .thenThrow(SQLException.class);
+        assertThrows(IllegalArgumentException.class, () -> {
+            when(searchService.toFilterQuery(any(Context.class), any(String.class), any(String.class),
+                    any(String.class), any(DiscoveryConfiguration.class)))
+                    .thenThrow(SQLException.class);
 
-        queryBuilder
-                .buildQuery(context, scope, discoveryConfiguration, query, Arrays.asList(searchFilter), "ITEM",
+            queryBuilder
+                    .buildQuery(context, scope, discoveryConfiguration, query, Arrays.asList(searchFilter), "ITEM",
                             pageSize, offset, sortProperty, sortDirection);
+        });
     }
 
     @Test
@@ -329,10 +337,12 @@ public class DiscoverQueryBuilderTest {
         ));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidSearchFacet() throws Exception {
-        queryBuilder.buildFacetQuery(context, scope, discoveryConfiguration, null, query,
-                                     Collections.singletonList(searchFilter), "item", pageSize, offset, "test");
+        assertThrows(IllegalArgumentException.class, () -> {
+            queryBuilder.buildFacetQuery(context, scope, discoveryConfiguration, null, query,
+                    Collections.singletonList(searchFilter), "item", pageSize, offset, "test");
+        });
     }
 
     public Matcher<DiscoverFacetField> discoverFacetFieldMatcher(DiscoverFacetField expected) {

@@ -7,10 +7,6 @@
  */
 package org.dspace.app.itemexport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -34,9 +30,11 @@ import org.dspace.content.service.CollectionService;
 import org.dspace.content.service.ItemService;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Basic integration testing for the SAF Export feature via CLI {@link ItemExportCLI}.
@@ -58,7 +56,7 @@ public class ItemExportCLIIT extends AbstractIntegrationTestWithDatabase {
     private Path tempDir;
     private Path workDir;
 
-    @Before
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -80,7 +78,7 @@ public class ItemExportCLIIT extends AbstractIntegrationTestWithDatabase {
         workDir = Path.of(file.getAbsolutePath());
     }
 
-    @After
+    @AfterEach
     @Override
     public void destroy() throws Exception {
         PathUtils.deleteOnExit(tempDir);

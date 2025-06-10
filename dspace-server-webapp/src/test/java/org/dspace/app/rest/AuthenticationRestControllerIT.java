@@ -16,12 +16,10 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -76,9 +74,9 @@ import org.dspace.orcid.client.OrcidConfiguration;
 import org.dspace.orcid.model.OrcidTokenResponseDTO;
 import org.dspace.services.ConfigurationService;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -139,7 +137,7 @@ public class AuthenticationRestControllerIT extends AbstractControllerIntegratio
     private final String feature = CanChangePasswordFeature.NAME;
 
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         super.setUp();
 
@@ -283,7 +281,7 @@ public class AuthenticationRestControllerIT extends AbstractControllerIntegratio
     }
 
     @Test
-    @Ignore
+    @Disabled
     // Ignored until an endpoint is added to return all groups. Anonymous is not considered a direct group.
     public void testStatusAuthenticatedAsNormalUser() throws Exception {
         String token = getAuthToken(eperson.getEmail(), password);
@@ -1076,7 +1074,7 @@ public class AuthenticationRestControllerIT extends AbstractControllerIntegratio
     }
 
     @Test
-    @Ignore
+    @Disabled
     // Ignored until an endpoint is added to return all groups
     public void testShibbolethLoginRequestAttribute() throws Exception {
         context.turnOffAuthorisationSystem();
@@ -1134,7 +1132,7 @@ public class AuthenticationRestControllerIT extends AbstractControllerIntegratio
     }
 
     @Test
-    @Ignore
+    @Disabled
     // Ignored until an endpoint is added to return all groups
     public void testShibbolethLoginRequestHeaderWithIpAuthentication() throws Exception {
         configurationService.setProperty("plugin.sequence.org.dspace.authenticate.AuthenticationMethod", SHIB_AND_IP);
@@ -1506,19 +1504,21 @@ public class AuthenticationRestControllerIT extends AbstractControllerIntegratio
     }
 
     // TODO: fix the exception. For now we want to verify a short lived token can't be used to login
-    @Test(expected = Exception.class)
+    @Test
     public void testLoginWithShortLivedToken() throws Exception {
-        String token = getAuthToken(eperson.getEmail(), password);
-        String shortLivedToken = getShortLivedToken(token);
+        assertThrows(Exception.class, () -> {
+            String token = getAuthToken(eperson.getEmail(), password);
+            String shortLivedToken = getShortLivedToken(token);
 
-        getClient().perform(post("/api/authn/login?authentication-token=" + shortLivedToken))
-            .andExpect(status().isInternalServerError());
-        // TODO: This internal server error needs to be fixed. This should actually produce a forbidden status
-        //.andExpect(status().isForbidden());
+            getClient().perform(post("/api/authn/login?authentication-token=" + shortLivedToken))
+                    .andExpect(status().isInternalServerError());
+            // TODO: This internal server error needs to be fixed. This should actually produce a forbidden status
+            //.andExpect(status().isForbidden());
 
-        // Logout, invalidating token
-        getClient(token).perform(post("/api/authn/logout"))
-                .andExpect(status().isNoContent());
+            // Logout, invalidating token
+            getClient(token).perform(post("/api/authn/logout"))
+                    .andExpect(status().isNoContent());
+        });
     }
 
     @Test

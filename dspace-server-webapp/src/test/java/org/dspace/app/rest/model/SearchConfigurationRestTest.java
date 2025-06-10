@@ -7,12 +7,10 @@
  */
 package org.dspace.app.rest.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class' purpose is to test the SearchConfigurationRest
@@ -21,7 +19,7 @@ public class SearchConfigurationRestTest {
 
     SearchConfigurationRest searchConfigurationRest;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         searchConfigurationRest = new SearchConfigurationRest();
     }

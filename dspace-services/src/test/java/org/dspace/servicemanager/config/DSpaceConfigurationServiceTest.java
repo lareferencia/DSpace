@@ -7,11 +7,7 @@
  */
 package org.dspace.servicemanager.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -30,9 +26,9 @@ import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.tree.ImmutableNode;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -48,7 +44,7 @@ public class DSpaceConfigurationServiceTest {
     // Path to our main test config file (local.properties)
     private String propertyFilePath;
 
-    @Before
+    @BeforeEach
     public void init() {
         configurationService = new DSpaceConfigurationService();
 
@@ -84,7 +80,7 @@ public class DSpaceConfigurationServiceTest {
         l = null;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         configurationService = null;
     }
@@ -116,24 +112,28 @@ public class DSpaceConfigurationServiceTest {
         l = null;
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testVariableReplacementCircular() {
-        // add a circular reference
-        configurationService.loadConfig("circular", "${circular}");
+        assertThrows(IllegalStateException.class, () -> {
+            // add a circular reference
+            configurationService.loadConfig("circular", "${circular}");
 
-        // try to get the value (should throw an error)
-        configurationService.getProperty("circular");
+            // try to get the value (should throw an error)
+            configurationService.getProperty("circular");
+        });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testVariableReplacementIndirectCircular() {
-        // add a circular reference
-        configurationService.loadConfig("circular", "${circular}");
-        // add an indirect reference to that circular reference
-        configurationService.loadConfig("indirect.circular", "$indirect ${circular}");
+        assertThrows(IllegalStateException.class, () -> {
+            // add a circular reference
+            configurationService.loadConfig("circular", "${circular}");
+            // add an indirect reference to that circular reference
+            configurationService.loadConfig("indirect.circular", "$indirect ${circular}");
 
-        // try to get the value (should throw an error)
-        configurationService.getProperty("indirect.circular");
+            // try to get the value (should throw an error)
+            configurationService.getProperty("indirect.circular");
+        });
     }
 
     /**

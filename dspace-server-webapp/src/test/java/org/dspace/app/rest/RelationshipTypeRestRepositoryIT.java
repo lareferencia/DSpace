@@ -12,9 +12,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,7 +27,7 @@ import org.dspace.app.rest.test.AbstractEntityIntegrationTest;
 import org.dspace.content.RelationshipType;
 import org.dspace.content.service.EntityTypeService;
 import org.dspace.content.service.RelationshipTypeService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RelationshipTypeRestRepositoryIT extends AbstractEntityIntegrationTest {
@@ -198,7 +196,7 @@ public class RelationshipTypeRestRepositoryIT extends AbstractEntityIntegrationT
         assertEquals(((Integer) 0), relationshipType.getLeftMinCardinality());
         assertEquals(((Integer) 0), relationshipType.getRightMinCardinality());
         assertNull(relationshipType.getLeftMaxCardinality());
-        assertNull(null, relationshipType.getRightMaxCardinality());
+        assertNull(relationshipType.getRightMaxCardinality());
 
         getClient().perform(get("/api/core/relationshiptypes/" + relationshipType.getID()))
                    .andExpect(jsonPath("$.leftMinCardinality", is(0)))

@@ -7,12 +7,11 @@
  */
 package org.dspace.app.rest.model.hateoas;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.dspace.app.rest.model.SearchSupportRest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class' purpose is to test the SearchSupportResource class
@@ -20,14 +19,16 @@ import org.junit.Test;
 public class SearchSupportResourceTest {
     private SearchSupportRest searchSupportRest;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         searchSupportRest = new SearchSupportRest();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorWithNullThrowsException() throws Exception {
-        SearchSupportResource searchSupportResource = new SearchSupportResource(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            SearchSupportResource searchSupportResource = new SearchSupportResource(null);
+        });
     }
 
     @Test

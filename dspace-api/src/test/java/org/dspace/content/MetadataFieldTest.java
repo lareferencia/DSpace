@@ -11,8 +11,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -26,9 +25,9 @@ import org.dspace.authorize.service.AuthorizeService;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.MetadataFieldService;
 import org.dspace.content.service.MetadataSchemaService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -82,7 +81,7 @@ public class MetadataFieldTest extends AbstractUnitTest {
      * Other methods can be annotated with @Before here or in subclasses
      * but no execution order is guaranteed
      */
-    @Before
+    @BeforeEach
     @Override
     public void init() {
         super.init();
@@ -126,7 +125,7 @@ public class MetadataFieldTest extends AbstractUnitTest {
      * Other methods can be annotated with @After here or in subclasses
      * but no execution order is guaranteed
      */
-    @After
+    @AfterEach
     @Override
     public void destroy() {
         mf = null;
@@ -156,7 +155,7 @@ public class MetadataFieldTest extends AbstractUnitTest {
      */
     @Test
     public void testGetFieldID() {
-        assertTrue("testGetFieldID 0", mf.getID() >= 0);
+        assertTrue(mf.getID() >= 0, "testGetFieldID 0");
     }
 
     /**
@@ -235,26 +234,30 @@ public class MetadataFieldTest extends AbstractUnitTest {
     /**
      * Test of create method, of class MetadataField.
      */
-    @Test(expected = AuthorizeException.class)
+    @Test
     public void testCreateNoAuth() throws Exception {
-        String elem = "elem1";
-        String qual = "qual1";
-        metadataFieldService.create(context, dcSchema, elem, qual, null);
-        fail("Exception expected");
+        assertThrows(AuthorizeException.class, () -> {
+            String elem = "elem1";
+            String qual = "qual1";
+            metadataFieldService.create(context, dcSchema, elem, qual, null);
+            fail("Exception expected");
+        });
     }
 
     /**
      * Test of create method, of class MetadataField.
      */
-    @Test(expected = NonUniqueMetadataException.class)
+    @Test
     public void testCreateRepeated() throws Exception {
-        // Allow full Admin perms
-        when(authorizeServiceSpy.isAdmin(context)).thenReturn(true);
+        assertThrows(NonUniqueMetadataException.class, () -> {
+            // Allow full Admin perms
+            when(authorizeServiceSpy.isAdmin(context)).thenReturn(true);
 
-        String elem = element;
-        String qual = qualifier;
-        metadataFieldService.create(context, dcSchema, elem, qual, null);
-        fail("Exception expected");
+            String elem = element;
+            String qual = qualifier;
+            metadataFieldService.create(context, dcSchema, elem, qual, null);
+            fail("Exception expected");
+        });
     }
 
     /**
@@ -277,7 +280,7 @@ public class MetadataFieldTest extends AbstractUnitTest {
     public void testFindAll() throws Exception {
         List<MetadataField> found = metadataFieldService.findAll(context);
         assertThat("testFindAll 0", found, notNullValue());
-        assertTrue("testFindAll 1", found.size() >= 1);
+        assertTrue(found.size() >= 1, "testFindAll 1");
 
         boolean added = false;
         for (MetadataField mdf : found) {
@@ -285,7 +288,7 @@ public class MetadataFieldTest extends AbstractUnitTest {
                 added = true;
             }
         }
-        assertTrue("testFindAll 2", added);
+        assertTrue(added, "testFindAll 2");
     }
 
     /**
@@ -296,8 +299,8 @@ public class MetadataFieldTest extends AbstractUnitTest {
         List<MetadataField> found = metadataFieldService
             .findAllInSchema(context, metadataSchemaService.find(context, MetadataSchemaEnum.DC.getName()));
         assertThat("testFindAllInSchema 0", found, notNullValue());
-        assertTrue("testFindAllInSchema 1", found.size() >= 1);
-        assertTrue("testFindAllInSchema 2", found.size() <= metadataFieldService.findAll(context).size());
+        assertTrue(found.size() >= 1, "testFindAllInSchema 1");
+        assertTrue(found.size() <= metadataFieldService.findAll(context).size(), "testFindAllInSchema 2");
 
         boolean added = false;
         for (MetadataField mdf : found) {
@@ -305,7 +308,7 @@ public class MetadataFieldTest extends AbstractUnitTest {
                 added = true;
             }
         }
-        assertTrue("testFindAllInSchema 3", added);
+        assertTrue(added, "testFindAllInSchema 3");
     }
 
     /**
@@ -328,31 +331,35 @@ public class MetadataFieldTest extends AbstractUnitTest {
     /**
      * Test of update method, of class MetadataField.
      */
-    @Test(expected = AuthorizeException.class)
+    @Test
     public void testUpdateNoAuth() throws Exception {
-        String elem = "elem2";
-        String qual = "qual2";
-        MetadataField m = metadataFieldService.create(context, dcSchema, elem, qual, null);
-        metadataFieldService.update(context, m);
-        fail("Exception expected");
+        assertThrows(AuthorizeException.class, () -> {
+            String elem = "elem2";
+            String qual = "qual2";
+            MetadataField m = metadataFieldService.create(context, dcSchema, elem, qual, null);
+            metadataFieldService.update(context, m);
+            fail("Exception expected");
+        });
     }
 
     /**
      * Test of update method, of class MetadataField.
      */
-    @Test(expected = NonUniqueMetadataException.class)
+    @Test
     public void testUpdateRepeated() throws Exception {
-        // Allow full Admin perms
-        when(authorizeServiceSpy.isAdmin(context)).thenReturn(true);
+        assertThrows(NonUniqueMetadataException.class, () -> {
+            // Allow full Admin perms
+            when(authorizeServiceSpy.isAdmin(context)).thenReturn(true);
 
-        String elem = element;
-        String qual = qualifier;
-        MetadataField m = metadataFieldService.create(context, dcSchema, elem, qual, null);
+            String elem = element;
+            String qual = qualifier;
+            MetadataField m = metadataFieldService.create(context, dcSchema, elem, qual, null);
 
-        m.setElement(elem);
-        m.setQualifier(qual);
-        metadataFieldService.update(context, m);
-        fail("Exception expected");
+            m.setElement(elem);
+            m.setQualifier(qual);
+            metadataFieldService.update(context, m);
+            fail("Exception expected");
+        });
     }
 
     /**
@@ -376,14 +383,16 @@ public class MetadataFieldTest extends AbstractUnitTest {
     /**
      * Test of delete method, of class MetadataField.
      */
-    @Test(expected = AuthorizeException.class)
+    @Test
     public void testDeleteNoAuth() throws Exception {
-        String elem = "elem3";
-        String qual = "qual3";
-        MetadataField m = metadataFieldService.create(context, dcSchema, elem, qual, null);
+        assertThrows(AuthorizeException.class, () -> {
+            String elem = "elem3";
+            String qual = "qual3";
+            MetadataField m = metadataFieldService.create(context, dcSchema, elem, qual, null);
 
-        metadataFieldService.delete(context, m);
-        fail("Exception expected");
+            metadataFieldService.delete(context, m);
+            fail("Exception expected");
+        });
     }
 
     /**

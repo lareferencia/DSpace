@@ -7,15 +7,18 @@
  */
 package org.dspace.servicemanager.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
 
 import java.io.File;
 
 import org.dspace.services.ConfigurationService;
 import org.dspace.test.DSpaceAbstractKernelTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+
 
 /**
  * Testing the org.apache.commons.configuration2.spring.ConfigurationPropertiesFactoryBean to ensure it performs
@@ -33,7 +36,7 @@ public class DSpaceConfigurationBeanTest
     // Path to our main test config file (local.properties)
     private String propertyFilePath;
 
-    @Before
+    @BeforeEach
     public void init() {
         // Save the path to our main test configuration file
         propertyFilePath = new DSpaceConfigurationService().getDSpaceHome(null) + File.separatorChar

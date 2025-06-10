@@ -10,14 +10,14 @@ package org.dspace.app.sword;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.dspace.app.rest.test.AbstractWebClientIntegrationTest;
 import org.dspace.services.ConfigurationService;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,16 +45,19 @@ public class Swordv1IT extends AbstractWebClientIntegrationTest {
     private final String DEPOSIT_PATH = "/sword/deposit";
     private final String MEDIA_LINK_PATH = "/sword/media-link";
 
-    @Before
+    @BeforeEach
     public void onlyRunIfConfigExists() {
         // These integration tests REQUIRE that SWORDWebConfig is found/available (as this class deploys SWORD)
         // If this class is not available, the below "Assume" will cause all tests to be SKIPPED
         // NOTE: SWORDWebConfig is provided by the 'dspace-sword' module
-        try {
-            Class.forName("org.dspace.app.configuration.SWORDWebConfig");
-        } catch (ClassNotFoundException ce) {
-            Assume.assumeNoException(ce);
-        }
+        Assumptions.assumeTrue(() -> {
+            try {
+                Class.forName("org.dspace.app.configuration.SWORDWebConfig");
+                return true;
+            } catch (ClassNotFoundException e) {
+                return false;
+            }
+        }, "SWORDWebConfig class not found - skipping SWORD v1 tests");
 
         // Ensure SWORD URL configurations are set correctly (based on our integration test server's paths)
         // SWORD validates requests against these configs, and throws a 404 if they don't match the request path
@@ -75,7 +78,7 @@ public class Swordv1IT extends AbstractWebClientIntegrationTest {
     public void serviceDocumentTest() throws Exception {
         // Attempt to load the ServiceDocument as an Admin user.
         ResponseEntity<String> response = getResponseAsString(SERVICE_DOC_PATH,
-                                                              admin.getEmail(), password);
+                admin.getEmail(), password);
         // Expect a 200 response code, and an ATOM UTF-8 document
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(response.getHeaders().getContentType().toString(), equalTo("application/atomsvc+xml;charset=UTF-8"));
@@ -93,7 +96,7 @@ public class Swordv1IT extends AbstractWebClientIntegrationTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void depositTest() throws Exception {
         // TODO: Actually test a full deposit via SWORD.
         // Currently, we are just ensuring the /deposit endpoint exists (see above) and isn't throwing a 404
@@ -108,10 +111,9 @@ public class Swordv1IT extends AbstractWebClientIntegrationTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void mediaLinkTest() throws Exception {
         // TODO: Actually test a /media-link request.
         // Currently, we are just ensuring the /media-link endpoint exists (see above) and isn't throwing a 404
     }
 }
-

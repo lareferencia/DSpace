@@ -7,10 +7,10 @@
  */
 package org.dspace.app.sherpa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +22,11 @@ import org.dspace.external.factory.ExternalServiceFactory;
 import org.dspace.external.model.ExternalDataObject;
 import org.dspace.external.provider.ExternalDataProvider;
 import org.dspace.external.service.ExternalDataService;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -41,28 +41,28 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
     private static final MetadataFieldRef TITLE_FIELD = new MetadataFieldRef("dc", "title", null);
     private static final MetadataFieldRef ISSN_FIELD = new MetadataFieldRef("creativeworkseries", "issn", null);
     private static final MetadataFieldRef SHERPA_PUBLISHER_FIELD =
-        new MetadataFieldRef("dc", "identifier", "sherpaPublisher");
+            new MetadataFieldRef("dc", "identifier", "sherpaPublisher");
     private static final MetadataFieldRef OTHER_FIELD = new MetadataFieldRef("dc", "identifier", "other");
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Set up External Service Factory and set data providers
         externalDataService = ExternalServiceFactory.getInstance().getExternalDataService();
         sherpaJournalProvider = externalDataService.getExternalDataProvider("sherpaJournal");
         sherpaPublisherProvider = externalDataService.getExternalDataProvider("sherpaPublisher");
         sherpaJournalIssnProvider =
-         externalDataService.getExternalDataProvider("sherpaJournalIssn");
+                externalDataService.getExternalDataProvider("sherpaJournalIssn");
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
@@ -84,7 +84,7 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         Optional<ExternalDataObject> externalDataObject = sherpaJournalIssnProvider.getExternalDataObject(validIssn);
         // If data object isn't here, throw a resource not found exception
         ExternalDataObject dataObject = externalDataObject.orElseThrow(
-            () -> new ResourceNotFoundException("Couldn't find a data object for ISSN " + validIssn));
+                () -> new ResourceNotFoundException("Couldn't find a data object for ISSN " + validIssn));
 
         // Instantiate some Strings that we'll set if we find the expected metadata
         String title = null;
@@ -98,10 +98,10 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         }
 
         // Does dc.title match the expected value?
-        assertEquals("Title metadata must equal '" + validName + "' ", validName, title);
+        assertEquals(validName, title, "Title metadata must equal '" + validName + "' ");
 
         // Does dc.identifier.uri match the expected value?
-        assertEquals("Identifier ISSN must equal " + validIssn, validIssn, identifier);
+        assertEquals(validIssn, identifier, "Identifier ISSN must equal " + validIssn);
     }
 
     /**
@@ -120,17 +120,17 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         String validIssn = "0140-6736";
         String validName = "The Lancet";
         List<ExternalDataObject> externalDataObjects =
-            sherpaJournalIssnProvider.searchExternalDataObjects(validIssn, 0, 1);
+                sherpaJournalIssnProvider.searchExternalDataObjects(validIssn, 0, 1);
 
         // Assert that the response is valid and not empty
-        assertTrue("Couldn't find a data object for publication name " + validName,
-            externalDataObjects != null && !externalDataObjects.isEmpty());
+        assertTrue(externalDataObjects != null && !externalDataObjects.isEmpty(),
+                "Couldn't find a data object for publication name " + validName);
 
         // Get the first search result for inspection
         ExternalDataObject dataObject = externalDataObjects.get(0);
 
         // Assert that the data object itself is not null
-        assertNotNull("External data object must not be null", dataObject);
+        assertNotNull(dataObject, "External data object must not be null");
 
         // Instantiate some Strings that we'll set if we find the expected metadata
         String title = null;
@@ -144,10 +144,10 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         }
 
         // Does dc.title match the expected value?
-        assertEquals("Title metadata must equal '" + validName + "' ", validName, title);
+        assertEquals(validName, title, "Title metadata must equal '" + validName + "' ");
 
         // Does dc.identifier.uri match the expected value?
-        assertEquals("Identifier ISSN must equal " + validIssn, validIssn, identifier);
+        assertEquals(validIssn, identifier, "Identifier ISSN must equal " + validIssn);
     }
 
     /**
@@ -168,7 +168,7 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         Optional<ExternalDataObject> externalDataObject = sherpaJournalProvider.getExternalDataObject(validName);
         // If data object isn't here, throw a resource not found exception
         ExternalDataObject dataObject = externalDataObject.orElseThrow(
-            () -> new ResourceNotFoundException("Couldn't find a data object for publication name " + validName));
+                () -> new ResourceNotFoundException("Couldn't find a data object for publication name " + validName));
 
         // Instantiate some Strings that we'll set if we find the expected metadata
         String title = null;
@@ -182,10 +182,10 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         }
 
         // Does dc.title match the expected value?
-        assertEquals("Title metadata must equal '" + validName + "' ", validName, title);
+        assertEquals(validName, title, "Title metadata must equal '" + validName + "' ");
 
         // Does dc.identifier.uri match the expected value?
-        assertEquals("Identifier ISSN must equal " + validIssn, validIssn, identifier);
+        assertEquals(validIssn, identifier, "Identifier ISSN must equal " + validIssn);
     }
 
     /**
@@ -205,17 +205,17 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         String validIssn = "0140-6736";
         String validName = "The Lancet";
         List<ExternalDataObject> externalDataObjects =
-            sherpaJournalProvider.searchExternalDataObjects(validName, 0, 1);
+                sherpaJournalProvider.searchExternalDataObjects(validName, 0, 1);
 
         // Assert that the response is valid and not empty
-        assertTrue("Couldn't find a data object for publication name " + validName,
-            externalDataObjects != null && !externalDataObjects.isEmpty());
+        assertTrue(externalDataObjects != null && !externalDataObjects.isEmpty(),
+                "Couldn't find a data object for publication name " + validName);
 
         // Get the first search result for inspection
         ExternalDataObject dataObject = externalDataObjects.get(0);
 
         // Assert that the data object itself is not null
-        assertNotNull("External data object must not be null", dataObject);
+        assertNotNull(dataObject, "External data object must not be null");
 
         // Instantiate some Strings that we'll set if we find the expected metadata
         String title = null;
@@ -229,10 +229,10 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         }
 
         // Does dc.title match the expected value?
-        assertEquals("Title metadata must equal '" + validName + "' ", validName, title);
+        assertEquals(validName, title, "Title metadata must equal '" + validName + "' ");
 
         // Does dc.identifier.uri match the expected value?
-        assertEquals("Identifier ISSN must equal " + validIssn, validIssn, identifier);
+        assertEquals(validIssn, identifier, "Identifier ISSN must equal " + validIssn);
     }
 
     /**
@@ -257,7 +257,7 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         Optional<ExternalDataObject> externalDataObject = sherpaPublisherProvider.getExternalDataObject(validName);
         // If data object isn't here, throw a resource not found exception
         ExternalDataObject dataObject = externalDataObject.orElseThrow(
-            () -> new ResourceNotFoundException("Couldn't find a data object for publication name " + validName));
+                () -> new ResourceNotFoundException("Couldn't find a data object for publication name " + validName));
 
         // Instantiate some Strings that we'll set if we find the expected metadata
         String title = null;
@@ -274,13 +274,13 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         }
 
         // Does dc.title match the expected value?
-        assertEquals("Title metadata must equal '" + validName + "' ", validName, title);
+        assertEquals(validName, title, "Title metadata must equal '" + validName + "' ");
 
         // Does dc.identifier.sherpaPublisher match the expected value?
-        assertEquals("Publisher ID must equal " + validIdentifier, validIdentifier, identifier);
+        assertEquals(validIdentifier, identifier, "Publisher ID must equal " + validIdentifier);
 
         // Does dc.identifier.other match the expected value?
-        assertEquals("Publisher URL must equal " + validUrl, validUrl, url);
+        assertEquals(validUrl, url, "Publisher URL must equal " + validUrl);
     }
 
     /**
@@ -303,16 +303,16 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
 
         // Retrieve the dataobject(s) from the data provider
         List<ExternalDataObject> externalDataObjects =
-            sherpaPublisherProvider.searchExternalDataObjects(validName, 0, 1);
+                sherpaPublisherProvider.searchExternalDataObjects(validName, 0, 1);
 
         // Assert that the response is valid and not empty
-        assertTrue("Couldn't find a data object for publication name " + validName,
-            externalDataObjects != null && !externalDataObjects.isEmpty());
+        assertTrue(externalDataObjects != null && !externalDataObjects.isEmpty(),
+                "Couldn't find a data object for publication name " + validName);
 
         ExternalDataObject dataObject = externalDataObjects.get(0);
 
         // Assert that the data object itself is not null
-        assertNotNull("External data object must not be null", dataObject);
+        assertNotNull(dataObject, "External data object must not be null");
 
         // Instantiate some Strings that we'll set if we find the expected metadata
         String title = null;
@@ -329,13 +329,13 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
         }
 
         // Does dc.title match the expected value?
-        assertEquals("Title metadata must equal '" + validName + "' ", validName, title);
+        assertEquals(validName, title, "Title metadata must equal '" + validName + "' ");
 
         // Does dc.identifier.sherpaPublisher match the expected value?
-        assertEquals("Publisher ID must equal " + validIdentifier, validIdentifier, identifier);
+        assertEquals(validIdentifier, identifier, "Publisher ID must equal " + validIdentifier);
 
         // Does dc.identifier.other match the expected value?
-        assertEquals("Publisher URL must equal " + validUrl, validUrl, url);
+        assertEquals(validUrl, url, "Publisher URL must equal " + validUrl);
     }
 
     /**
@@ -395,13 +395,13 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
                 sherpaPublisherProvider.searchExternalDataObjects(validName, 0, 1);
 
         // Assert that the response is valid and not empty
-        assertTrue("Couldn't find a data object for publication name " + validName,
-                externalDataObjects != null && !externalDataObjects.isEmpty());
+        assertTrue(externalDataObjects != null && !externalDataObjects.isEmpty(),
+                "Couldn't find a data object for publication name " + validName);
 
         ExternalDataObject dataObject = externalDataObjects.get(0);
 
         // Assert that the data object itself is not null
-        assertNotNull("External data object must not be null", dataObject);
+        assertNotNull(dataObject, "External data object must not be null");
 
         // Assert equality to the exemplar object
         assertEquals(exemplarDataObject, dataObject);
@@ -426,9 +426,9 @@ public class SHERPADataProviderTest extends AbstractDSpaceTest {
 
         public boolean matches(MetadataValueDTO value) {
             return schema.equalsIgnoreCase(value.getSchema()) &&
-                element.equalsIgnoreCase(value.getElement()) &&
-                (qualifier == null ? value.getQualifier() == null
-                    : qualifier.equalsIgnoreCase(value.getQualifier()));
+                    element.equalsIgnoreCase(value.getElement()) &&
+                    (qualifier == null ? value.getQualifier() == null
+                            : qualifier.equalsIgnoreCase(value.getQualifier()));
         }
 
         public MetadataValueDTO toMetadata(String value) {

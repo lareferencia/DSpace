@@ -8,9 +8,6 @@
 
 package org.dspace.services.email;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.PasswordAuthentication;
@@ -18,7 +15,12 @@ import jakarta.mail.Session;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.EmailService;
 import org.dspace.test.DSpaceAbstractKernelTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertNull;
+
 
 /**
  * @author mwood
@@ -92,8 +94,8 @@ public class EmailServiceImplTest
         EmailServiceImpl instance = (EmailServiceImpl) getService(EmailServiceImpl.class);
         instance.reset();
         assertNotNull(" getSession returned null", instance);
-        assertEquals(" authenticated session ", "true",
-                instance.getSession().getProperties().getProperty("mail.smtp.auth"));
+        assertEquals("true", instance.getSession().getProperties().getProperty("mail.smtp.auth"),
+                " authenticated session ");
 
         // Restore old values, if any.
         cfg.setProperty(CFG_USERNAME, oldUsername);
@@ -121,8 +123,8 @@ public class EmailServiceImplTest
 
         PasswordAuthentication result = instance.getPasswordAuthentication();
         assertNotNull(" null returned", result);
-        assertEquals(" username does not match configuration", result.getUserName(), USERNAME);
-        assertEquals(" password does not match configuration", result.getPassword(), PASSWORD);
+        assertEquals(USERNAME, result.getUserName(), " username does not match configuration");
+        assertEquals(PASSWORD, result.getPassword(), " password does not match configuration");
 
         // Restore old values, if any.
         cfg.setProperty(CFG_USERNAME, oldUsername);

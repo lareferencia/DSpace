@@ -8,10 +8,6 @@
 
 package org.dspace.identifier;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -41,11 +37,13 @@ import org.dspace.services.factory.DSpaceServicesFactory;
 import org.dspace.workflow.WorkflowException;
 import org.dspace.workflow.WorkflowItem;
 import org.dspace.workflow.factory.WorkflowServiceFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author mwood
@@ -140,7 +138,7 @@ public class EZIDIdentifierProviderTest
         return item;
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass()
         throws Exception {
         // Find the configuration service
@@ -165,7 +163,7 @@ public class EZIDIdentifierProviderTest
                                                              EZIDIdentifierProvider.class));
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass()
         throws Exception {
         DSpaceServicesFactory.getInstance().getServiceManager()
@@ -173,7 +171,7 @@ public class EZIDIdentifierProviderTest
         System.out.print("Tearing down\n\n");
     }
 
-    @Before
+    @BeforeEach
     public void setUp()
         throws Exception {
         context.turnOffAuthorisationSystem();
@@ -190,7 +188,7 @@ public class EZIDIdentifierProviderTest
         collectionService.update(context, collection);
     }
 
-    @After
+    @AfterEach
     public void tearDown()
         throws SQLException {
         context.restoreAuthSystemState();
@@ -211,7 +209,7 @@ public class EZIDIdentifierProviderTest
 
         Class<? extends Identifier> identifier = DOI.class;
         boolean result = instance.supports(identifier);
-        assertTrue("DOI is supported", result);
+        assertTrue(result, "DOI is supported");
     }
 
     /**
@@ -227,7 +225,7 @@ public class EZIDIdentifierProviderTest
 
         String identifier = "doi:" + TEST_SHOULDER;
         boolean result = instance.supports(identifier);
-        assertTrue(identifier + " is supported", result);
+        assertTrue(result, identifier + " is supported");
     }
 
     /**
@@ -450,13 +448,12 @@ public class EZIDIdentifierProviderTest
 
             // Evaluate
             String target = (String) metadata.get("_target");
-            assertEquals("Generates correct _target metadatum",
-                         config.getProperty("dspace.ui.url") + "/handle/" + handle,
-                         target);
-            assertTrue("Has title", metadata.containsKey("datacite.title"));
-            assertTrue("Has publication year", metadata.containsKey("datacite.publicationyear"));
-            assertTrue("Has publisher", metadata.containsKey("datacite.publisher"));
-            assertTrue("Has creator", metadata.containsKey("datacite.creator"));
+            assertEquals(config.getProperty("dspace.ui.url") + "/handle/" + handle,
+                    target,"Generates correct _target metadatum");
+            assertTrue(metadata.containsKey("datacite.title"), "Has title");
+            assertTrue(metadata.containsKey("datacite.publicationyear"), "Has publication year");
+            assertTrue(metadata.containsKey("datacite.publisher"), "Has publisher");
+            assertTrue(metadata.containsKey("datacite.creator"), "Has creator");
 
             // Dump out the generated metadata for inspection
             System.out.println("Results:");

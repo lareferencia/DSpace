@@ -7,11 +7,6 @@
  */
 package org.dspace.authenticate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,12 +17,13 @@ import org.dspace.content.MetadataValue;
 import org.dspace.eperson.EPerson;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SamlAuthenticationTest extends AbstractUnitTest {
     private static ConfigurationService configurationService;
@@ -36,14 +32,14 @@ public class SamlAuthenticationTest extends AbstractUnitTest {
     private SamlAuthentication samlAuth;
     private EPerson testUser;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeAll() {
         configurationService = DSpaceServicesFactory.getInstance().getConfigurationService();
 
         AbstractBuilder.init(); // AbstractUnitTest doesn't do this for us.
     }
 
-    @Before
+    @BeforeEach
     public void beforeEach() throws Exception {
         configurationService.setProperty("authentication-saml.autoregister", true);
         configurationService.setProperty("authentication-saml.eperson.metadata.autocreate", true);
@@ -53,14 +49,14 @@ public class SamlAuthenticationTest extends AbstractUnitTest {
         testUser = null;
     }
 
-    @After
+    @AfterEach
     public void afterEach() throws Exception {
         if (testUser != null) {
             EPersonBuilder.deleteEPerson(testUser.getID());
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterAll() {
         AbstractBuilder.destroy(); // AbstractUnitTest doesn't do this for us.
     }

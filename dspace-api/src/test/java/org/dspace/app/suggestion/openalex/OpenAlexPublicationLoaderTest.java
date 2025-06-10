@@ -7,9 +7,7 @@
  */
 package org.dspace.app.suggestion.openalex;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
@@ -20,8 +18,8 @@ import java.util.List;
 
 import org.dspace.content.Item;
 import org.dspace.content.service.ItemService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -37,7 +35,7 @@ public class OpenAlexPublicationLoaderTest {
 
     private ItemService itemService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         itemService = Mockito.mock(ItemService.class);
         loader = new OpenAlexPublicationLoader();

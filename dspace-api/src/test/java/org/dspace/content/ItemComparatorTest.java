@@ -7,10 +7,6 @@
  */
 package org.dspace.content;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -26,9 +22,11 @@ import org.dspace.content.service.MetadataFieldService;
 import org.dspace.content.service.MetadataSchemaService;
 import org.dspace.content.service.MetadataValueService;
 import org.dspace.content.service.WorkspaceItemService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Tests for class ItemComparator
@@ -74,7 +72,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
      * Other methods can be annotated with @Before here or in subclasses
      * but no execution order is guaranteed
      */
-    @Before
+    @BeforeEach
     @Override
     public void init() {
         try {
@@ -109,7 +107,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
      * Other methods can be annotated with @After here or in subclasses
      * but no execution order is guaranteed
      */
-    @After
+    @AfterEach
     @Override
     public void destroy() {
         context.turnOffAuthorisationSystem();
@@ -138,18 +136,18 @@ public class ItemComparatorTest extends AbstractUnitTest {
         //one of the items has no value
         ic = new ItemComparator("test", "one", Item.ANY, true);
         result = ic.compare(one, two);
-        assertTrue("testCompare 0", result == 0);
+        assertTrue(result == 0, "testCompare 0");
 
         ic = new ItemComparator("test", "one", Item.ANY, true);
         itemService.addMetadata(context, one, "dc", "test", "one", null, "1");
         result = ic.compare(one, two);
-        assertTrue("testCompare 1", result >= 1);
+        assertTrue( result >= 1, "testCompare 1");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
 
         ic = new ItemComparator("test", "one", Item.ANY, true);
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         result = ic.compare(one, two);
-        assertTrue("testCompare 2", result <= -1);
+        assertTrue(result <= -1, "testCompare 2");
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
         //value in both items
@@ -157,7 +155,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, one, "dc", "test", "one", null, "1");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "2");
         result = ic.compare(one, two);
-        assertTrue("testCompare 3", result <= -1);
+        assertTrue(result <= -1,"testCompare 3");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -165,7 +163,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, one, "dc", "test", "one", null, "1");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         result = ic.compare(one, two);
-        assertTrue("testCompare 4", result == 0);
+        assertTrue(result == 0, "testCompare 4");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -173,7 +171,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, one, "dc", "test", "one", null, "2");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         result = ic.compare(one, two);
-        assertTrue("testCompare 5", result >= 1);
+        assertTrue(result >= 1, "testCompare 5");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -184,7 +182,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, two, "dc", "test", "one", null, "2");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "3");
         result = ic.compare(one, two);
-        assertTrue("testCompare 3", result <= -1);
+        assertTrue(result <= -1, "testCompare 3");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -194,7 +192,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, two, "dc", "test", "one", null, "-1");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         result = ic.compare(one, two);
-        assertTrue("testCompare 4", result == 0);
+        assertTrue(result == 0, "testCompare 4");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -204,7 +202,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "-1");
         result = ic.compare(one, two);
-        assertTrue("testCompare 5", result >= 1);
+        assertTrue(result >= 1, "testCompare 5");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -214,7 +212,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, two, "dc", "test", "one", null, "2");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "3");
         result = ic.compare(one, two);
-        assertTrue("testCompare 3", result <= -1);
+        assertTrue( result <= -1, "testCompare 3");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -224,7 +222,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "5");
         result = ic.compare(one, two);
-        assertTrue("testCompare 4", result == 0);
+        assertTrue(result == 0, "testCompare 4");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
 
@@ -234,7 +232,7 @@ public class ItemComparatorTest extends AbstractUnitTest {
         itemService.addMetadata(context, two, "dc", "test", "one", null, "1");
         itemService.addMetadata(context, two, "dc", "test", "one", null, "4");
         result = ic.compare(one, two);
-        assertTrue("testCompare 5", result >= 1);
+        assertTrue(result >= 1, "testCompare 5");
         itemService.clearMetadata(context, one, "dc", "test", "one", Item.ANY);
         itemService.clearMetadata(context, two, "dc", "test", "one", Item.ANY);
     }
@@ -248,23 +246,23 @@ public class ItemComparatorTest extends AbstractUnitTest {
         ItemComparator ic = new ItemComparator("test", "one", Item.ANY, true);
         ItemComparator target;
 
-        assertFalse("testEquals 0", ic.equals(null));
-        assertFalse("testEquals 1", ic.equals("test one"));
+        assertFalse(ic.equals(null), "testEquals 0");
+        assertFalse(ic.equals("test one"), "testEquals 1");
 
         target = new ItemComparator("test1", "one", Item.ANY, true);
-        assertFalse("testEquals 2", ic.equals(target));
+        assertFalse(ic.equals(target), "testEquals 2");
 
         target = new ItemComparator("test", "one1", Item.ANY, true);
-        assertFalse("testEquals 3", ic.equals(target));
+        assertFalse(ic.equals(target), "testEquals 3");
 
         target = new ItemComparator("test", "one", "es", true);
-        assertFalse("testEquals 4", ic.equals(target));
+        assertFalse(ic.equals(target),"testEquals 4");
 
         target = new ItemComparator("test1", "one", Item.ANY, false);
-        assertFalse("testEquals 5", ic.equals(target));
+        assertFalse(ic.equals(target), "testEquals 5");
 
         target = new ItemComparator("test", "one", Item.ANY, true);
-        assertTrue("testEquals 6", ic.equals(target));
+        assertTrue( ic.equals(target), "testEquals 6");
     }
 
 }

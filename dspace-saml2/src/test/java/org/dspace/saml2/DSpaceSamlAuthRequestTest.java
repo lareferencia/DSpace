@@ -8,11 +8,12 @@
 
 package org.dspace.saml2;
 
-import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Ray Lee

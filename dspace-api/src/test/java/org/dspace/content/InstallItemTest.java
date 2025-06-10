@@ -11,6 +11,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,10 +29,10 @@ import org.dspace.content.service.CommunityService;
 import org.dspace.content.service.InstallItemService;
 import org.dspace.content.service.ItemService;
 import org.dspace.content.service.WorkspaceItemService;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
 /**
@@ -63,7 +64,7 @@ public class InstallItemTest extends AbstractUnitTest {
     public ExpectedException thrown = ExpectedException.none();
 
 
-    @Before
+    @BeforeEach
     @Override
     public void init() {
         super.init();
@@ -85,7 +86,7 @@ public class InstallItemTest extends AbstractUnitTest {
      * Other methods can be annotated with @After here or in subclasses
      * but no execution order is guaranteed
      */
-    @After
+    @AfterEach
     @Override
     public void destroy() {
         try {
@@ -134,24 +135,26 @@ public class InstallItemTest extends AbstractUnitTest {
     /**
      * Test of installItem method (with an invalid handle), of class InstallItem.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testInstallItem_invalidHandle() throws Exception {
-        // create two items for tests
-        context.turnOffAuthorisationSystem();
-        try {
-            WorkspaceItem is = workspaceItemService.create(context, collection, false);
-            WorkspaceItem is2 = workspaceItemService.create(context, collection, false);
+        assertThrows(IllegalStateException.class, () -> {
+            // create two items for tests
+            context.turnOffAuthorisationSystem();
+            try {
+                WorkspaceItem is = workspaceItemService.create(context, collection, false);
+                WorkspaceItem is2 = workspaceItemService.create(context, collection, false);
 
-            //Test assigning the same Handle to two different items
-            String handle = "123456789/56789";
-            installItemService.installItem(context, is, handle);
+                //Test assigning the same Handle to two different items
+                String handle = "123456789/56789";
+                installItemService.installItem(context, is, handle);
 
-            // Assigning the same handle again should throw a RuntimeException
-            installItemService.installItem(context, is2, handle);
-        } finally {
-            context.restoreAuthSystemState();
-        }
-        fail("Exception expected");
+                // Assigning the same handle again should throw a RuntimeException
+                installItemService.installItem(context, is2, handle);
+            } finally {
+                context.restoreAuthSystemState();
+            }
+            fail("Exception expected");
+        });
     }
 
 

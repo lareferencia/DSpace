@@ -7,8 +7,6 @@
  */
 package org.dspace.xmlworkflow;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -40,9 +38,11 @@ import org.dspace.xmlworkflow.service.XmlWorkflowService;
 import org.dspace.xmlworkflow.state.Workflow;
 import org.dspace.xmlworkflow.state.actions.processingaction.SelectReviewerAction;
 import org.dspace.xmlworkflow.storedcomponents.ClaimedTask;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * IT for {@link XmlWorkflowServiceImpl}
@@ -65,7 +65,7 @@ public class XmlWorkflowServiceIT extends AbstractIntegrationTestWithDatabase {
      * @throws AuthorizeException
      * @throws IOException
      */
-    @After
+    @AfterEach
     public void cleanup() throws SQLException, AuthorizeException, IOException {
         Group reviewManagers = groupService.findByName(context, "ReviewManagers");
         if (reviewManagers != null) {

@@ -8,10 +8,6 @@
 
 package org.dspace.app.bulkedit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -39,8 +35,10 @@ import org.dspace.discovery.SearchService;
 import org.dspace.discovery.SearchUtils;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MetadataExportSearchIT extends AbstractIntegrationTestWithDatabase {
 
@@ -57,7 +55,7 @@ public class MetadataExportSearchIT extends AbstractIntegrationTestWithDatabase 
     private SearchService searchService;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 

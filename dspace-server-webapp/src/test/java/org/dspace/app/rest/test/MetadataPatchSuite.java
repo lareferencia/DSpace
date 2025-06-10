@@ -7,6 +7,7 @@
  */
 package org.dspace.app.rest.test;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.core.MediaType;
-import org.junit.Assert;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -56,7 +56,7 @@ public class MetadataPatchSuite {
                     checkResponse("GET", client, get(url), expectedMetadata, expectedStatus);
                 }
             } catch (Throwable t) {
-                Assert.fail("Metadata patch test '" + testNode.get("name") + "' failed.\n" + "Request body: "
+                fail("Metadata patch test '" + testNode.get("name") + "' failed.\n" + "Request body: "
                         + requestBody + "\n" + "Error: " + (t instanceof AssertionError ? "" : t.getClass().getName())
                         + t.getMessage());
             }
@@ -84,7 +84,7 @@ public class MetadataPatchSuite {
           JsonNode responseJson =  mapper.readTree(responseBody);
           String responseMetadata = responseJson.get("metadata").toString();
           if (!responseMetadata.equals(expectedMetadata)) {
-              Assert.fail("Expected metadata in " + verb + " response: " + expectedMetadata
+              fail("Expected metadata in " + verb + " response: " + expectedMetadata
                       + "\nGot metadata in " + verb + " response: " + responseMetadata);
           }
         }

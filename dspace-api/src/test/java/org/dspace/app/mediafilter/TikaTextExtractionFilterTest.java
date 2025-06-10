@@ -7,9 +7,9 @@
  */
 package org.dspace.app.mediafilter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import org.apache.commons.io.IOUtils;
 import org.dspace.AbstractUnitTest;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test the TikaTextExtractionFilter using test files for all major formats.
@@ -39,7 +39,7 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithUseTempFile()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         // Extract text from file with "use-temp-file=true"
@@ -49,7 +49,7 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
         String tempFileExtractedText = readAll(result);
 
         // Verify text extracted successfully
-        assertTrue("Known content was not found in .pdf", tempFileExtractedText.contains("quick brown fox"));
+        assertTrue(tempFileExtractedText.contains("quick brown fox"), "Known content was not found in .pdf");
 
         // Now, extract text from same file using default, in-memory
         configurationService.setProperty("textextractor.use-temp-file", "false");
@@ -58,8 +58,7 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
         String inMemoryExtractedText = readAll(result);
 
         // Verify the two results are equal
-        assertEquals("Extracted text via temp file is the same as in-memory.",
-                     inMemoryExtractedText, tempFileExtractedText);
+        assertEquals(inMemoryExtractedText, tempFileExtractedText, "Extracted text via temp file is the same as in-memory.");
     }
 
     /**
@@ -69,7 +68,7 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithMaxChars()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         // Set "max-chars" to a small value of 100 chars, which is less than the text size of the file.
@@ -81,8 +80,8 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
         // Verify we have exactly the first 100 characters
         assertEquals(100, extractedText.length());
         // Verify it has some text at the beginning of the file, but NOT text near the end
-        assertTrue("Known beginning content was found", extractedText.contains("This is a text."));
-        assertFalse("Known ending content was not found", extractedText.contains("Emergency Broadcast System"));
+        assertTrue(extractedText.contains("This is a text."), "Known beginning content was found");
+        assertFalse(extractedText.contains("Emergency Broadcast System"), "Known ending content was not found");
     }
 
     /**
@@ -93,12 +92,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithDoc()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.doc");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .doc", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .doc");
     }
 
     /**
@@ -109,12 +108,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithDocx()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.docx");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .docx", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .docx");
     }
 
     /**
@@ -125,12 +124,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithODT()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.odt");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .odt", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .odt");
     }
 
     /**
@@ -141,12 +140,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithRTF()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.rtf");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .rtf", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .rtf");
     }
 
     /**
@@ -157,12 +156,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithPDF()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.pdf");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .pdf", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .pdf");
     }
 
     /**
@@ -173,12 +172,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithHTML()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.html");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .html", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .html");
     }
 
     /**
@@ -189,12 +188,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithTxt()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.txt");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .txt", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .txt");
     }
 
     /**
@@ -205,12 +204,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithCsv()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.csv");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .csv", readAll(result).contains("data3,3"));
+        assertTrue(readAll(result).contains("data3,3"), "Known content was not found in .csv");
     }
 
     /**
@@ -221,12 +220,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithXLS()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.xls");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .xls", readAll(result).contains("data3,3"));
+        assertTrue(readAll(result).contains("data3,3"), "Known content was not found in .xls");
     }
 
     /**
@@ -237,12 +236,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithXLSX()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.xlsx");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .xlsx", readAll(result).contains("data3,3"));
+        assertTrue(readAll(result).contains("data3,3"), "Known content was not found in .xlsx");
     }
 
     /**
@@ -253,12 +252,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithODS()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.ods");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .ods", readAll(result).contains("Data on the second sheet"));
+        assertTrue(readAll(result).contains("Data on the second sheet"), "Known content was not found in .ods");
     }
 
     /**
@@ -269,12 +268,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithPPT()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.ppt");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .ppt", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .ppt");
     }
 
     /**
@@ -285,12 +284,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithPPTX()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.pptx");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .pptx", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .pptx");
     }
 
     /**
@@ -301,12 +300,12 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      */
     @Test
     public void testGetDestinationStreamWithODP()
-        throws Exception {
+            throws Exception {
         TikaTextExtractionFilter instance = new TikaTextExtractionFilter();
 
         InputStream source = getClass().getResourceAsStream("test.odp");
         InputStream result = instance.getDestinationStream(null, source, false);
-        assertTrue("Known content was not found in .odp", readAll(result).contains("quick brown fox"));
+        assertTrue(readAll(result).contains("quick brown fox"), "Known content was not found in .odp");
     }
 
     /**
@@ -317,7 +316,7 @@ public class TikaTextExtractionFilterTest extends AbstractUnitTest {
      * @throws IOException
      */
     private static String readAll(InputStream stream)
-        throws IOException {
+            throws IOException {
         return IOUtils.toString(stream, StandardCharsets.UTF_8);
     }
 }

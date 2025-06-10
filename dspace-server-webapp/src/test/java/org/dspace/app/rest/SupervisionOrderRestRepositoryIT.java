@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -50,9 +51,8 @@ import org.dspace.supervision.SupervisionOrder;
 import org.dspace.supervision.service.SupervisionOrderService;
 import org.dspace.workflow.WorkflowItem;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -68,7 +68,7 @@ public class SupervisionOrderRestRepositoryIT extends AbstractControllerIntegrat
     @Autowired
     private InstallItemService installItemService;
 
-    @Before
+    @BeforeEach
     public void init() throws Exception {
         context.turnOffAuthorisationSystem();
         parentCommunity = CommunityBuilder.createCommunity(context)
@@ -975,7 +975,7 @@ public class SupervisionOrderRestRepositoryIT extends AbstractControllerIntegrat
                                           .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
                              .andExpect(status().isForbidden());
 
-        Assert.assertTrue(item.getResourcePolicies().stream()
+        assertTrue(item.getResourcePolicies().stream()
                               .noneMatch(rp -> group.getID().equals(rp.getGroup().getID())));
     }
 
