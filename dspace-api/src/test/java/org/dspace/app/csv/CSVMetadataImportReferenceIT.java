@@ -469,12 +469,10 @@ public class CSVMetadataImportReferenceIT extends AbstractIntegrationTestWithDat
     @Test
     public void testNonExistMdRef() throws Exception {
         assertThrows(Exception.class, () -> {
-            assertThrows(Exception.class, () -> {
-                String[] csv = {"id,dspace.entity.type,relation.isAuthorOfPublication,collection,dc.identifier.other",
-                        "+,Person,," + col1.getHandle() + ",1",
-                        "+,Publication,dc.identifier.other:8675309," + col1.getHandle() + ",2"};
-                performImportScript(csv, false);
-            });
+            String[] csv = {"id,dspace.entity.type,relation.isAuthorOfPublication,collection,dc.identifier.other",
+                    "+,Person,," + col1.getHandle() + ",1",
+                    "+,Publication,dc.identifier.other:8675309," + col1.getHandle() + ",2"};
+            performImportScript(csv, false);
         });
     }
 

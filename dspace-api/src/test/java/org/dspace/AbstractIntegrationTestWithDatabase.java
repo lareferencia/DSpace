@@ -7,8 +7,6 @@
  */
 package org.dspace;
 
-import static org.junit.Assert.fail;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,6 +41,8 @@ import org.jdom2.Document;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Abstract Test class that will initialize the in-memory database

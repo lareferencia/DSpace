@@ -7,7 +7,7 @@
  */
 package org.dspace.identifier;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +25,8 @@ import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.services.factory.DSpaceServicesFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+
 
 public class VersionedHandleIdentifierProviderIT extends AbstractIdentifierProviderIT  {
 
@@ -46,11 +48,11 @@ public class VersionedHandleIdentifierProviderIT extends AbstractIdentifierProvi
         // Clean out providers to avoid any being used for creation of community and collection
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                      .withName("Collection")
-                                      .build();
+                .withName("Collection")
+                .build();
 
         context.restoreAuthSystemState();
     }
@@ -58,9 +60,7 @@ public class VersionedHandleIdentifierProviderIT extends AbstractIdentifierProvi
     private void createVersions() throws SQLException, AuthorizeException {
         context.turnOffAuthorisationSystem();
 
-        itemV1 = ItemBuilder.createItem(context, collection)
-                .withTitle("First version")
-                .build();
+        itemV1 = ItemBuilder.createItem(context, collection).withTitle("First version").build();
         firstHandle = itemV1.getHandle();
         itemV2 = VersionBuilder.createVersion(context, itemV1, "Second version").build().getItem();
         itemV3 = VersionBuilder.createVersion(context, itemV1, "Third version").build().getItem();
@@ -87,17 +87,17 @@ public class VersionedHandleIdentifierProviderIT extends AbstractIdentifierProvi
     public void testCollectionHandleMetadata() {
         context.turnOffAuthorisationSystem();
         Community testCommunity = CommunityBuilder.createCommunity(context)
-                                                  .withName("Test community")
-                                                  .build();
+                .withName("Test community")
+                .build();
 
         Collection testCollection = CollectionBuilder.createCollection(context, testCommunity)
-                                                     .withName("Test Collection")
-                                                     .build();
+                .withName("Test Collection")
+                .build();
         context.restoreAuthSystemState();
 
         List<MetadataValue> metadata = ContentServiceFactory.getInstance().getDSpaceObjectService(testCollection)
-                                                            .getMetadata(testCollection, "dc", "identifier", "uri",
-                                                                         Item.ANY);
+                .getMetadata(testCollection, "dc", "identifier", "uri",
+                        Item.ANY);
 
         assertEquals(1, metadata.size());
         assertEquals(dspaceUrl + "/handle/" + testCollection.getHandle(), metadata.get(0).getValue());
@@ -107,13 +107,13 @@ public class VersionedHandleIdentifierProviderIT extends AbstractIdentifierProvi
     public void testCommunityHandleMetadata() {
         context.turnOffAuthorisationSystem();
         Community testCommunity = CommunityBuilder.createCommunity(context)
-                                                  .withName("Test community")
-                                                  .build();
+                .withName("Test community")
+                .build();
         context.restoreAuthSystemState();
 
         List<MetadataValue> metadata = ContentServiceFactory.getInstance().getDSpaceObjectService(testCommunity)
-                                                            .getMetadata(testCommunity, "dc", "identifier", "uri",
-                                                                         Item.ANY);
+                .getMetadata(testCommunity, "dc", "identifier", "uri",
+                        Item.ANY);
 
         assertEquals(1, metadata.size());
         assertEquals(dspaceUrl + "/handle/" + testCommunity.getHandle(), metadata.get(0).getValue());

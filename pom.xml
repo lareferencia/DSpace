@@ -245,9 +245,10 @@
                     <configuration>
                         <!-- Allow for the ability to pass JVM memory flags for Unit Tests. Since
                              maven-failsafe-plugin forks a new JVM, it ignores MAVEN_OPTS.-->
-                        <argLine>${test.argLine} ${failsafeJacoco}</argLine>
+                        <argLine>${test.argLine} ${failsafeJacoco} -javaagent:${settings.localRepository}/com/ginsberg/junit5-system-exit/2.0.2/junit5-system-exit-2.0.2.jar</argLine>
                         <includes>
                             <include>**/*IT.java</include>
+<!--                            <include>org/dspace/identifier/VersionedHandleIdentifierProviderIT.java</include>-->
                         </includes>
                         <excludes>
                             <exclude>**/Abstract*</exclude>
@@ -1262,6 +1263,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring-boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ginsberg</groupId>
+                <artifactId>junit5-system-exit</artifactId>
+                <version>2.0.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.stefanbirkner</groupId>
+                <artifactId>system-lambda</artifactId>
+                <version>1.2.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

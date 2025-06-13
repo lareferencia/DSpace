@@ -15,17 +15,20 @@ import org.dspace.AbstractIntegrationTest;
 import org.dspace.services.ConfigurationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 /**
  * Unit tests for {@link RegexPasswordValidator}.
  * 
  * @author Luca Giamminonni (luca.giamminonni at 4science.it)
  */
-@RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.WARN)
+@ExtendWith(MockitoExtension.class)
 public class RegexPasswordValidatorIT extends AbstractIntegrationTest {
 
     @Mock
