@@ -9,8 +9,8 @@ package org.dspace.content;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -3288,7 +3288,6 @@ public class RelationshipServiceImplPlaceTest extends AbstractUnitTest {
         );
 
         assertEquals(
-            "Metadata authorities should match relationship IDs",
             relationships.stream()
                          .map(r -> {
                              if (r != null) {
@@ -3300,7 +3299,8 @@ public class RelationshipServiceImplPlaceTest extends AbstractUnitTest {
                          .collect(Collectors.toList()),
             mdvs.stream()
                 .map(MetadataValue::getAuthority)
-                .collect(Collectors.toList())
+                .collect(Collectors.toList()),
+                "Metadata authorities should match relationship IDs"
         );
     }
 

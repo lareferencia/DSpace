@@ -7,8 +7,6 @@
  */
 package org.dspace.content.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +32,9 @@ import org.dspace.content.service.WorkspaceItemService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RelationshipTypeDAOImplIT extends AbstractIntegrationTest {
 
@@ -131,9 +132,9 @@ public class RelationshipTypeDAOImplIT extends AbstractIntegrationTest {
      */
     @Test
     public void testFindByTypesAndLabels() throws Exception {
-        assertEquals("TestFindbyTypesAndLabels 0", relationshipType, relationshipTypeService
+        assertEquals( relationshipType, relationshipTypeService
                 .findbyTypesAndTypeName(context, entityTypeTwo, entityTypeOne, "isAuthorOfPublication",
-                        "isPublicationOfAuthor"));
+                        "isPublicationOfAuthor"), "TestFindbyTypesAndLabels 0");
     }
 
     /**
@@ -143,8 +144,9 @@ public class RelationshipTypeDAOImplIT extends AbstractIntegrationTest {
      */
     @Test
     public void testFindByLeftOrRightLabel() throws Exception {
-        assertEquals("TestFindByLeftOrRightLabel 0", relationshipTypeList, relationshipTypeService.
-                findByLeftwardOrRightwardTypeName(context, "isAuthorOfPublication", -1, -1));
+        assertEquals(relationshipTypeList, relationshipTypeService.
+                findByLeftwardOrRightwardTypeName(context, "isAuthorOfPublication", -1, -1),
+                "TestFindByLeftOrRightLabel 0");
     }
 
     /**
@@ -155,7 +157,7 @@ public class RelationshipTypeDAOImplIT extends AbstractIntegrationTest {
      */
     @Test
     public void testFindByEntityType() throws Exception {
-        assertEquals("TestFindByEntityType 0", relationshipTypeList, relationshipTypeService.findByEntityType(context,
-                entityTypeOne));
+        assertEquals(relationshipTypeList, relationshipTypeService.findByEntityType(context,
+                entityTypeOne), "TestFindByEntityType 0");
     }
 }

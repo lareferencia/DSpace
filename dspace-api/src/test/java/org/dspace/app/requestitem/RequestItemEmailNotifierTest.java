@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -164,13 +164,11 @@ public class RequestItemEmailNotifierTest
 
         // Check the To: address.
         Address[] myAddresses = JavaMailTestTransport.getAddresses();
-        assertEquals("Should have one To: address.",
-                myAddresses.length, 1);
+        assertEquals(myAddresses.length, 1, "Should have one To: address.");
         assertThat("To: should be an Internet address",
                 myAddresses[0], instanceOf(InternetAddress.class));
-        String address = ((InternetAddress)myAddresses[0]).getAddress();
-        assertEquals("To: address should match requester.",
-                ri.getReqEmail(), address);
+        String address = ((InternetAddress) myAddresses[0]).getAddress();
+        assertEquals(ri.getReqEmail(), address, "To: address should match requester.");
 
         // Check the message body.
         Message myMessage = JavaMailTestTransport.getMessage();
@@ -180,10 +178,10 @@ public class RequestItemEmailNotifierTest
                 content, instanceOf(String.class));
 
         assertThat("Should contain the helpdesk name",
-                (String)content, containsString(HELPDESK_NAME));
+                (String) content, containsString(HELPDESK_NAME));
 
         assertThat("Should contain the test custom message",
-                (String)content, containsString(TEST_MESSAGE));
+                (String) content, containsString(TEST_MESSAGE));
     }
 
     /**
@@ -192,7 +190,7 @@ public class RequestItemEmailNotifierTest
      */
     @Test
     public void testSendRejection()
-        throws Exception {
+            throws Exception {
         // Create some content to send.
         context.turnOffAuthorisationSystem();
         Community com = CommunityBuilder.createCommunity(context)
@@ -237,13 +235,11 @@ public class RequestItemEmailNotifierTest
 
         // Check the To: address.
         Address[] myAddresses = JavaMailTestTransport.getAddresses();
-        assertEquals("Should have one To: address.",
-                myAddresses.length, 1);
+        assertEquals(myAddresses.length, 1, "Should have one To: address.");
         assertThat("To: should be an Internet address",
                 myAddresses[0], instanceOf(InternetAddress.class));
-        String address = ((InternetAddress)myAddresses[0]).getAddress();
-        assertEquals("To: address should match requester.",
-                ri.getReqEmail(), address);
+        String address = ((InternetAddress) myAddresses[0]).getAddress();
+        assertEquals(ri.getReqEmail(), address, "To: address should match requester.");
 
         // Check the message body.
         Message myMessage = JavaMailTestTransport.getMessage();
@@ -253,14 +249,14 @@ public class RequestItemEmailNotifierTest
                 content, instanceOf(String.class));
 
         assertThat("Should contain the helpdesk name",
-                (String)content, containsString(HELPDESK_NAME));
+                (String) content, containsString(HELPDESK_NAME));
 
         assertThat("Should contain the test custom message",
-                (String)content, containsString(TEST_MESSAGE));
+                (String) content, containsString(TEST_MESSAGE));
 
         // FIXME Note that this depends on the content of the rejection template!
         assertThat("Should contain the word 'denied'.",
-                (String)content, containsString("denied"));
+                (String) content, containsString("denied"));
     }
 
     @Test
@@ -283,7 +279,7 @@ public class RequestItemEmailNotifierTest
                 .withName("large.pdf")
                 .build();
         context.restoreAuthSystemState();
-       // Create a request to which we can respond.
+        // Create a request to which we can respond.
         RequestItem request = RequestItemBuilder
                 .createRequestItem(context, item, largeBitstream)
                 .withAcceptRequest(true)
@@ -302,7 +298,7 @@ public class RequestItemEmailNotifierTest
 
         // Check that the email contains the access link and no attachment.
         Message myMessage = JavaMailTestTransport.getMessage();
-        String content = (String)myMessage.getContent();
+        String content = (String) myMessage.getContent();
         assertThat("Should contain access link", content, containsString(responseLink));
         assertThat("Should not contain attachment marker", content, not(containsString("Attachment")));
     }

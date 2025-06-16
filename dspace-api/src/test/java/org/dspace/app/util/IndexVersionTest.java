@@ -7,11 +7,11 @@
  */
 package org.dspace.app.util;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Tim

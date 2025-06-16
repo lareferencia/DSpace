@@ -7,10 +7,6 @@
  */
 package org.dspace.access.status;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +36,8 @@ import org.dspace.core.Constants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Tests for access status service
@@ -159,8 +157,8 @@ public class AccessStatusServiceTest extends AbstractUnitTest {
         AccessStatus accessStatus = accessStatusService.getAccessStatus(context, item);
         String status = accessStatus.getStatus();
         LocalDate availabilityDate = accessStatus.getAvailabilityDate();
-        assertNotEquals("testGetAccessStatusItem 0", status, DefaultAccessStatusHelper.UNKNOWN);
-        assertNull("testGetAccessStatusItem 1", availabilityDate);
+        assertNotEquals(status, DefaultAccessStatusHelper.UNKNOWN, "testGetAccessStatusItem 0");
+        assertNull(availabilityDate, "testGetAccessStatusItem 1");
     }
 
     @Test
@@ -168,8 +166,8 @@ public class AccessStatusServiceTest extends AbstractUnitTest {
         AccessStatus accessStatus = accessStatusService.getAnonymousAccessStatus(context, item);
         String status = accessStatus.getStatus();
         LocalDate availabilityDate = accessStatus.getAvailabilityDate();
-        assertNotEquals("testGetAnonymousAccessStatusItem 0", status, DefaultAccessStatusHelper.UNKNOWN);
-        assertNull("testGetAnonymousAccessStatusItem 1", availabilityDate);
+        assertNotEquals(status, DefaultAccessStatusHelper.UNKNOWN, "testGetAnonymousAccessStatusItem 0");
+        assertNull(availabilityDate, "testGetAnonymousAccessStatusItem 1");
     }
 
     @Test
@@ -177,7 +175,7 @@ public class AccessStatusServiceTest extends AbstractUnitTest {
         AccessStatus accessStatus = accessStatusService.getAccessStatus(context, bitstream);
         String status = accessStatus.getStatus();
         LocalDate availabilityDate = accessStatus.getAvailabilityDate();
-        assertNotEquals("testGetAccessStatusBitstream 0", status, DefaultAccessStatusHelper.UNKNOWN);
-        assertNull("testGetAccessStatusBitstream 1", availabilityDate);
+        assertNotEquals(status, DefaultAccessStatusHelper.UNKNOWN, "testGetAccessStatusBitstream 0");
+        assertNull(availabilityDate, "testGetAccessStatusBitstream 1");
     }
 }

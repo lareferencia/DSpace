@@ -12,7 +12,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import jakarta.inject.Inject;
 import org.dspace.AbstractIntegrationTestWithDatabase;
 import org.dspace.builder.CollectionBuilder;
 import org.dspace.builder.CommunityBuilder;
@@ -29,20 +28,16 @@ import org.dspace.util.DSpaceConfigurationInitializer;
 import org.dspace.util.DSpaceKernelInitializer;
 import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  * Test the attachment of curation tasks to workflows.
  *
  * @author mwood
  */
-@RunWith(SpringRunner.class)
-@ContextConfiguration(
-        initializers = { DSpaceKernelInitializer.class, DSpaceConfigurationInitializer.class },
-        locations = { "classpath:spring/*.xml" }
+@SpringJUnitConfig(
+        initializers = {DSpaceKernelInitializer.class, DSpaceConfigurationInitializer.class},
+        locations = {"classpath:spring/*.xml"}
 )
 public class WorkflowCurationIT
         extends AbstractIntegrationTestWithDatabase {

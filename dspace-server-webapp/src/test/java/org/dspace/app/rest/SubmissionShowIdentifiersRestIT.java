@@ -28,6 +28,7 @@ import org.dspace.handle.service.HandleService;
 import org.dspace.identifier.DOIIdentifierProvider;
 import org.dspace.services.ConfigurationService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,6 +52,7 @@ public class SubmissionShowIdentifiersRestIT extends AbstractControllerIntegrati
     private Collection collection;
     private EPerson submitter;
 
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();

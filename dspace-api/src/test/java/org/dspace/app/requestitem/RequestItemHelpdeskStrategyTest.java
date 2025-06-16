@@ -7,8 +7,6 @@
  */
 package org.dspace.app.requestitem;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -32,6 +30,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
@@ -101,12 +101,12 @@ public class RequestItemHelpdeskStrategyTest
         configurationService.setProperty(RequestItemHelpdeskStrategy.P_HELPDESK_OVERRIDE, "true");
         configurationService.setProperty(RequestItemHelpdeskStrategy.P_MAIL_HELPDESK, HELPDESK_ADDRESS);
         List<RequestItemAuthor> authors = instance.getRequestItemAuthor(context, item);
-        assertEquals("Wrong author address", HELPDESK_ADDRESS, authors.get(0).getEmail());
+        assertEquals(HELPDESK_ADDRESS, authors.get(0).getEmail(), "Wrong author address");
 
         // Check with help desk disabled.
         configurationService.setProperty(RequestItemHelpdeskStrategy.P_HELPDESK_OVERRIDE, "false");
         authors = instance.getRequestItemAuthor(context, item);
-        assertEquals("Wrong author address", AUTHOR_ADDRESS, authors.get(0).getEmail());
+        assertEquals(AUTHOR_ADDRESS, authors.get(0).getEmail(), "Wrong author address");
     }
 
     /**

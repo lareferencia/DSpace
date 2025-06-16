@@ -7,12 +7,9 @@
  */
 package org.dspace.content;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.dspace.authorize.AuthorizeException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 
@@ -28,17 +25,17 @@ public class MetadataFieldNameTest {
     @Test
     public void testConstruct3() {
         MetadataFieldName instance = new MetadataFieldName("one", "two", "three");
-        assertEquals("Incorrect schema", "one", instance.schema);
-        assertEquals("Incorrect element", "two", instance.element);
-        assertEquals("Incorrect qualifier", "three", instance.qualifier);
+        assertEquals("one", instance.schema, "Incorrect schema");
+        assertEquals("two", instance.element, "Incorrect element");
+        assertEquals("three", instance.qualifier, "Incorrect qualifier");
     }
 
     @Test
     public void testConstruct2() {
         MetadataFieldName instance = new MetadataFieldName("one", "two");
-        assertEquals("Incorrect schema", "one", instance.schema);
-        assertEquals("Incorrect element", "two", instance.element);
-        assertNull("Incorrect qualifier", instance.qualifier);
+        assertEquals("one", instance.schema, "Incorrect schema");
+        assertEquals( "two", instance.element, "Incorrect element");
+        assertNull(instance.qualifier, "Incorrect qualifier");
     }
 
     @Test
@@ -55,9 +52,9 @@ public class MetadataFieldNameTest {
     @Test
     public void testParse3() {
         String[] results = MetadataFieldName.parse(STRING_NAME_3);
-        assertEquals(STRING_NAME_3, "one", results[0]);
-        assertEquals(STRING_NAME_3, "two", results[1]);
-        assertEquals(STRING_NAME_3, "three", results[2]);
+        assertEquals("one", results[0], STRING_NAME_3);
+        assertEquals("two", results[1], STRING_NAME_3);
+        assertEquals("three", results[2], STRING_NAME_3);
     }
 
     /**
@@ -66,9 +63,9 @@ public class MetadataFieldNameTest {
     @Test
     public void TestParse2() {
         String[] results = MetadataFieldName.parse(STRING_NAME_2);
-        assertEquals(STRING_NAME_2, "one", results[0]);
-        assertEquals(STRING_NAME_2, "two", results[1]);
-        assertNull(STRING_NAME_2, results[2]);
+        assertEquals("one", results[0], STRING_NAME_2);
+        assertEquals("two", results[1], STRING_NAME_2);
+        assertNull(results[2], STRING_NAME_2);
     }
 
     /**
@@ -109,7 +106,7 @@ public class MetadataFieldNameTest {
     public void testToString3() {
         MetadataFieldName instance = new MetadataFieldName("one", "two", "three");
         String name = instance.toString();
-        assertEquals("Stringified name not assembled correctly", "one.two.three", name);
+        assertEquals("one.two.three", name, "Stringified name not assembled correctly");
     }
 
     /**
@@ -119,6 +116,6 @@ public class MetadataFieldNameTest {
     public void testToString2() {
         MetadataFieldName instance = new MetadataFieldName("one", "two");
         String name = instance.toString();
-        assertEquals("Stringified name not assembled correctly", "one.two", name);
+        assertEquals( "one.two", name, "Stringified name not assembled correctly");
     }
 }

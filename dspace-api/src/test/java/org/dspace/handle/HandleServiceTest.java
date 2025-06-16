@@ -7,8 +7,8 @@
  */
 package org.dspace.handle;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.dspace.AbstractUnitTest;
 import org.dspace.handle.factory.HandleServiceFactory;
@@ -17,6 +17,7 @@ import org.dspace.services.ConfigurationService;
 import org.dspace.utils.DSpace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 public class HandleServiceTest extends AbstractUnitTest {
     protected HandleService handleService = HandleServiceFactory.getInstance().getHandleService();

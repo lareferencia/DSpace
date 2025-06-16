@@ -7,8 +7,6 @@
  */
 package org.dspace.content.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import org.dspace.AbstractUnitTest;
 import org.dspace.content.MetadataField;
@@ -16,6 +14,9 @@ import org.dspace.content.MetadataSchema;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.core.Context;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MetadataFieldServiceTest extends AbstractUnitTest {
 

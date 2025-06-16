@@ -248,7 +248,6 @@
                         <argLine>${test.argLine} ${failsafeJacoco} -javaagent:${settings.localRepository}/com/ginsberg/junit5-system-exit/2.0.2/junit5-system-exit-2.0.2.jar</argLine>
                         <includes>
                             <include>**/*IT.java</include>
-<!--                            <include>org/dspace/identifier/VersionedHandleIdentifierProviderIT.java</include>-->
                         </includes>
                         <excludes>
                             <exclude>**/Abstract*</exclude>

@@ -7,8 +7,6 @@
  */
 package org.dspace.app.util;
 
-import static org.junit.Assert.assertEquals;
-
 import org.dspace.AbstractIntegrationTestWithDatabase;
 import org.dspace.builder.CollectionBuilder;
 import org.dspace.builder.CommunityBuilder;
@@ -17,6 +15,8 @@ import org.dspace.content.Community;
 import org.dspace.submit.factory.SubmissionServiceFactory;
 import org.dspace.submit.service.SubmissionConfigService;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Integration Tests for parsing and utilities on submission config forms / readers

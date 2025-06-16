@@ -7,9 +7,6 @@
  */
 package org.dspace.content;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.List;
 
 import org.dspace.AbstractIntegrationTestWithDatabase;
@@ -25,6 +22,9 @@ import org.dspace.content.service.RelationshipService;
 import org.dspace.services.factory.DSpaceServicesFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RelationshipServiceImplVersioningIT extends AbstractIntegrationTestWithDatabase {
 

@@ -89,6 +89,7 @@ import org.dspace.orcid.service.OrcidTokenService;
 import org.dspace.services.ConfigurationService;
 import org.dspace.util.UUIDUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,6 +137,7 @@ public class ResearcherProfileRestRepositoryIT extends AbstractControllerIntegra
     /**
      * Tests setup.
      */
+    @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -990,7 +992,7 @@ public class ResearcherProfileRestRepositoryIT extends AbstractControllerIntegra
 
         // the profile item should be the same
         String secondItemId = getItemIdByProfileId(adminToken, id);
-        assertEquals("The item should be the same", firstItemId, secondItemId);
+        assertEquals(firstItemId, secondItemId, "The item should be the same");
 
     }
 
@@ -1120,7 +1122,7 @@ public class ResearcherProfileRestRepositoryIT extends AbstractControllerIntegra
         token = getAuthToken(ePerson.getEmail(), password);
 
         String newProfileItemId = getItemIdByProfileId(token, epersonId);
-        assertEquals("The item should be the same", newProfileItemId, profileItemId);
+        assertEquals(newProfileItemId, profileItemId, "The item should be the same");
 
     }
 

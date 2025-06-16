@@ -19,11 +19,7 @@ import org.dspace.AbstractDSpaceTest;
 import org.dspace.services.ConfigurationService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.contrib.java.lang.system.ExpectedSystemExit;
-import org.junit.contrib.java.lang.system.SystemErrRule;
-import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import java.util.Arrays;
 
@@ -53,17 +49,6 @@ public class ConfigurationIT
 
     private static final String MISSING_PROPERTY = "test.missing";
 
-    /** Capture standard output. */
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule();
-
-    /** Capture standard error. */
-    @Rule
-    public final SystemErrRule systemErrRule = new SystemErrRule();
-
-    /** Capture System.exit() value. */
-    @Rule
-    public final ExpectedSystemExit expectedSystemExit = ExpectedSystemExit.none();
 
     /**
      * Create some expected properties before all tests.

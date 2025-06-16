@@ -8,7 +8,7 @@
 package org.dspace.xmlworkflow;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.sql.SQLException;

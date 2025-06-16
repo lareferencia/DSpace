@@ -10,8 +10,8 @@ package org.dspace.content.packager;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,14 +60,12 @@ import org.dspace.handle.service.HandleService;
 import org.dspace.services.ConfigurationService;
 import org.dspace.services.factory.DSpaceServicesFactory;
 import org.dspace.workflow.WorkflowException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Basic integration testing for the AIP Backup and Restore feature
@@ -92,7 +90,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
     protected PluginService pluginService = CoreServiceFactory.getInstance().getPluginService();
     protected ConfigurationService configService = DSpaceServicesFactory.getInstance().getConfigurationService();
     protected ResourcePolicyService resourcePolicyService = AuthorizeServiceFactory.getInstance()
-                                                                                   .getResourcePolicyService();
+            .getResourcePolicyService();
     protected GroupService groupService = EPersonServiceFactory.getInstance().getGroupService();
 
     /**
@@ -113,15 +111,15 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * Create a global temporary upload folder which will be cleaned up automatically by JUnit.
      * NOTE: As a ClassRule, this temp folder is shared by ALL tests below.
      **/
-    @ClassRule
-    public static final TemporaryFolder uploadTempFolder = new TemporaryFolder();
+    @TempDir
+    public static File uploadTempFolder;
 
     /**
      * Create another temporary folder for AIPs. As a Rule, this one is *recreated* for each
      * test, in order to ensure each test is standalone with respect to AIPs.
      **/
-    @Rule
-    public final TemporaryFolder aipTempFolder = new TemporaryFolder();
+    @TempDir
+    public File aipTempFolder;
 
     /**
      * This method will be run during class initialization. It will initialize
@@ -161,19 +159,19 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             //
             Community topCommunity = communityService.create(null, context);
             communityService
-                .addMetadata(context, topCommunity, MetadataSchemaEnum.DC.getName(),
-                             "title", null, null, "Top Community");
+                    .addMetadata(context, topCommunity, MetadataSchemaEnum.DC.getName(),
+                            "title", null, null, "Top Community");
             communityService.update(context, topCommunity);
             topCommunityHandle = topCommunity.getHandle();
 
             Community child = communityService.createSubcommunity(context, topCommunity);
             communityService
-                .addMetadata(context, child, MetadataSchemaEnum.DC.getName(), "title", null, null, "Child Community");
+                    .addMetadata(context, child, MetadataSchemaEnum.DC.getName(), "title", null, null, "Child Community");
             communityService.update(context, child);
 
             Community grandchild = communityService.createSubcommunity(context, child);
             communityService.addMetadata(context, grandchild, MetadataSchemaEnum.DC.getName(), "title", null, null,
-                                         "Grandchild Community");
+                    "Grandchild Community");
             communityService.update(context, grandchild);
 
             // Create our primary Test Collection
@@ -185,7 +183,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             // Create an additional Test Collection
             Collection greatgrandchildCol = collectionService.create(context, grandchild);
             collectionService
-                .addMetadata(context, greatgrandchildCol, "dc", "title", null, null, "GreatGrandchild Collection");
+                    .addMetadata(context, greatgrandchildCol, "dc", "title", null, null, "GreatGrandchild Collection");
             collectionService.update(context, greatgrandchildCol);
 
             EPersonService ePersonService = EPersonServiceFactory.getInstance().getEPersonService();
@@ -295,12 +293,12 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Override default value of configured temp directory to point at our
         // JUnit TemporaryFolder. This ensures Crosswalk classes like RoleCrosswalk
         // store their temp files in a place where JUnit can clean them up automatically.
-        configService.setProperty("upload.temp.dir", uploadTempFolder.getRoot().getAbsolutePath());
+        configService.setProperty("upload.temp.dir", uploadTempFolder.getAbsolutePath());
 
         try {
             context = new Context();
             context.setCurrentUser(
-                EPersonServiceFactory.getInstance().getEPersonService().findByEmail(context, submitterEmail));
+                    EPersonServiceFactory.getInstance().getEPersonService().findByEmail(context, submitterEmail));
         } catch (SQLException ex) {
             log.error("SQL Error in init()", ex);
             fail("SQL Error in init(): " + ex.getMessage());
@@ -357,8 +355,9 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // SPECIAL CASE: Test Item Mapping restoration was successful
         // In our community, we have one Item which should be in two Collections
         Item mappedItem = (Item) handleService.resolveToObject(context, testMappedItemHandle);
-        assertEquals("testRestoreCommunityHierarchy() - Mapped Item's Collection mappings restored", 2,
-                     mappedItem.getCollections().size());
+        assertEquals(2,
+                mappedItem.getCollections().size(),
+                "testRestoreCommunityHierarchy() - Mapped Item's Collection mappings restored");
 
         log.info("testRestoreCommunityHierarchy() - END");
     }
@@ -406,7 +405,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted collection no longer exists
         DSpaceObject obj = handleService.resolveToObject(context, communityHandle);
         assertThat("testRestoreRestrictedCommunity() Community " + communityHandle + " doesn't exist", obj,
-                   nullValue());
+                nullValue());
 
         // Restore Collection from AIP (non-recursive)
         log.info("testRestoreRestrictedCommunity() - RESTORE Community");
@@ -415,21 +414,25 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted Collection is RESTORED
         DSpaceObject objRestored = handleService.resolveToObject(context, communityHandle);
         assertThat("testRestoreRestrictedCommunity() Community " + communityHandle + " exists", objRestored,
-                   notNullValue());
+                notNullValue());
 
         // Assert the number of restored policies is equal
         List<ResourcePolicy> policiesRestored = authorizeService.getPolicies(context, objRestored);
-        assertEquals("testRestoreRestrictedCommunity() restored policy count equal", policies.size(),
-                     policiesRestored.size());
+        assertEquals(policies.size(),
+                policiesRestored.size(),
+                "testRestoreRestrictedCommunity() restored policy count equal");
 
         // Assert the restored policy has same name, group and permission settings
         ResourcePolicy restoredPolicy = policiesRestored.get(0);
-        assertEquals("testRestoreRestrictedCommunity() restored policy group successfully", policy.getGroup().getName(),
-                     restoredPolicy.getGroup().getName());
-        assertEquals("testRestoreRestrictedCommunity() restored policy action successfully", policy.getAction(),
-                     restoredPolicy.getAction());
-        assertEquals("testRestoreRestrictedCommunity() restored policy name successfully", policy.getRpName(),
-                     restoredPolicy.getRpName());
+        assertEquals(policy.getGroup().getName(),
+                restoredPolicy.getGroup().getName(),
+                "testRestoreRestrictedCommunity() restored policy group successfully");
+        assertEquals(policy.getAction(),
+                restoredPolicy.getAction(),
+                "testRestoreRestrictedCommunity() restored policy action successfully");
+        assertEquals(policy.getRpName(),
+                restoredPolicy.getRpName(),
+                "testRestoreRestrictedCommunity() restored policy name successfully");
 
         log.info("testRestoreRestrictedCommunity() - END");
     }
@@ -471,7 +474,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted collection no longer exists
         DSpaceObject obj = handleService.resolveToObject(context, deletedCollectionHandle);
         assertThat("testReplaceCommunityHierarchy() collection " + deletedCollectionHandle + " doesn't exist", obj,
-                   nullValue());
+                nullValue());
 
         // Assert the child item no longer exists
         DSpaceObject obj2 = handleService.resolveToObject(context, deletedItemHandle);
@@ -489,18 +492,20 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted collection is RESTORED
         DSpaceObject objRestored = handleService.resolveToObject(context, deletedCollectionHandle);
         assertThat("testReplaceCommunityHierarchy() collection " + deletedCollectionHandle + " exists", objRestored,
-                   notNullValue());
+                notNullValue());
 
         // Assert the deleted item is also RESTORED
         DSpaceObject obj2Restored = handleService.resolveToObject(context, deletedItemHandle);
         assertThat("testReplaceCommunityHierarchy() item " + deletedItemHandle + " exists", obj2Restored,
-                   notNullValue());
+                notNullValue());
 
         // Assert the Collection count and Item count are same as before
-        assertEquals("testReplaceCommunityHierarchy() collection count", numberOfCollections,
-                     communityService.getAllCollections(context, topCommunity).size());
-        assertEquals("testReplaceCommunityHierarchy() item count", numberOfItems,
-                     itemService.countItems(context, ((Collection) objRestored)));
+        assertEquals(numberOfCollections,
+                communityService.getAllCollections(context, topCommunity).size(),
+                "testReplaceCommunityHierarchy() collection count");
+        assertEquals(numberOfItems,
+                itemService.countItems(context, ((Collection) objRestored)),
+                "testReplaceCommunityHierarchy() item count");
 
         log.info("testReplaceCommunityHierarchy() - END");
     }
@@ -526,16 +531,16 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         String newName = "This is NOT my Community name!";
         communityService.clearMetadata(context, topCommunity, MetadataSchemaEnum.DC.getName(), "title", null, Item.ANY);
         communityService.addMetadata(context, topCommunity, MetadataSchemaEnum.DC.getName(),
-                                     "title", null, null, newName);
+                "title", null, null, newName);
 
         // Ensure name is changed
-        assertEquals("testReplaceCommunityOnly() new name", topCommunity.getName(), newName);
+        assertEquals(topCommunity.getName(), newName, "testReplaceCommunityOnly() new name");
 
         // Now, replace our Community from AIP (non-recursive)
         replaceFromAIP(topCommunity, aipFile, null, false);
 
         // Check if name reverted to previous value
-        assertEquals("testReplaceCommunityOnly() old name", topCommunity.getName(), oldName);
+        assertEquals(topCommunity.getName(), oldName, "testReplaceCommunityOnly() old name");
     }
 
     /**
@@ -619,7 +624,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted collection no longer exists
         DSpaceObject obj = handleService.resolveToObject(context, collectionHandle);
         assertThat("testRestoreRestrictedCollection() Collection " + collectionHandle + " doesn't exist", obj,
-                   nullValue());
+                nullValue());
 
         // Restore Collection from AIP (non-recursive)
         log.info("testRestoreRestrictedCollection() - RESTORE Collection");
@@ -628,21 +633,23 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted Collection is RESTORED
         DSpaceObject objRestored = handleService.resolveToObject(context, collectionHandle);
         assertThat("testRestoreRestrictedCollection() Collection " + collectionHandle + " exists", objRestored,
-                   notNullValue());
+                notNullValue());
 
         // Assert the number of restored policies is equal
         List<ResourcePolicy> policiesRestored = authorizeService.getPolicies(context, objRestored);
-        assertEquals("testRestoreRestrictedCollection() restored policy count equal", policies.size(),
-                     policiesRestored.size());
+        assertEquals(policies.size(),
+                policiesRestored.size(),
+                "testRestoreRestrictedCollection() restored policy count equal");
 
         // Assert the restored policy has same name, group and permission settings
         ResourcePolicy restoredPolicy = policiesRestored.get(0);
-        assertEquals("testRestoreRestrictedCollection() restored policy group successfully",
-                     policy.getGroup().getName(), restoredPolicy.getGroup().getName());
-        assertEquals("testRestoreRestrictedCollection() restored policy action successfully", policy.getAction(),
-                     restoredPolicy.getAction());
-        assertEquals("testRestoreRestrictedCollection() restored policy name successfully", policy.getRpName(),
-                     restoredPolicy.getRpName());
+        assertEquals(policy.getGroup().getName(), restoredPolicy.getGroup().getName(), "testRestoreRestrictedCollection() restored policy group successfully");
+        assertEquals(policy.getAction(),
+                restoredPolicy.getAction(),
+                "testRestoreRestrictedCollection() restored policy action successfully");
+        assertEquals(policy.getRpName(),
+                restoredPolicy.getRpName(),
+                "testRestoreRestrictedCollection() restored policy name successfully");
 
         log.info("testRestoreRestrictedCollection() - END");
     }
@@ -680,8 +687,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         assertThat("testReplaceCollectionHierarchy() item " + deletedItemHandle + " doesn't exist", obj, nullValue());
 
         // Assert the item count is one less
-        assertEquals("testReplaceCollectionHierarchy() updated item count for collection " + testCollectionHandle,
-                     numberOfItems - 1, itemService.countItems(context, testCollection));
+        assertEquals(numberOfItems - 1, itemService.countItems(context, testCollection), "testReplaceCollectionHierarchy() updated item count for collection " + testCollectionHandle);
 
         // Replace Collection (and all child objects, recursively) from AIPs
         log.info("testReplaceCollectionHierarchy() - REPLACE Collection Hierarchy");
@@ -690,11 +696,10 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Assert the deleted item is RESTORED
         DSpaceObject objRestored = handleService.resolveToObject(context, deletedItemHandle);
         assertThat("testReplaceCollectionHierarchy() item " + deletedItemHandle + " exists", objRestored,
-                   notNullValue());
+                notNullValue());
 
         // Assert the Item count is same as before
-        assertEquals("testReplaceCollectionHierarchy() restored item count for collection " + testCollectionHandle,
-                     numberOfItems, itemService.countItems(context, testCollection));
+        assertEquals(numberOfItems, itemService.countItems(context, testCollection), "testReplaceCollectionHierarchy() restored item count for collection " + testCollectionHandle);
 
         log.info("testReplaceCollectionHierarchy() - END");
     }
@@ -720,18 +725,18 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         // Change the Collection name
         String newName = "This is NOT my Collection name!";
         collectionService.clearMetadata(context, testCollection, MetadataSchemaEnum.DC.getName(),
-                                        "title", null, Item.ANY);
+                "title", null, Item.ANY);
         collectionService.addMetadata(context, testCollection, MetadataSchemaEnum.DC.getName(),
-                                      "title", null, null, newName);
+                "title", null, null, newName);
 
         // Ensure name is changed
-        assertEquals("testReplaceCollectionOnly() new name", testCollection.getName(), newName);
+        assertEquals(testCollection.getName(), newName, "testReplaceCollectionOnly() new name");
 
         // Now, replace our Collection from AIP (non-recursive)
         replaceFromAIP(testCollection, aipFile, null, false);
 
         // Check if name reverted to previous value
-        assertEquals("testReplaceCollectionOnly() old name", testCollection.getName(), oldName);
+        assertEquals(testCollection.getName(), oldName, "testReplaceCollectionOnly() old name");
     }
 
 
@@ -792,7 +797,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         List<Bundle> restoredBund = itemService.getBundles(((Item) objRestored), Constants.CONTENT_BUNDLE_NAME);
         Bitstream restoredBitstream = bundleService.getBitstreamByName(restoredBund.get(0), bitstreamName);
         assertThat("testRestoreItem() bitstream exists", restoredBitstream, notNullValue());
-        assertEquals("testRestoreItem() bitstream checksum", restoredBitstream.getChecksum(), bitstreamCheckSum);
+        assertEquals(restoredBitstream.getChecksum(), bitstreamCheckSum, "testRestoreItem() bitstream checksum");
 
         log.info("testRestoreItem() - END");
     }
@@ -852,17 +857,19 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
 
         // Assert the number of restored policies is equal
         List<ResourcePolicy> policiesRestored = authorizeService.getPolicies(context, objRestored);
-        assertEquals("testRestoreRestrictedItem() restored policy count equal", policies.size(),
-                     policiesRestored.size());
+        assertEquals(policies.size(),
+                policiesRestored.size(),
+                "testRestoreRestrictedItem() restored policy count equal");
 
         // Assert the restored policy has same name, group and permission settings
         ResourcePolicy restoredPolicy = policiesRestored.get(0);
-        assertEquals("testRestoreRestrictedItem() restored policy group successfully",
-                     admin_policy.getGroup().getName(), restoredPolicy.getGroup().getName());
-        assertEquals("testRestoreRestrictedItem() restored policy action successfully", admin_policy.getAction(),
-                     restoredPolicy.getAction());
-        assertEquals("testRestoreRestrictedItem() restored policy name successfully", admin_policy.getRpName(),
-                     restoredPolicy.getRpName());
+        assertEquals(admin_policy.getGroup().getName(), restoredPolicy.getGroup().getName(), "testRestoreRestrictedItem() restored policy group successfully");
+        assertEquals(admin_policy.getAction(),
+                restoredPolicy.getAction(),
+                "testRestoreRestrictedItem() restored policy action successfully");
+        assertEquals(admin_policy.getRpName(),
+                restoredPolicy.getRpName(),
+                "testRestoreRestrictedItem() restored policy name successfully");
 
         log.info("testRestoreRestrictedItem() - END");
     }
@@ -916,7 +923,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
 
         // Assert the restored item also has ZERO policies
         List<ResourcePolicy> policiesRestored = authorizeService.getPolicies(context, objRestored);
-        assertEquals("testRestoreItemNoPolicies() restored policy count is zero", 0, policiesRestored.size());
+        assertEquals(0, policiesRestored.size(), "testRestoreItemNoPolicies() restored policy count is zero");
 
         log.info("testRestoreItemNoPolicies() - END");
     }
@@ -944,13 +951,13 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
         itemService.addMetadata(context, testItem, MetadataSchemaEnum.DC.getName(), "title", null, null, newName);
 
         // Ensure name is changed
-        assertEquals("testReplaceItem() new name", testItem.getName(), newName);
+        assertEquals(testItem.getName(), newName, "testReplaceItem() new name");
 
         // Now, replace our Item from AIP (non-recursive)
         replaceFromAIP(testItem, aipFile, null, false);
 
         // Check if name reverted to previous value
-        assertEquals("testReplaceItem() old name", testItem.getName(), oldName);
+        assertEquals(testItem.getName(), oldName, "testReplaceItem() old name");
     }
 
     /**
@@ -968,8 +975,9 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
 
         // Assert that it is in multiple collections
         List<Collection> mappedCollections = item.getCollections();
-        assertEquals("testRestoreMappedItem() item " + testMappedItemHandle + " is mapped to multiple collections", 2,
-                     mappedCollections.size());
+        assertEquals(2,
+                mappedCollections.size(),
+                "testRestoreMappedItem() item " + testMappedItemHandle + " is mapped to multiple collections");
 
         // Export mapped item AIP
         log.info("testRestoreMappedItem() - CREATE Mapped Item AIP");
@@ -994,7 +1002,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
 
         // Test that this restored Item exists in multiple Collections
         List<Collection> restoredMappings = itemRestored.getCollections();
-        assertEquals("testRestoreMappedItem() collection count", 2, restoredMappings.size());
+        assertEquals(2, restoredMappings.size(), "testRestoreMappedItem() collection count");
 
         log.info("testRestoreMappedItem() - END");
     }
@@ -1009,10 +1017,10 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * @return exported root AIP file
      */
     private File createAIP(DSpaceObject dso, PackageParameters pkgParams, boolean recursive)
-        throws PackageException, CrosswalkException, AuthorizeException, SQLException, IOException {
+            throws PackageException, CrosswalkException, AuthorizeException, SQLException, IOException {
         // Get a reference to the configured "AIP" package disseminator
         PackageDisseminator dip = (PackageDisseminator) pluginService
-            .getNamedPlugin(PackageDisseminator.class, "AIP");
+                .getNamedPlugin(PackageDisseminator.class, "AIP");
         if (dip == null) {
             fail("Could not find a disseminator for type 'AIP'");
             return null;
@@ -1020,7 +1028,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             // Export file (this is placed in JUnit's temporary folder, so that it can be cleaned up after tests
             // complete)
             File exportAIPFile = new File(
-                aipTempFolder.getRoot().getAbsolutePath() + File.separator + PackageUtils.getPackageName(dso, "zip"));
+                    aipTempFolder.getAbsolutePath() + File.separator + PackageUtils.getPackageName(dso, "zip"));
 
             // If unspecified, set default PackageParameters
             if (pkgParams == null) {
@@ -1048,10 +1056,10 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * @param recursive whether to recursively restore AIPs or just a single AIP
      */
     private void restoreFromAIP(DSpaceObject parent, File aipFile, PackageParameters pkgParams, boolean recursive)
-        throws PackageException, CrosswalkException, AuthorizeException, SQLException, IOException, WorkflowException {
+            throws PackageException, CrosswalkException, AuthorizeException, SQLException, IOException, WorkflowException {
         // Get a reference to the configured "AIP" package ingestor
         PackageIngester sip = (PackageIngester) pluginService
-            .getNamedPlugin(PackageIngester.class, "AIP");
+                .getNamedPlugin(PackageIngester.class, "AIP");
         if (sip == null) {
             fail("Could not find a ingestor for type 'AIP'");
         } else {
@@ -1086,10 +1094,10 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * @param recursive whether to recursively restore AIPs or just a single AIP
      */
     private void replaceFromAIP(DSpaceObject dso, File aipFile, PackageParameters pkgParams, boolean recursive)
-        throws PackageException, CrosswalkException, AuthorizeException, SQLException, IOException, WorkflowException {
+            throws PackageException, CrosswalkException, AuthorizeException, SQLException, IOException, WorkflowException {
         // Get a reference to the configured "AIP" package ingestor
         PackageIngester sip = (PackageIngester) pluginService
-            .getNamedPlugin(PackageIngester.class, "AIP");
+                .getNamedPlugin(PackageIngester.class, "AIP");
         if (sip == null) {
             fail("Could not find a ingestor for type 'AIP'");
         } else {
@@ -1126,7 +1134,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * @throws SQLException if database error
      */
     private void saveObjectInfo(DSpaceObject dso, HashMap<String, String> infoMap)
-        throws SQLException {
+            throws SQLException {
         // We need the HashMap to be non-null
         if (infoMap == null) {
             return;
@@ -1136,7 +1144,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             // Save this Community's info to the infoMap
             Community community = (Community) dso;
             infoMap.put(community.getHandle(),
-                        communityService.getTypeText(community) + valueseparator + community.getName());
+                    communityService.getTypeText(community) + valueseparator + community.getName());
 
             // Recursively call method for each SubCommunity
             List<Community> subCommunities = community.getSubcommunities();
@@ -1153,7 +1161,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             // Save this Collection's info to the infoMap
             Collection collection = (Collection) dso;
             infoMap.put(collection.getHandle(),
-                        collectionService.getTypeText(collection) + valueseparator + collection.getName());
+                    collectionService.getTypeText(collection) + valueseparator + collection.getName());
 
             // Recursively call method for each Item in Collection
             Iterator<Item> items = itemService.findByCollection(context, collection);
@@ -1178,7 +1186,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * @throws SQLException if database error
      */
     private void assertObjectsExist(HashMap<String, String> infoMap)
-        throws SQLException {
+            throws SQLException {
         if (infoMap == null || infoMap.isEmpty()) {
             fail("Cannot assert against an empty infoMap");
         }
@@ -1188,7 +1196,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             // The Key is the Handle, so make sure this object exists
             DSpaceObject obj = handleService.resolveToObject(context, key);
             assertThat("assertObjectsExist object " + key + " (info=" + infoMap.get(key) + ") exists", obj,
-                       notNullValue());
+                    notNullValue());
 
             // Get the typeText & name of this object from the values
             String info = infoMap.get(key);
@@ -1197,9 +1205,8 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             String name = values.get(1);
 
             // Also assert type and name are correct
-            assertEquals("assertObjectsExist object " + key + " type",
-                         ContentServiceFactory.getInstance().getDSpaceObjectService(obj).getTypeText(obj), typeText);
-            assertEquals("assertObjectsExist object " + key + " name", obj.getName(), name);
+            assertEquals(ContentServiceFactory.getInstance().getDSpaceObjectService(obj).getTypeText(obj), typeText, "assertObjectsExist object " + key + " type");
+            assertEquals(obj.getName(), name, "assertObjectsExist object " + key + " name");
         }
 
     }
@@ -1211,7 +1218,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
      * @throws SQLException if database error
      */
     public void assertObjectsNotExist(HashMap<String, String> infoMap)
-        throws SQLException {
+            throws SQLException {
         if (infoMap == null || infoMap.isEmpty()) {
             fail("Cannot assert against an empty infoMap");
         }
@@ -1221,7 +1228,7 @@ public class ITDSpaceAIP extends AbstractIntegrationTest {
             // The key is the Handle, so make sure this object does NOT exist
             DSpaceObject obj = handleService.resolveToObject(context, key);
             assertThat("assertObjectsNotExist object " + key + " (info=" + infoMap.get(key) + ") doesn't exist", obj,
-                       nullValue());
+                    nullValue());
         }
     }
 }

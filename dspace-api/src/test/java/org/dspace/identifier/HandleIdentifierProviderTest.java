@@ -7,8 +7,6 @@
  */
 package org.dspace.identifier;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
@@ -25,6 +23,8 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test the HandleIdentifierProvider.
@@ -152,7 +152,7 @@ public class HandleIdentifierProviderTest
             String message = expResult ?
                 "This provider should support " + identifier :
                 "This provider should not support " + identifier;
-            assertEquals(message, expResult, result);
+            assertEquals(expResult, result, message);
         }
     }
 

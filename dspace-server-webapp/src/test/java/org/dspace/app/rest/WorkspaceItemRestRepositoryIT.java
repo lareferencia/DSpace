@@ -168,47 +168,47 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         Collection col2 = CollectionBuilder.createCollection(context, child1).withName("Collection 2").build();
 
 
         //2. Three workspace items in two different collections
         WorkspaceItem workspaceItem1 = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                      .withTitle("Workspace Item 1")
-                                      .withIssueDate("2017-10-17")
-                                      .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .build();
 
         WorkspaceItem workspaceItem2 = WorkspaceItemBuilder.createWorkspaceItem(context, col2)
-                                      .withTitle("Workspace Item 2")
-                                      .withIssueDate("2016-02-13")
-                                      .build();
+                .withTitle("Workspace Item 2")
+                .withIssueDate("2016-02-13")
+                .build();
 
         WorkspaceItem workspaceItem3 = WorkspaceItemBuilder.createWorkspaceItem(context, col2)
-                                      .withTitle("Workspace Item 3")
-                                      .withIssueDate("2016-02-13")
-                                      .build();
+                .withTitle("Workspace Item 3")
+                .withIssueDate("2016-02-13")
+                .build();
 
         context.restoreAuthSystemState();
 
         String token = getAuthToken(admin.getEmail(), password);
 
         getClient(token).perform(get("/api/submission/workspaceitems"))
-                   .andExpect(status().isOk())
-                   .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
                         WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
                                 "2017-10-17"),
                         WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
                                 "2016-02-13"),
                         WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3",
                                 "2016-02-13"))))
-                   .andExpect(jsonPath("$._links.self.href", Matchers.containsString("/api/submission/workspaceitems")))
-                   .andExpect(jsonPath("$.page.size", is(20)))
-                   .andExpect(jsonPath("$.page.totalElements", is(3)));
+                .andExpect(jsonPath("$._links.self.href", Matchers.containsString("/api/submission/workspaceitems")))
+                .andExpect(jsonPath("$.page.size", is(20)))
+                .andExpect(jsonPath("$.page.totalElements", is(3)));
     }
 
     @Test
@@ -239,7 +239,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.restoreAuthSystemState();
 
         getClient().perform(get("/api/submission/workspaceitems"))
-                   .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -282,19 +282,19 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String authTokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(authTokenAdmin).perform(get("/api/submission/workspaceitems"))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
-                   WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
-                        "2019-01-13"),
-                   WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
-                        "2018-09-20"))))
-                 .andExpect(jsonPath("$._links.self.href", Matchers.containsString("/api/submission/workspaceitems")))
-                 .andExpect(jsonPath("$.page.size", is(20)))
-                 .andExpect(jsonPath("$.page.totalElements", is(2)));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
+                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
+                                "2019-01-13"),
+                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
+                                "2018-09-20"))))
+                .andExpect(jsonPath("$._links.self.href", Matchers.containsString("/api/submission/workspaceitems")))
+                .andExpect(jsonPath("$.page.size", is(20)))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
 
         String authToken = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(authToken).perform(get("/api/submission/workspaceitems"))
-                 .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -309,30 +309,30 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         Collection col2 = CollectionBuilder.createCollection(context, child1).withName("Collection 2").build();
 
 
         //2. Three workspace items in two different collections
         WorkspaceItem workspaceItem1 = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                      .withTitle("Workspace Item 1")
-                                      .withIssueDate("2017-10-17")
-                                      .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .build();
 
         WorkspaceItem workspaceItem2 = WorkspaceItemBuilder.createWorkspaceItem(context, col2)
-                                      .withTitle("Workspace Item 2")
-                                      .withIssueDate("2016-02-13")
-                                      .build();
+                .withTitle("Workspace Item 2")
+                .withIssueDate("2016-02-13")
+                .build();
 
         WorkspaceItem workspaceItem3 = WorkspaceItemBuilder.createWorkspaceItem(context, col2)
-                                      .withTitle("Workspace Item 3")
-                                      .withIssueDate("2016-02-13")
-                                      .build();
+                .withTitle("Workspace Item 3")
+                .withIssueDate("2016-02-13")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -376,11 +376,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
@@ -440,14 +440,14 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String tokenEperson1 = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(tokenEperson1).perform(get("/api/submission/workspaceitems/" + witem1.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$",
-                       Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem1,
-                                    "Workspace Item 1", "2019-09-09", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem1,
+                                "Workspace Item 1", "2019-09-09", "ExtraEntry"))));
 
         String tokenEperson2 = getAuthToken(eperson2.getEmail(), "qwerty02");
         getClient(tokenEperson2).perform(get("/api/submission/workspaceitems/" + witem1.getID()))
-                        .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -462,11 +462,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
@@ -508,7 +508,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String token = getAuthToken(eperson.getEmail(), password);
 
         getClient(token).perform(get("/api/submission/workspaceitems/" + Integer.MAX_VALUE))
-                   .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -523,8 +523,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community with one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity).withName("Collection 1").build();
 
         //2. a workspace item
@@ -551,19 +551,19 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         //Delete the workspaceitem
         getClient(token).perform(delete("/api/submission/workspaceitems/" + witem.getID()))
-                    .andExpect(status().is(204));
+                .andExpect(status().is(204));
 
         //Trying to get deleted item should fail with 404
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                   .andExpect(status().is(404));
+                .andExpect(status().is(404));
 
         //Trying to get deleted workspaceitem's item should fail with 404
         getClient(token).perform(get("/api/core/items/" + item.getID()))
-                   .andExpect(status().is(404));
+                .andExpect(status().is(404));
 
         //Trying to get deleted workspaceitem's bitstream should fail with 404
         getClient(token).perform(get("/api/core/biststreams/" + bitstream.getID()))
-                   .andExpect(status().is(404));
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -596,7 +596,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.restoreAuthSystemState();
 
         getClient().perform(delete("/api/submission/workspaceitems/" + witem.getID()))
-                   .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -659,21 +659,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // submitter2 attempt to delete the workspaceitem of submitter1
         String tokenSubmitter2 = getAuthToken(submitter2.getEmail(), "qwerty02");
         getClient(tokenSubmitter2).perform(delete("/api/submission/workspaceitems/" + witem.getID()))
-                                  .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
 
         // check that workspaceitem was not deleted
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         // a normal user, without any special submission rights, attempt to delete the workspaceitem of submitter1
         String tokenEPerson = getAuthToken(eperson.getEmail(), password);
         getClient(tokenEPerson).perform(delete("/api/submission/workspaceitems/" + witem.getID()))
-                                  .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
 
         // check that workspaceitem was not deleted
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -689,11 +689,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         Collection col2 = CollectionBuilder.createCollection(context, child1).withName("Collection 2").build();
 
@@ -713,84 +713,84 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         //3. Two workspace items in two different collections
         WorkspaceItem workspaceItem1 = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                      .withTitle("Workspace Item 1")
-                                      .withIssueDate("2017-10-17")
-                                      .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .build();
 
         WorkspaceItem workspaceItem2 = WorkspaceItemBuilder.createWorkspaceItem(context, col2)
-                                      .withTitle("Workspace Item 2")
-                                      .withIssueDate("2016-02-13")
-                                      .build();
+                .withTitle("Workspace Item 2")
+                .withIssueDate("2016-02-13")
+                .build();
 
         //4. A workspaceitem for the second submitter
         context.setCurrentUser(submitter2);
         WorkspaceItem workspaceItem3 = WorkspaceItemBuilder.createWorkspaceItem(context, col2)
-                                      .withTitle("Workspace Item 3")
-                                      .withIssueDate("2016-02-13")
-                                      .build();
+                .withTitle("Workspace Item 3")
+                .withIssueDate("2016-02-13")
+                .build();
 
         context.restoreAuthSystemState();
         // the first submitter has two workspace
         String tokenSubmitter1 = getAuthToken(submitter1.getEmail(), "qwerty01");
         getClient(tokenSubmitter1).perform(get("/api/submission/workspaceitems/search/findBySubmitter")
-                .param("size", "20")
-                .param("uuid", submitter1.getID().toString()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$._embedded.workspaceitems",
-                    Matchers.containsInAnyOrder(
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
-                                    "2017-10-17"),
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
-                                    "2016-02-13"))))
-            .andExpect(jsonPath("$._embedded.workspaceitems",
-                    Matchers.not(contains(WorkspaceItemMatcher
-                            .matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3", "2016-02-13")))))
-            .andExpect(jsonPath("$.page.size", is(20)))
-            .andExpect(jsonPath("$.page.totalElements", is(2)));
+                        .param("size", "20")
+                        .param("uuid", submitter1.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.workspaceitems",
+                        Matchers.containsInAnyOrder(
+                                WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
+                                        "2017-10-17"),
+                                WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
+                                        "2016-02-13"))))
+                .andExpect(jsonPath("$._embedded.workspaceitems",
+                        Matchers.not(contains(WorkspaceItemMatcher
+                                .matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3", "2016-02-13")))))
+                .andExpect(jsonPath("$.page.size", is(20)))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
 
         // the first submitter has two workspace so if we paginate with a 1-size windows the page 1 will contains the
         // second workspace
         getClient(tokenSubmitter1).perform(get("/api/submission/workspaceitems/search/findBySubmitter")
-                .param("size", "1")
-                .param("page", "1")
-                .param("uuid", submitter1.getID().toString()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$._embedded.workspaceitems",
-                    contains(WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2,
-                            "Workspace Item 2", "2016-02-13"))))
-            .andExpect(jsonPath("$._embedded.workspaceitems",
-                    Matchers.not(contains(
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
-                                    "2017-10-17"),
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3",
-                                    "2016-02-13")))))
-            .andExpect(jsonPath("$.page.size", is(1)))
-            .andExpect(jsonPath("$.page.totalElements", is(2)));
+                        .param("size", "1")
+                        .param("page", "1")
+                        .param("uuid", submitter1.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.workspaceitems",
+                        contains(WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2,
+                                "Workspace Item 2", "2016-02-13"))))
+                .andExpect(jsonPath("$._embedded.workspaceitems",
+                        Matchers.not(contains(
+                                WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
+                                        "2017-10-17"),
+                                WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3",
+                                        "2016-02-13")))))
+                .andExpect(jsonPath("$.page.size", is(1)))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
 
         // the second submitter has a single workspace
         String tokenSubmitter2 = getAuthToken(submitter2.getEmail(), "qwerty02");
         getClient(tokenSubmitter2).perform(get("/api/submission/workspaceitems/search/findBySubmitter")
-                .param("size", "20")
-                .param("uuid", submitter2.getID().toString()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$._embedded.workspaceitems",
-                    contains(
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3",
-                                    "2016-02-13"))))
-            .andExpect(jsonPath("$.page.size", is(20)))
-            .andExpect(jsonPath("$.page.totalElements", is(1)));
+                        .param("size", "20")
+                        .param("uuid", submitter2.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.workspaceitems",
+                        contains(
+                                WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem3, "Workspace Item 3",
+                                        "2016-02-13"))))
+                .andExpect(jsonPath("$.page.size", is(20)))
+                .andExpect(jsonPath("$.page.totalElements", is(1)));
 
         // also the admin should be able to retrieve the submission of an another user
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/search/findBySubmitter")
-                             .param("uuid", submitter1.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
-                                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued
-                                                  (workspaceItem1, "Workspace Item 1", "2017-10-17"),
-                                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued
-                                                  (workspaceItem2, "Workspace Item 2", "2016-02-13"))))
-                             .andExpect(jsonPath("$.page.totalElements", is(2)));
+                        .param("uuid", submitter1.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
+                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued
+                                (workspaceItem1, "Workspace Item 1", "2017-10-17"),
+                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued
+                                (workspaceItem2, "Workspace Item 2", "2016-02-13"))))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
     }
 
     @Test
@@ -822,29 +822,29 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.setCurrentUser(submitter1);
 
         WorkspaceItem workspaceItem1 = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                      .withTitle("Workspace Item 1")
-                                      .withIssueDate("2019-10-17")
-                                      .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2019-10-17")
+                .build();
 
         WorkspaceItem workspaceItem2 = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                      .withTitle("Workspace Item 2")
-                                      .withIssueDate("2018-02-13")
-                                      .build();
+                .withTitle("Workspace Item 2")
+                .withIssueDate("2018-02-13")
+                .build();
 
         context.restoreAuthSystemState();
         String tokenSubmitter1 = getAuthToken(submitter1.getEmail(), "qwerty01");
         getClient(tokenSubmitter1).perform(get("/api/submission/workspaceitems/search/findBySubmitter")
-                .param("uuid", submitter1.getID().toString()))
+                        .param("uuid", submitter1.getID().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.workspaceitems", Matchers.containsInAnyOrder(
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
-                                    "2019-10-17"),
-                            WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
-                                    "2018-02-13"))));
+                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem1, "Workspace Item 1",
+                                "2019-10-17"),
+                        WorkspaceItemMatcher.matchItemWithTitleAndDateIssued(workspaceItem2, "Workspace Item 2",
+                                "2018-02-13"))));
 
         String tokenSubmitter2 = getAuthToken(submitter2.getEmail(), "qwerty02");
         getClient(tokenSubmitter2).perform(get("/api/submission/workspaceitems/search/findBySubmitter")
-                .param("uuid", submitter1.getID().toString()))
+                        .param("uuid", submitter1.getID().toString()))
                 .andExpect(status().isForbidden());
     }
 
@@ -861,19 +861,19 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
         context.restoreAuthSystemState();
 
         AtomicReference<Integer> idRef1 = new AtomicReference<>();
@@ -881,34 +881,34 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         AtomicReference<Integer> idRef3 = new AtomicReference<>();
         try {
 
-        String authToken = getAuthToken(eperson.getEmail(), password);
+            String authToken = getAuthToken(eperson.getEmail(), password);
 
-        // create a workspaceitem explicitly in the col1
-        getClient(authToken).perform(post("/api/submission/workspaceitems")
-                    .param("owningCollection", col1.getID().toString())
-                    .param("embed", "collection")
-                    .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$._embedded.collection.id", is(col1.getID().toString())))
-                .andDo(result -> idRef1.set(read(result.getResponse().getContentAsString(), "$.id")));
+            // create a workspaceitem explicitly in the col1
+            getClient(authToken).perform(post("/api/submission/workspaceitems")
+                            .param("owningCollection", col1.getID().toString())
+                            .param("embed", "collection")
+                            .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$._embedded.collection.id", is(col1.getID().toString())))
+                    .andDo(result -> idRef1.set(read(result.getResponse().getContentAsString(), "$.id")));
 
-        // create a workspaceitem explicitly in the col2
-        getClient(authToken).perform(post("/api/submission/workspaceitems")
-                    .param("owningCollection", col2.getID().toString())
-                    .param("embed", "collection")
-                    .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$._embedded.collection.id", is(col2.getID().toString())))
-                .andDo(result -> idRef2.set(read(result.getResponse().getContentAsString(), "$.id")));
+            // create a workspaceitem explicitly in the col2
+            getClient(authToken).perform(post("/api/submission/workspaceitems")
+                            .param("owningCollection", col2.getID().toString())
+                            .param("embed", "collection")
+                            .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$._embedded.collection.id", is(col2.getID().toString())))
+                    .andDo(result -> idRef2.set(read(result.getResponse().getContentAsString(), "$.id")));
 
-        // create a workspaceitem without an explicit collection, this will go in the first valid collection for the
-        // user: the col1
-        getClient(authToken).perform(post("/api/submission/workspaceitems")
-                    .param("embed", "collection")
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$._embedded.collection.id", is(col1.getID().toString())))
-                .andDo(result -> idRef3.set(read(result.getResponse().getContentAsString(), "$.id")));
+            // create a workspaceitem without an explicit collection, this will go in the first valid collection for the
+            // user: the col1
+            getClient(authToken).perform(post("/api/submission/workspaceitems")
+                            .param("embed", "collection")
+                            .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$._embedded.collection.id", is(col1.getID().toString())))
+                    .andDo(result -> idRef3.set(read(result.getResponse().getContentAsString(), "$.id")));
 
 
         } finally {
@@ -930,23 +930,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream bibtex = getClass().getResourceAsStream("bibtex-test.bib");
         final MockMultipartFile bibtexFile = new MockMultipartFile("file", "/local/path/bibtex-test.bib",
-            "application/x-bibtex", bibtex);
+                "application/x-bibtex", bibtex);
 
         context.restoreAuthSystemState();
 
@@ -955,24 +955,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         try {
             // create a workspaceitem from a single bibliographic entry file explicitly in the default collection (col1)
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(bibtexFile)
-                    .param("embed", "collection"))
-                // create should return 200, 201 (created) is better for single resource
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Article")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/bibtex-test.bib")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.title'][0].value",
-                        is("bibtex-test.bib")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                    "$._embedded.workspaceitems[*].id")));
+                            .file(bibtexFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/bibtex-test.bib")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("bibtex-test.bib")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -984,24 +984,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create a workspaceitem from a single bibliographic entry file explicitly in the col2
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(bibtexFile)
-                    .param("embed", "collection")
-                    .param("owningCollection", col2.getID().toString()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Article")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col2.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/bibtex-test.bib")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload"
-                     + ".files[0].metadata['dc.title'][0].value",
-                        is("bibtex-test.bib")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                            .file(bibtexFile)
+                            .param("embed", "collection")
+                            .param("owningCollection", col2.getID().toString()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col2.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/bibtex-test.bib")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload"
+                                    + ".files[0].metadata['dc.title'][0].value",
+                            is("bibtex-test.bib")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1329,23 +1329,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream csv = getClass().getResourceAsStream("csv-test.csv");
         final MockMultipartFile csvFile = new MockMultipartFile("file", "/local/path/csv-test.csv",
-            "text/csv", csv);
+                "text/csv", csv);
 
         context.restoreAuthSystemState();
 
@@ -1354,35 +1354,35 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         AtomicReference<List<Integer>> idRef = new AtomicReference<>();
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(csvFile)
-                    .param("embed", "collection"))
-                // create should return 200, 201 (created) is better for single resource
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Article")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.contributor.author'][0].value",
-                        is("Nobody")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.date.issued'][0].value",
-                        is("2006")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.identifier.issn'][0].value",
-                        is("Mock ISSN")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
-                        is("Mock subtype")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/csv-test.csv")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.title'][0].value",
-                        is("csv-test.csv")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                            .file(csvFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Nobody")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.date.issued'][0].value",
+                            is("2006")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.identifier.issn'][0].value",
+                            is("Mock ISSN")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
+                            is("Mock subtype")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/csv-test.csv")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("csv-test.csv")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1394,36 +1394,36 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create workspaceitems explicitly in the col2
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(csvFile)
-                    .param("embed", "collection")
-                    .param("owningCollection", col2.getID().toString()))
+                            .file(csvFile)
+                            .param("embed", "collection")
+                            .param("owningCollection", col2.getID().toString()))
                     .andExpect(status().isOk())
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                     + "['dc.title'][0].value",
-                     is("My Article")))
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                     + "['dc.contributor.author'][0].value",
-                     is("Nobody")))
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                     + "['dc.date.issued'][0].value",
-                     is("2006")))
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                     + "['dc.identifier.issn'][0].value",
-                     is("Mock ISSN")))
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
-                     is("Mock subtype")))
-                 .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col2.getID().toString())))
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/csv-test.csv")))
-                 .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload"
-                     + ".files[0].metadata['dc.title'][0].value",
-                        is("csv-test.csv")))
-                 .andExpect(
-                     jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                 .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                         "$._embedded.workspaceitems[*].id")));
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Nobody")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.date.issued'][0].value",
+                            is("2006")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.identifier.issn'][0].value",
+                            is("Mock ISSN")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
+                            is("Mock subtype")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col2.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/csv-test.csv")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload"
+                                    + ".files[0].metadata['dc.title'][0].value",
+                            is("csv-test.csv")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1447,23 +1447,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream csv = getClass().getResourceAsStream("csv-missing-field-test.csv");
         final MockMultipartFile csvFile = new MockMultipartFile("file", "/local/path/csv-missing-field-test.csv",
-            "text/csv", csv);
+                "text/csv", csv);
 
         context.restoreAuthSystemState();
 
@@ -1473,37 +1473,37 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                .file(csvFile)
-                .param("embed", "collection"))
-            // create should return 200, 201 (created) is better for single resource
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                    is("My Article")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                + "['dc.contributor.author'][0].value",
-                    is("Nobody")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                    + "['dc.contributor.author'][1].value",
-                        is("Try escape, in item")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                    + "['dc.date.issued'][0].value").isEmpty())
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                    + "['dc.identifier.issn'][0].value",
-                    is("Mock ISSN")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value"
+                            .file(csvFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Nobody")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][1].value",
+                            is("Try escape, in item")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                            + "['dc.date.issued'][0].value").isEmpty())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.identifier.issn'][0].value",
+                            is("Mock ISSN")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value"
                     ).doesNotExist())
-            .andExpect(
-                    jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                 + ".metadata['dc.source'][0].value",
-                    is("/local/path/csv-missing-field-test.csv")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                 + ".metadata['dc.title'][0].value",
-                    is("csv-missing-field-test.csv")))
-            .andExpect(
-                    jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-            .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                    "$._embedded.workspaceitems[*].id")));
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/csv-missing-field-test.csv")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("csv-missing-field-test.csv")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1526,23 +1526,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream tsv = getClass().getResourceAsStream("tsv-test.tsv");
         final MockMultipartFile tsvFile = new MockMultipartFile("file", "/local/path/tsv-test.tsv",
-            "text/tsv", tsv);
+                "text/tsv", tsv);
 
         context.restoreAuthSystemState();
 
@@ -1552,35 +1552,35 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create workspaceitems in the default collection (col1)
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(tsvFile)
-                    .param("embed", "collection"))
-                // create should return 200, 201 (created) is better for single resource
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Article")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.contributor.author'][0].value",
-                        is("Nobody")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.date.issued'][0].value",
-                        is("2006")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.identifier.issn'][0].value",
-                        is("Mock ISSN")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
-                        is("Mock subtype")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/tsv-test.tsv")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.title'][0].value",
-                        is("tsv-test.tsv")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                            .file(tsvFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Nobody")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.date.issued'][0].value",
+                            is("2006")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.identifier.issn'][0].value",
+                            is("Mock ISSN")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
+                            is("Mock subtype")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/tsv-test.tsv")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("tsv-test.tsv")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1603,23 +1603,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream ris = getClass().getResourceAsStream("ris-test.ris");
         final MockMultipartFile tsvFile = new MockMultipartFile("file", "/local/path/ris-test.ris",
-            "text/ris", ris);
+                "text/ris", ris);
 
         context.restoreAuthSystemState();
 
@@ -1629,37 +1629,37 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create workspaceitems in the default collection (col1)
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(tsvFile)
-                    .param("embed", "collection"))
-                // create should return 200, 201 (created) is better for single resource
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("Challenge–Response Identification")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][1].value",
-                        is("Challenge–Response Identification second title")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.contributor.author'][0].value",
-                        is("Just, Mike")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.date.issued'][0].value",
-                        is("2005")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.identifier.issn'][0].value",
-                        is("978-0-387-23483-0")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
-                        is("Mock subtype")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/ris-test.ris")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.title'][0].value",
-                        is("ris-test.ris")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                                "$._embedded.workspaceitems[*].id")));
+                            .file(tsvFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("Challenge–Response Identification")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][1].value",
+                            is("Challenge–Response Identification second title")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Just, Mike")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.date.issued'][0].value",
+                            is("2005")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.identifier.issn'][0].value",
+                            is("978-0-387-23483-0")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value",
+                            is("Mock subtype")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/ris-test.ris")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("ris-test.ris")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1682,23 +1682,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream endnote = getClass().getResourceAsStream("endnote-test.enw");
         final MockMultipartFile endnoteFile = new MockMultipartFile("file", "/local/path/endnote-test.enw",
-            "text/endnote", endnote);
+                "text/endnote", endnote);
 
         context.restoreAuthSystemState();
 
@@ -1707,40 +1707,40 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create workspaceitems in the default collection (col1)
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(endnoteFile)
-                    .param("embed", "collection"))
-                // create should return 200, 201 (created) is better for single resource
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Title")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.contributor.author'][0].value",
-                        is("Author 1")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.contributor.author'][1].value",
-                        is("Author 2")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.date.issued'][0].value",
-                        is("2005")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpagetwo"
-                        + "['dc.description.abstract'][0].value",
-                        is("This is my abstract")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/endnote-test.enw")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.title'][0].value",
-                        is("endnote-test.enw")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                            .file(endnoteFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Title")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Author 1")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][1].value",
+                            is("Author 2")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.date.issued'][0].value",
+                            is("2005")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpagetwo"
+                                    + "['dc.description.abstract'][0].value",
+                            is("This is my abstract")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/endnote-test.enw")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("endnote-test.enw")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
-                     WorkspaceItemBuilder.deleteWorkspaceItem(i);
+                    WorkspaceItemBuilder.deleteWorkspaceItem(i);
                 }
             }
         }
@@ -1761,23 +1761,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream tsv = getClass().getResourceAsStream("tsv-missing-field-test.tsv");
         final MockMultipartFile csvFile = new MockMultipartFile("file", "/local/path/tsv-missing-field-test.tsv",
-            "text/tsv", tsv);
+                "text/tsv", tsv);
 
         context.restoreAuthSystemState();
 
@@ -1787,45 +1787,45 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create workspaceitems in the default collection (col1)
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                .file(csvFile)
-                .param("embed", "collection"))
-            // create should return 200, 201 (created) is better for single resource
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                    is("My Article")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                + "['dc.contributor.author'][0].value",
-                    is("Nobody")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                    + "['dc.contributor.author'][1].value",
-                        is("Try escape \t\t\tin \t\titem")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                    + "['dc.date.issued'][0].value").isEmpty())
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                    + "['dc.identifier.issn'][0].value",
-                    is("Mock ISSN")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value"
+                            .file(csvFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Nobody")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][1].value",
+                            is("Try escape \t\t\tin \t\titem")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                            + "['dc.date.issued'][0].value").isEmpty())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.identifier.issn'][0].value",
+                            is("Mock ISSN")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.type'][0].value"
                     ).doesNotExist())
-            .andExpect(
-                    jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                 + ".metadata['dc.source'][0].value",
-                    is("/local/path/tsv-missing-field-test.tsv")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                 + ".metadata['dc.title'][0].value",
-                    is("tsv-missing-field-test.tsv")))
-            .andExpect(
-                    jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
-            .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                    "$._embedded.workspaceitems[*].id")));
-            } finally {
-                if (idRef != null && idRef.get() != null) {
-                    for (int i : idRef.get()) {
-                        WorkspaceItemBuilder.deleteWorkspaceItem(i);
-                    }
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/tsv-missing-field-test.tsv")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("tsv-missing-field-test.tsv")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[*]._embedded.upload").doesNotExist())
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
+        } finally {
+            if (idRef != null && idRef.get() != null) {
+                for (int i : idRef.get()) {
+                    WorkspaceItemBuilder.deleteWorkspaceItem(i);
                 }
             }
-            tsv.close();
+        }
+        tsv.close();
     }
 
     @Test
@@ -1840,26 +1840,26 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream bibtex = getClass().getResourceAsStream("bibtex-test.bib");
         final MockMultipartFile bibtexFile = new MockMultipartFile("file", "/local/path/bibtex-test.bib",
-            "application/x-bibtex", bibtex);
+                "application/x-bibtex", bibtex);
         InputStream xmlIS = getClass().getResourceAsStream("pubmed-test.xml");
         final MockMultipartFile pubmedFile = new MockMultipartFile("file", "/local/path/pubmed-test.xml",
-            "application/xml", xmlIS);
+                "application/xml", xmlIS);
 
         context.restoreAuthSystemState();
 
@@ -1869,31 +1869,31 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create a workspaceitem from a single bibliographic entry file explicitly in the default collection (col1)
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(bibtexFile)
-                    .file(pubmedFile)
-                    .param("embed", "collection"))
-                // create should return 200, 201 (created) is better for single resource
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Article")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/bibtex-test.bib")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.title'][0].value",
-                        is("bibtex-test.bib")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][1].value")
-                    .doesNotExist())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
-                        + ".metadata['dc.source'][0].value",
+                            .file(bibtexFile)
+                            .file(pubmedFile)
+                            .param("embed", "collection"))
+                    // create should return 200, 201 (created) is better for single resource
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col1.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/bibtex-test.bib")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("bibtex-test.bib")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][1].value")
+                            .doesNotExist())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
+                                    + ".metadata['dc.source'][0].value",
                             is("/local/path/pubmed-test.xml")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
-                        + ".metadata['dc.title'][0].value",
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
+                                    + ".metadata['dc.title'][0].value",
                             is("pubmed-test.xml")))
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1905,30 +1905,30 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create a workspaceitem from a single bibliographic entry file explicitly in the col2
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(bibtexFile).file(pubmedFile)
-                    .param("embed", "collection")
-                    .param("owningCollection", col2.getID().toString()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("My Article")))
-                .andExpect(
-                        jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col2.getID().toString())))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                     + ".metadata['dc.source'][0].value",
-                        is("/local/path/bibtex-test.bib")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload"
-                     + ".files[0].metadata['dc.title'][0].value",
-                        is("bibtex-test.bib")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][1].value")
-                        .doesNotExist())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
-                     + ".metadata['dc.source'][0].value",
-                         is("/local/path/pubmed-test.xml")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
-                     + ".metadata['dc.title'][0].value",
-                         is("pubmed-test.xml")))
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                            .file(bibtexFile).file(pubmedFile)
+                            .param("embed", "collection")
+                            .param("owningCollection", col2.getID().toString()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("My Article")))
+                    .andExpect(
+                            jsonPath("$._embedded.workspaceitems[0]._embedded.collection.id", is(col2.getID().toString())))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/bibtex-test.bib")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload"
+                                    + ".files[0].metadata['dc.title'][0].value",
+                            is("bibtex-test.bib")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][1].value")
+                            .doesNotExist())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/pubmed-test.xml")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[1]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("pubmed-test.xml")))
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -1953,23 +1953,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
 
         InputStream bibtex = getClass().getResourceAsStream("bibtex-test-3-entries.bib");
         final MockMultipartFile bibtexFile = new MockMultipartFile("file", "bibtex-test-3-entries.bib",
-            "application/x-bibtex",
+                "application/x-bibtex",
                 bibtex);
 
         context.restoreAuthSystemState();
@@ -1978,9 +1978,9 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // create a workspaceitem from a single bibliographic entry file explicitly in the default collection (col1)
         getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(bibtexFile))
-                  // create should return return a 422 because we don't allow/support bibliographic files
-                 // that have multiple metadata records
+                        .file(bibtexFile))
+                // create should return return a 422 because we don't allow/support bibliographic files
+                // that have multiple metadata records
                 .andExpect(status().is(422));
         bibtex.close();
     }
@@ -1998,22 +1998,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .build();
         Collection col2 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 2")
-                                           .withSubmitterGroup(eperson)
-                                           .build();
+                .withName("Collection 2")
+                .withSubmitterGroup(eperson)
+                .build();
         InputStream xmlIS = getClass().getResourceAsStream("pubmed-test.xml");
         final MockMultipartFile pubmedFile = new MockMultipartFile("file", "/local/path/pubmed-test.xml",
-            "application/xml", xmlIS);
+                "application/xml", xmlIS);
 
         context.restoreAuthSystemState();
 
@@ -2023,25 +2023,25 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create a workspaceitem from a single bibliographic entry file explicitly in the default collection (col1)
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(pubmedFile))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                        is("Multistep microreactions with proteins using electrocapture technology.")))
-                .andExpect(
-                        jsonPath(
-                        "$._embedded.workspaceitems[0].sections.traditionalpageone['dc.identifier.other'][0].value",
-                        is("15117179")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                        + "['dc.contributor.author'][0].value",
-                        is("Astorga-Wells, Juan")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                    + ".metadata['dc.source'][0].value",
-                        is("/local/path/pubmed-test.xml")))
-                .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
-                    + ".metadata['dc.title'][0].value",
-                        is("pubmed-test.xml")))
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                        "$._embedded.workspaceitems[*].id")));
+                            .file(pubmedFile))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("Multistep microreactions with proteins using electrocapture technology.")))
+                    .andExpect(
+                            jsonPath(
+                                    "$._embedded.workspaceitems[0].sections.traditionalpageone['dc.identifier.other'][0].value",
+                                    is("15117179")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Astorga-Wells, Juan")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.source'][0].value",
+                            is("/local/path/pubmed-test.xml")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0]"
+                                    + ".metadata['dc.title'][0].value",
+                            is("pubmed-test.xml")))
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -2054,24 +2054,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // create a workspaceitem from a single bibliographic entry file explicitly in the col2
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(pubmedFile)
-                    .param("owningCollection", col2.getID().toString()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
-                is("Multistep microreactions with proteins using electrocapture technology.")))
-            .andExpect(
-                jsonPath(
-                "$._embedded.workspaceitems[0].sections.traditionalpageone['dc.identifier.other'][0].value",
-                is("15117179")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
-                + "['dc.contributor.author'][0].value",
-                is("Astorga-Wells, Juan")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0].metadata['dc.source'][0].value",
-                    is("/local/path/pubmed-test.xml")))
-            .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0].metadata['dc.title'][0].value",
-                    is("pubmed-test.xml")))
-            .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                    "$._embedded.workspaceitems[*].id")));
+                            .file(pubmedFile)
+                            .param("owningCollection", col2.getID().toString()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone['dc.title'][0].value",
+                            is("Multistep microreactions with proteins using electrocapture technology.")))
+                    .andExpect(
+                            jsonPath(
+                                    "$._embedded.workspaceitems[0].sections.traditionalpageone['dc.identifier.other'][0].value",
+                                    is("15117179")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.traditionalpageone"
+                                    + "['dc.contributor.author'][0].value",
+                            is("Astorga-Wells, Juan")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0].metadata['dc.source'][0].value",
+                            is("/local/path/pubmed-test.xml")))
+                    .andExpect(jsonPath("$._embedded.workspaceitems[0].sections.upload.files[0].metadata['dc.title'][0].value",
+                            is("pubmed-test.xml")))
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                            "$._embedded.workspaceitems[*].id")));
         } finally {
             if (idRef != null && idRef.get() != null) {
                 for (int i : idRef.get()) {
@@ -2095,11 +2095,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
                 .withName("Collection 1")
                 .withSubmitterGroup(eperson)
@@ -2114,7 +2114,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // create a workspaceitem
         getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                    .file(pdfFile))
+                        .file(pdfFile))
                 // create should return 200, 201 (created) is better for single resource
                 .andExpect(status().isOk())
                 //FIXME it will be nice to setup a mock grobid server for end to end testing
@@ -2146,11 +2146,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
                 .withName("Collection 1")
                 .withSubmitterGroup(eperson)
@@ -2177,34 +2177,34 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         AtomicReference<Integer> idRef = new AtomicReference<>();
         try {
 
-        getClient(authToken).perform(get("/api/submission/workspaceitems/" + workspaceItem1.getID()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors").doesNotExist())
-        ;
+            getClient(authToken).perform(get("/api/submission/workspaceitems/" + workspaceItem1.getID()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.errors").doesNotExist())
+            ;
 
-        getClient(authToken).perform(get("/api/submission/workspaceitems/" + workspaceItem2.getID()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
-                        contains(
-                                hasJsonPath("$.paths", contains(
-                                        hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.date.issued"))
-                                )))))
-        ;
+            getClient(authToken).perform(get("/api/submission/workspaceitems/" + workspaceItem2.getID()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
+                            contains(
+                                    hasJsonPath("$.paths", contains(
+                                            hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.date.issued"))
+                                    )))))
+            ;
 
-        // create an empty workspaceitem explicitly in the col1, check validation on creation
-        getClient(authToken).perform(post("/api/submission/workspaceitems")
-                    .param("owningCollection", col1.getID().toString())
-                    .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                // title and dateissued are required in the first panel
-                // the json path with a @ selector always return an array
-                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
-                        contains(
-                                hasJsonPath("$.paths", Matchers.containsInAnyOrder(
-                                        hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.title")),
-                                        hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.date.issued"))
-                                )))))
-                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(), "$.id")));
+            // create an empty workspaceitem explicitly in the col1, check validation on creation
+            getClient(authToken).perform(post("/api/submission/workspaceitems")
+                            .param("owningCollection", col1.getID().toString())
+                            .contentType(org.springframework.http.MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated())
+                    // title and dateissued are required in the first panel
+                    // the json path with a @ selector always return an array
+                    .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
+                            contains(
+                                    hasJsonPath("$.paths", Matchers.containsInAnyOrder(
+                                            hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.title")),
+                                            hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.date.issued"))
+                                    )))))
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(), "$.id")));
         } finally {
             WorkspaceItemBuilder.deleteWorkspaceItem(idRef.get());
         }
@@ -2223,11 +2223,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -2252,22 +2252,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(updateTitle);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.errors").doesNotExist())
-                        .andExpect(jsonPath("$",
-                                // check the new title and untouched values
-                                Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                                        "New Title", "2017-10-17", "ExtraEntry"))));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        // check the new title and untouched values
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))));
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                            "New Title", "2017-10-17", "ExtraEntry"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))))
         ;
     }
 
@@ -2609,16 +2609,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(updateIssueDate);
         String tokenEperson2 = getAuthToken(eperson2.getEmail(), "qwerty02");
         getClient(tokenEperson2).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         String tokenEperson1 = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(tokenEperson1).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                               (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
     }
 
     public void patchReplaceMetadataOnItemStillInSubmissionTest() throws Exception {
@@ -2654,15 +2654,15 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // Verify submitter cannot modify metadata via item PATCH. They must use submission forms.
         String tokenEperson = getAuthToken(eperson.getEmail(), password);
         getClient(tokenEperson).perform(patch("/api/core/items/" + idItem)
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/core/items/" + idItem))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", Matchers.is(ItemMatcher.matchItemWithTitleAndDateIssued
-                  (witem.getItem(), "Workspace Item 1", "2017-10-17"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.is(ItemMatcher.matchItemWithTitleAndDateIssued
+                        (witem.getItem(), "Workspace Item 1", "2017-10-17"))));
     }
 
     @Test
@@ -2698,16 +2698,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // Verify submitter cannot modify metadata via item PATCH. They must use submission forms.
         String tokenEperson = getAuthToken(eperson.getEmail(), password);
         getClient(tokenEperson).perform(patch("/api/core/items/" + idItem)
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/core/items/" + idItem))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasJsonPath("$.metadata", allOf(
-              matchMetadata("dc.title", "Workspace")))))
-        .andExpect(jsonPath("$.metadata.['dc.date.issued']").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasJsonPath("$.metadata", allOf(
+                        matchMetadata("dc.title", "Workspace")))))
+                .andExpect(jsonPath("$.metadata.['dc.date.issued']").doesNotExist());
     }
 
     @Test
@@ -2745,16 +2745,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(updateIssueDate);
         getClient().perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isUnauthorized());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnauthorized());
 
         String tokenEperson1 = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(tokenEperson1).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                               (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
     }
 
     @Test
@@ -2789,16 +2789,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // Verify submitter cannot modify metadata via item PATCH. They must use submission forms.
         String tokenEperson = getAuthToken(eperson.getEmail(), password);
         getClient(tokenEperson).perform(patch("/api/core/items/" + idItem)
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/core/items/" + idItem))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasJsonPath("$.metadata", allOf(
-              matchMetadata("dc.title", "Workspace title"),
-              matchMetadata("dc.date.issued", "2017-10-17")))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasJsonPath("$.metadata", allOf(
+                        matchMetadata("dc.title", "Workspace title"),
+                        matchMetadata("dc.date.issued", "2017-10-17")))));
     }
 
     @Test
@@ -2813,11 +2813,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -2856,30 +2856,30 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(removeTitle);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
-                                contains(hasJsonPath("$.paths",
-                                        contains(
-                                                hasJsonPath("$",
-                                                        Matchers.is("/sections/traditionalpageone/dc.title")))))))
-                            .andExpect(jsonPath("$",
-                                    // check the new title and untouched values
-                                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                                            null, "2017-10-17", "ExtraEntry"))));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
+                        contains(hasJsonPath("$.paths",
+                                contains(
+                                        hasJsonPath("$",
+                                                Matchers.is("/sections/traditionalpageone/dc.title")))))))
+                .andExpect(jsonPath("$",
+                        // check the new title and untouched values
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                null, "2017-10-17", "ExtraEntry"))));
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
-                    contains(
-                            hasJsonPath("$.paths", contains(
-                                    hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.title"))
-                            )))))
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                            null, "2017-10-17", "ExtraEntry"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
+                        contains(
+                                hasJsonPath("$.paths", contains(
+                                        hasJsonPath("$", Matchers.is("/sections/traditionalpageone/dc.title"))
+                                )))))
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                null, "2017-10-17", "ExtraEntry"))))
         ;
 
         //disable file upload mandatory
@@ -2891,22 +2891,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(removeMidSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witemMultipleSubjects.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject1")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject3")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Subject4")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject3")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Subject4")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witemMultipleSubjects.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject1")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject3")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Subject4")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject3")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Subject4")))
         ;
 
         List<Operation> removeFirstSubject = new ArrayList<Operation>();
@@ -2914,20 +2914,20 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(removeFirstSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witemMultipleSubjects.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject4")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject4")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witemMultipleSubjects.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject4")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject4")))
         ;
 
         List<Operation> removeLastSubject = new ArrayList<Operation>();
@@ -2935,18 +2935,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(removeLastSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witemMultipleSubjects.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witemMultipleSubjects.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject3")))
         ;
 
         List<Operation> removeFinalSubject = new ArrayList<Operation>();
@@ -2954,18 +2954,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(removeFinalSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witemMultipleSubjects.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witemMultipleSubjects.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
         ;
 
         // remove all the subjects with a single operation
@@ -2974,18 +2974,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(removeSubjectsAllAtOnce);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witemWithTitleDateAndSubjects.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witemWithTitleDateAndSubjects.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
         ;
     }
 
@@ -3028,16 +3028,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(deleteIssueDate);
         String tokenEperson2 = getAuthToken(eperson2.getEmail(), "qwerty02");
         getClient(tokenEperson2).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         String tokenEperson1 = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(tokenEperson1).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                               (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
     }
 
     @Test
@@ -3073,16 +3073,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(deleteIssueDate);
         getClient().perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isUnauthorized());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnauthorized());
 
         String tokenEperson1 = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(tokenEperson1).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                               (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, "Workspace Item 1", "2019-01-01", "ExtraEntry"))));
     }
 
     @Test
@@ -3097,11 +3097,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -3132,28 +3132,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(operations);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$",
-                                    // check if the new title if back and the other values untouched
-                                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                                            "New Title", "2017-10-17", "ExtraEntry"))))
-                            .andExpect(jsonPath("$", Matchers.allOf(
-                                    hasJsonPath("$.sections.traditionalpageone['dc.identifier.uri'][0].value",
-                                             is("https://www.dspace.org")))));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        // check if the new title if back and the other values untouched
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.traditionalpageone['dc.identifier.uri'][0].value",
+                                is("https://www.dspace.org")))));
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                            "New Title", "2017-10-17", "ExtraEntry"))))
-            .andExpect(jsonPath("$", Matchers.allOf(
-                    hasJsonPath("$.sections.traditionalpageone['dc.identifier.uri'][0].value",
-                             is("https://www.dspace.org")))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.traditionalpageone['dc.identifier.uri'][0].value",
+                                is("https://www.dspace.org")))))
         ;
     }
 
@@ -3169,11 +3169,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -3204,27 +3204,27 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(operations);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$",
-                                    // check if the new title if back and the other values untouched
-                                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                                            "New Title", "2017-10-17", "ExtraEntry"))))
-                            .andExpect(jsonPath("$", JsonPathMatchers
-                                    .hasNoJsonPath("$.sections.traditionalpageone['dc.identifier.uri']")));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        // check if the new title if back and the other values untouched
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))))
+                .andExpect(jsonPath("$", JsonPathMatchers
+                        .hasNoJsonPath("$.sections.traditionalpageone['dc.identifier.uri']")));
 
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                            "New Title", "2017-10-17", "ExtraEntry"))))
-            .andExpect(jsonPath("$", JsonPathMatchers
-                    .hasNoJsonPath("$.sections.traditionalpageone['dc.identifier.uri']")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))))
+                .andExpect(jsonPath("$", JsonPathMatchers
+                        .hasNoJsonPath("$.sections.traditionalpageone['dc.identifier.uri']")))
         ;
     }
 
@@ -3238,11 +3238,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
                 .build();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.setCurrentUser(eperson1);
@@ -3264,15 +3264,15 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(addTitle);
         String authToken = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                            "New Title", "2017-10-17", "ExtraEntry"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "New Title", "2017-10-17", "ExtraEntry"))))
         ;
     }
 
@@ -3281,11 +3281,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
@@ -3304,16 +3304,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addTitle);
         getClient().perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                   .content(patchBody)
-                   .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                   .andExpect(status().isUnauthorized());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnauthorized());
 
         String authToken = getAuthToken(admin.getEmail(), password);
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                               (witem, null, "2020-01-13", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, null, "2020-01-13", "ExtraEntry"))));
     }
 
     @Test
@@ -3356,16 +3356,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(addTitle);
         String tokenEperson2 = getAuthToken(eperson2.getEmail(), "qwerty02");
         getClient(tokenEperson2).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-            .content(patchBody)
-            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         String tokenEperson1 = getAuthToken(eperson1.getEmail(), "qwerty01");
         getClient(tokenEperson1).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                    Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                               (witem, null, "2019-11-25", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, null, "2019-11-25", "ExtraEntry"))));
     }
 
     @Test
@@ -3380,11 +3380,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -3414,22 +3414,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addSubjects);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
-                                    is("Subject1")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
-                                    is("Subject2")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
+                        is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
+                        is("Subject2")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject1")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject2")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject2")))
         ;
 
         // add a subject in the first position
@@ -3441,25 +3441,25 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addFirstSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
-                                    is("First Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
-                                    is("Subject1")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
-                                    is("Subject2")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
+                        is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
+                        is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
+                        is("Subject2")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Subject2")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Subject2")))
         ;
 
         // add a subject in a central position
@@ -3471,28 +3471,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addMidSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
-                                    is("First Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
-                                    is("Subject1")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
-                                    is("Mid Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value",
-                                    is("Subject2")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
+                        is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
+                        is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
+                        is("Mid Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value",
+                        is("Subject2")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Mid Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value", is("Subject2")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Mid Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value", is("Subject2")))
         ;
 
         // append a last subject without specifying the index
@@ -3504,31 +3504,31 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addLastSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
-                                    is("First Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
-                                    is("Subject1")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
-                                    is("Mid Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value",
-                                    is("Subject2")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value",
-                                    is("Last Subject")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
+                        is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
+                        is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
+                        is("Mid Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value",
+                        is("Subject2")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value",
+                        is("Last Subject")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Mid Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value", is("Subject2")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value", is("Last Subject")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Mid Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value", is("Subject2")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value", is("Last Subject")))
         ;
 
         // append a last subject without specifying the index
@@ -3540,34 +3540,34 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addFinalSubject);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
-                                    is("First Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
-                                    is("Subject1")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
-                                    is("Mid Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value",
-                                    is("Subject2")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value",
-                                    is("Last Subject")))
-                            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][5].value",
-                                    is("Final Subject")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value",
+                        is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value",
+                        is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value",
+                        is("Mid Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value",
+                        is("Subject2")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value",
+                        is("Last Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][5].value",
+                        is("Final Subject")))
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Mid Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value", is("Subject2")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value", is("Last Subject")))
-            .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][5].value", is("Final Subject")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][0].value", is("First Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][1].value", is("Subject1")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][2].value", is("Mid Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][3].value", is("Subject2")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][4].value", is("Last Subject")))
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject'][5].value", is("Final Subject")))
         ;
     }
 
@@ -3583,11 +3583,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -3615,11 +3615,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // check that our workspaceitems come without a license (all are build in the same way, just check the first)
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(false)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         //disable file upload mandatory
@@ -3631,24 +3631,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(true)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(true)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // try to grant the license with an add operation supplying a string instead than a boolean
@@ -3657,24 +3657,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addGrantString);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem2.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(true)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem2.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(true)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // try to grant the license with a replace operation
@@ -3683,24 +3683,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem3.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(true)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem3.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(true)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // try to grant the license with a replace operation supplying a string
@@ -3709,24 +3709,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem4.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(true)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem4.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(true)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
     }
 
@@ -3742,11 +3742,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
         String authToken = getAuthToken(eperson.getEmail(), password);
 
@@ -3781,11 +3781,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // check that our workspaceitems come with a license (all are build in the same way, just check the first)
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(true)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(true)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isNotEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isNotEmpty())
         ;
 
         // try to reject the license with an add operation
@@ -3794,28 +3794,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                                contains( hasJsonPath("$.paths",
-                                    contains(hasJsonPath("$", is("/sections/license")))))))
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(false)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                    contains( hasJsonPath("$.paths",
-                        contains(hasJsonPath("$", is("/sections/license")))))))
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(false)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // try to reject the license with an add operation supplying a string instead than a boolean
@@ -3824,28 +3824,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addGrantString);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem2.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                                    contains( hasJsonPath("$.paths",
-                                        contains(hasJsonPath("$", is("/sections/license")))))))
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(false)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem2.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                    contains( hasJsonPath("$.paths",
-                        contains(hasJsonPath("$", is("/sections/license")))))))
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(false)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // try to reject the license with a replace operation
@@ -3854,28 +3854,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem3.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                                contains( hasJsonPath("$.paths",
-                                    contains(hasJsonPath("$", is("/sections/license")))))))
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(false)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem3.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                    contains( hasJsonPath("$.paths",
-                        contains(hasJsonPath("$", is("/sections/license")))))))
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(false)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // try to reject the license with a replace operation supplying a string
@@ -3884,29 +3884,29 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem4.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(
-                                jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                                    contains( hasJsonPath("$.paths",
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(
+                        jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                                contains( hasJsonPath("$.paths",
                                         contains(hasJsonPath("$", is("/sections/license")))))))
-                            .andExpect(jsonPath("$.sections.license.granted",
-                                    is(false)))
-                            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-                            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem4.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
-                contains( hasJsonPath("$.paths",
-                    contains(hasJsonPath("$", is("/sections/license")))))))
-            .andExpect(jsonPath("$.sections.license.granted",
-                    is(false)))
-            .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
-            .andExpect(jsonPath("$.sections.license.url").isEmpty())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.license.notgranted')]",
+                        contains( hasJsonPath("$.paths",
+                                contains(hasJsonPath("$", is("/sections/license")))))))
+                .andExpect(jsonPath("$.sections.license.granted",
+                        is(false)))
+                .andExpect(jsonPath("$.sections.license.acceptanceDate").isEmpty())
+                .andExpect(jsonPath("$.sections.license.url").isEmpty())
         ;
 
     }
@@ -3923,11 +3923,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         String authToken = getAuthToken(eperson.getEmail(), password);
@@ -3944,11 +3944,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // check the file metadata
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                    is("/local/path/simple-article.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                    is("simple-article.pdf")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("simple-article.pdf")))
         ;
 
         // try to change the filename and add a description
@@ -3964,29 +3964,29 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            // is the source still here?
-                            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                                    is("/local/path/simple-article.pdf")))
-                            // check the new filename
-                            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                                    is("newfilename.pdf")))
-                            // check the description
-                            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description'][0].value",
-                                    is("Description")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // is the source still here?
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
+                // check the new filename
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("newfilename.pdf")))
+                // check the description
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description'][0].value",
+                        is("Description")))
         ;
 
         // check that changes persist
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                    is("/local/path/simple-article.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                    is("newfilename.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description'][0].value",
-                    is("Description")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("newfilename.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description'][0].value",
+                        is("Description")))
         ;
 
         // try to remove the description
@@ -3995,24 +3995,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(removeOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            // check the filename still here
-                            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                                    is("newfilename.pdf")))
-                            // check the removed description
-                            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description']").doesNotExist())
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // check the filename still here
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("newfilename.pdf")))
+                // check the removed description
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description']").doesNotExist())
         ;
 
         // check that changes persist
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                    is("/local/path/simple-article.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                    is("newfilename.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description']").doesNotExist())        ;
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("newfilename.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.description']").doesNotExist())        ;
 
         // try to update the filename with an update opt
         List<Operation> updateOpts = new ArrayList<Operation>();
@@ -4022,19 +4022,19 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(updateOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            // check the filename still here
-                            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                                    is("another-filename.pdf")))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // check the filename still here
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("another-filename.pdf")))
         ;
 
         // check that changes persist
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                    is("another-filename.pdf")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("another-filename.pdf")))
         ;
     }
 
@@ -4079,22 +4079,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String authToken = getAuthToken(eperson.getEmail(), password);
 
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + witem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                .perform(
+                        patch("/api/submission/workspaceitems/" + witem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
 
         // create a list of values to use in remove operation
         List<Operation> removeAccessCondition = new ArrayList<>();
@@ -4103,18 +4103,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // remove and verify that access conditions are removed
         String patchReplaceBody = getPatchContent(removeAccessCondition);
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + witem.getID())
-                    .content(patchReplaceBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(
+                        patch("/api/submission/workspaceitems/" + witem.getID())
+                                .content(patchReplaceBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
     }
 
     @Test
@@ -4129,11 +4129,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         String authToken = getAuthToken(eperson.getEmail(), password);
@@ -4151,21 +4151,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // upload the file in our workspaceitem
         getClient(authToken).perform(multipart("/api/submission/workspaceitems/" + witem.getID())
-                .file(pdfFile))
-                    .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                            is("simple-article.pdf")))
-                    .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                            is("/local/path/simple-article.pdf")))
+                        .file(pdfFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("simple-article.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
         ;
 
         // check the file metadata
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                    is("simple-article.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                    is("/local/path/simple-article.pdf")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("simple-article.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
         ;
     }
 
@@ -4194,7 +4194,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // upload the file in our workspaceitem
         getClient().perform(multipart("/api/submission/workspaceitems/" + witem.getID())
-                .file(pdfFile))
+                        .file(pdfFile))
                 .andExpect(status().isUnauthorized());
 
         String authToken = getAuthToken(admin.getEmail(), password);
@@ -4241,7 +4241,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // upload the file in our workspaceitem
         String authToken = getAuthToken(eperson2.getEmail(), "qwerty02");
         getClient(authToken).perform(multipart("/api/submission/workspaceitems/" + witem.getID())
-                .file(pdfFile))
+                        .file(pdfFile))
                 .andExpect(status().isForbidden());
 
         String authToken2 = getAuthToken(eperson1.getEmail(), "qwerty01");
@@ -4257,40 +4257,40 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-            .withName("Parent Community")
-            .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-            .withName("Sub Community")
-            .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         String authToken = getAuthToken(eperson.getEmail(), password);
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-            .withTitle("Test WorkspaceItem")
-            .withIssueDate("2017-10-17")
-            .grantLicense()
-            .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .grantLicense()
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         final MockMultipartFile pdfFile = new MockMultipartFile("file", "/local/path/simple-article.pdf",
-            "application/pdf", pdf);
+                "application/pdf", pdf);
 
         context.restoreAuthSystemState();
         // upload the file in our workspaceitem
         getClient(authToken).perform(multipart("/api/submission/workspaceitems/" + witem.getID())
-            .file(pdfFile))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
-                is("simple-article.pdf")))
-            .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
-                is("/local/path/simple-article.pdf")))
+                        .file(pdfFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.title'][0].value",
+                        is("simple-article.pdf")))
+                .andExpect(jsonPath("$.sections.upload.files[0].metadata['dc.source'][0].value",
+                        is("/local/path/simple-article.pdf")))
         ;
 
         //Verify there are no errors since file was uploaded (with upload required set to true)
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist());
     }
 
     @Test
@@ -4300,30 +4300,30 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-            .withName("Parent Community")
-            .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-            .withName("Sub Community")
-            .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         String authToken = getAuthToken(eperson.getEmail(), password);
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-            .withTitle("Test WorkspaceItem")
-            .withIssueDate("2017-10-17")
-            .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .build();
 
         context.restoreAuthSystemState();
         //Verify there is an error since no file was uploaded (with upload required set to true)
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").isNotEmpty())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.filerequired')]",
-                contains(
-                    hasJsonPath("$.paths", contains(
-                        hasJsonPath("$", Matchers.is("/sections/upload"))
-                    )))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").isNotEmpty())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.filerequired')]",
+                        contains(
+                                hasJsonPath("$.paths", contains(
+                                        hasJsonPath("$", Matchers.is("/sections/upload"))
+                                )))));
     }
 
     @Test
@@ -4333,46 +4333,46 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.restoreAuthSystemState();
 
         Integer workspaceItemId = null;
         try {
-        // You have to be an admin to create an Item from an ExternalDataObject
-        String token = getAuthToken(admin.getEmail(), password);
-        MvcResult mvcResult = getClient(token).perform(post("/api/submission/workspaceitems?owningCollection="
-                                                                + col1.getID().toString())
-                                                           .param("embed", "item")
-                                                           .contentType(parseMediaType(TEXT_URI_LIST_VALUE))
-                                                           .content("https://localhost:8080/server/api/integration/" +
-                                                                        "externalsources/mock/entryValues/one"))
-                                            .andExpect(status().isCreated()).andReturn();
+            // You have to be an admin to create an Item from an ExternalDataObject
+            String token = getAuthToken(admin.getEmail(), password);
+            MvcResult mvcResult = getClient(token).perform(post("/api/submission/workspaceitems?owningCollection="
+                            + col1.getID().toString())
+                            .param("embed", "item")
+                            .contentType(parseMediaType(TEXT_URI_LIST_VALUE))
+                            .content("https://localhost:8080/server/api/integration/" +
+                                    "externalsources/mock/entryValues/one"))
+                    .andExpect(status().isCreated()).andReturn();
 
-        String content = mvcResult.getResponse().getContentAsString();
-        Map<String,Object> map = mapper.readValue(content, Map.class);
-        workspaceItemId = (Integer) map.get("id");
-        String itemUuidString = String.valueOf(((Map) ((Map) map.get("_embedded")).get("item")).get("uuid"));
+            String content = mvcResult.getResponse().getContentAsString();
+            Map<String,Object> map = mapper.readValue(content, Map.class);
+            workspaceItemId = (Integer) map.get("id");
+            String itemUuidString = String.valueOf(((Map) ((Map) map.get("_embedded")).get("item")).get("uuid"));
 
-        getClient(token).perform(get("/api/submission/workspaceitems/" + workspaceItemId)
-                        .param("embed", "item"))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
+            getClient(token).perform(get("/api/submission/workspaceitems/" + workspaceItemId)
+                            .param("embed", "item"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", Matchers.allOf(
                             hasJsonPath("$.id", is(workspaceItemId)),
                             hasJsonPath("$.type", is("workspaceitem")),
                             hasJsonPath("$._embedded.item", Matchers.allOf(
-                                hasJsonPath("$.id", is(itemUuidString)),
-                                hasJsonPath("$.uuid", is(itemUuidString)),
-                                hasJsonPath("$.type", is("item")),
-                                hasJsonPath("$.metadata", Matchers.allOf(
-                                    MetadataMatcher.matchMetadata("dc.contributor.author", "Donald, Smith")
-                                )))))
-                        ));
+                                    hasJsonPath("$.id", is(itemUuidString)),
+                                    hasJsonPath("$.uuid", is(itemUuidString)),
+                                    hasJsonPath("$.type", is("item")),
+                                    hasJsonPath("$.metadata", Matchers.allOf(
+                                            MetadataMatcher.matchMetadata("dc.contributor.author", "Donald, Smith")
+                                    )))))
+                    ));
         } finally {
             WorkspaceItemBuilder.deleteWorkspaceItem(workspaceItemId);
         }
@@ -4382,22 +4382,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
     public void createWorkspaceItemFromExternalSourcesNoOwningCollectionUuidBadRequest() throws Exception {
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(post("/api/submission/workspaceitems")
-                                     .contentType(parseMediaType(
-                                         TEXT_URI_LIST_VALUE))
-                                     .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                                "mock/entryValues/one"))
-                        .andExpect(status().isBadRequest());
+                        .contentType(parseMediaType(
+                                TEXT_URI_LIST_VALUE))
+                        .content("https://localhost:8080/server/api/integration/externalsources/" +
+                                "mock/entryValues/one"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void createWorkspaceItemFromExternalSourcesRandomOwningCollectionUuidBadRequest() throws Exception {
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(post("/api/submission/workspaceitems?owningCollection=" + UUID.randomUUID())
-                                     .contentType(parseMediaType(
-                                         TEXT_URI_LIST_VALUE))
-                                     .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                                  "mock/entryValues/one"))
-                        .andExpect(status().isBadRequest());
+                        .contentType(parseMediaType(
+                                TEXT_URI_LIST_VALUE))
+                        .content("https://localhost:8080/server/api/integration/externalsources/" +
+                                "mock/entryValues/one"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -4407,22 +4407,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(post("/api/submission/workspaceitems?owningCollection="
-                                          + col1.getID().toString())
-                                     .contentType(parseMediaType(
-                                         TEXT_URI_LIST_VALUE))
-                                     .content("https://localhost:8080/server/mock/mock/mock/" +
-                                                  "mock/entryValues/one")).andExpect(status().isBadRequest());
+                + col1.getID().toString())
+                .contentType(parseMediaType(
+                        TEXT_URI_LIST_VALUE))
+                .content("https://localhost:8080/server/mock/mock/mock/" +
+                        "mock/entryValues/one")).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -4432,23 +4432,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(post("/api/submission/workspaceitems?owningCollection="
-                                          + col1.getID().toString())
-                                     .contentType(parseMediaType(
-                                         TEXT_URI_LIST_VALUE))
-                                     .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                                  "mockWrongSource/entryValues/one"))
-                        .andExpect(status().isBadRequest());
+                        + col1.getID().toString())
+                        .contentType(parseMediaType(
+                                TEXT_URI_LIST_VALUE))
+                        .content("https://localhost:8080/server/api/integration/externalsources/" +
+                                "mockWrongSource/entryValues/one"))
+                .andExpect(status().isBadRequest());
 
     }
 
@@ -4459,23 +4459,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(post("/api/submission/workspaceitems?owningCollection="
-                                          + col1.getID().toString())
-                                     .contentType(parseMediaType(
-                                         TEXT_URI_LIST_VALUE))
-                                     .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                                  "mock/entryValues/azeazezaezeaz"))
-                        .andExpect(status().is(404));
+                        + col1.getID().toString())
+                        .contentType(parseMediaType(
+                                TEXT_URI_LIST_VALUE))
+                        .content("https://localhost:8080/server/api/integration/externalsources/" +
+                                "mock/entryValues/azeazezaezeaz"))
+                .andExpect(status().is(404));
 
     }
 
@@ -4486,23 +4486,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(post("/api/submission/workspaceitems?owningCollection="
-                                          + col1.getID().toString())
-                                     .contentType(parseMediaType(
-                                         TEXT_URI_LIST_VALUE))
-                                     .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                                  "mock/entryValues/one"))
-                        .andExpect(status().isForbidden());
+                        + col1.getID().toString())
+                        .contentType(parseMediaType(
+                                TEXT_URI_LIST_VALUE))
+                        .content("https://localhost:8080/server/api/integration/externalsources/" +
+                                "mock/entryValues/one"))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -4512,22 +4512,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         context.restoreAuthSystemState();
 
         getClient().perform(post("/api/submission/workspaceitems?owningCollection="
-                                     + col1.getID().toString())
-                                .contentType(parseMediaType(
-                                    TEXT_URI_LIST_VALUE))
-                                .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                             "mock/entryValues/one"))
-                   .andExpect(status().isUnauthorized());
+                        + col1.getID().toString())
+                        .contentType(parseMediaType(
+                                TEXT_URI_LIST_VALUE))
+                        .content("https://localhost:8080/server/api/integration/externalsources/" +
+                                "mock/entryValues/one"))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -4537,11 +4537,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1")
                 .withSubmitterGroup(eperson).build();
 
@@ -4552,33 +4552,33 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         try {
 
-        String token = getAuthToken(eperson.getEmail(), password);
-        getClient(token).perform(post("/api/submission/workspaceitems")
+            String token = getAuthToken(eperson.getEmail(), password);
+            getClient(token).perform(post("/api/submission/workspaceitems")
                             .param("embed", "collection")
                             .param("owningCollection", col1.getID().toString())
                             .contentType(parseMediaType(TEXT_URI_LIST_VALUE))
                             .content("https://localhost:8080/server/api/integration/externalsources/" +
-                                                          "mock/entryValues/one"))
-                            .andExpect(status().isCreated())
-                            .andExpect(jsonPath("$._embedded.collection.id", is(col1.getID().toString())))
-                            .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(), "$.id")));
-        workspaceItemId = idRef.get();
+                                    "mock/entryValues/one"))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$._embedded.collection.id", is(col1.getID().toString())))
+                    .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(), "$.id")));
+            workspaceItemId = idRef.get();
 
-        getClient(token).perform(get("/api/submission/workspaceitems/" + workspaceItemId)
-                                    .param("embed", "collection")
-                                    .param("embed", "item"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", Matchers.allOf(
-            hasJsonPath("$.id", is(workspaceItemId)),
-            hasJsonPath("$.type", is("workspaceitem")),
-            hasJsonPath("$._embedded.item", Matchers.allOf(
-                hasJsonPath("$.metadata", Matchers.allOf(
-                    MetadataMatcher.matchMetadata("dc.contributor.author", "Donald, Smith")
-            )))),
-            hasJsonPath("$._embedded.collection", Matchers.allOf(
-                hasJsonPath("$.id", is(col1.getID().toString())
-            )))
-        )));
+            getClient(token).perform(get("/api/submission/workspaceitems/" + workspaceItemId)
+                            .param("embed", "collection")
+                            .param("embed", "item"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", Matchers.allOf(
+                            hasJsonPath("$.id", is(workspaceItemId)),
+                            hasJsonPath("$.type", is("workspaceitem")),
+                            hasJsonPath("$._embedded.item", Matchers.allOf(
+                                    hasJsonPath("$.metadata", Matchers.allOf(
+                                            MetadataMatcher.matchMetadata("dc.contributor.author", "Donald, Smith")
+                                    )))),
+                            hasJsonPath("$._embedded.collection", Matchers.allOf(
+                                    hasJsonPath("$.id", is(col1.getID().toString())
+                                    )))
+                    )));
 
         } finally {
             WorkspaceItemBuilder.deleteWorkspaceItem(idRef.get());
@@ -4593,30 +4593,30 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withAuthor("Smith, Donald").withAuthor("Doe, John")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald").withAuthor("Doe, John")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
         String token = getAuthToken(admin.getEmail(), password);
         getClient(token).perform(get("/api/submission/workspaceitems/search/item")
-                                .param("uuid", String.valueOf(witem.getItem().getID())))
-                   .andExpect(status().isOk())
-                   .andExpect(jsonPath("$",
-                                       Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
-                                           (witem, "Workspace Item 1", "2017-10-17",
-                                            "ExtraEntry"))));
+                        .param("uuid", String.valueOf(witem.getItem().getID())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject
+                                (witem, "Workspace Item 1", "2017-10-17",
+                                        "ExtraEntry"))));
     }
 
     @Test
@@ -4626,24 +4626,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withAuthor("Smith, Donald").withAuthor("Doe, John")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald").withAuthor("Doe, John")
+                .withSubject("ExtraEntry")
+                .build();
         context.restoreAuthSystemState();
         String token = getAuthToken(admin.getEmail(), password);
         getClient(token).perform(get("/api/submission/workspaceitems/search/item"))
-                   .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -4653,26 +4653,26 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         Item item = ItemBuilder.createItem(context, col1).build();
         //2. a workspace item
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withAuthor("Smith, Donald").withAuthor("Doe, John")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald").withAuthor("Doe, John")
+                .withSubject("ExtraEntry")
+                .build();
         context.restoreAuthSystemState();
         String token = getAuthToken(admin.getEmail(), password);
         getClient(token).perform(get("/api/submission/workspaceitems/search/item")
-                                .param("uuid", String.valueOf(item.getID())))
-                   .andExpect(status().isNoContent());
+                        .param("uuid", String.valueOf(item.getID())))
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -4682,27 +4682,27 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withAuthor("Smith, Donald").withAuthor("Doe, John")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald").withAuthor("Doe, John")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(get("/api/submission/workspaceitems/search/item")
-                                .param("uuid", String.valueOf(witem.getItem().getID())))
-                   .andExpect(status().isForbidden());
+                        .param("uuid", String.valueOf(witem.getItem().getID())))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -4712,24 +4712,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withAuthor("Smith, Donald").withAuthor("Doe, John")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald").withAuthor("Doe, John")
+                .withSubject("ExtraEntry")
+                .build();
         context.restoreAuthSystemState();
         getClient().perform(get("/api/submission/workspaceitems/search/item")
-                                     .param("uuid", String.valueOf(witem.getItem().getID())))
-                        .andExpect(status().isUnauthorized());
+                        .param("uuid", String.valueOf(witem.getItem().getID())))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -4737,21 +4737,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withIssueDate("2019-04-25")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withIssueDate("2019-04-25")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -4769,13 +4769,13 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addTitle);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist());
 
     }
 
@@ -4784,21 +4784,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withIssueDate("2019-04-25")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withIssueDate("2019-04-25")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -4816,9 +4816,9 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addTitle);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -4827,21 +4827,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withIssueDate("2019-11-21")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -4859,13 +4859,13 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addTitle);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist());
     }
 
     @Test
@@ -4878,11 +4878,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
         //** GIVEN **
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1, "123456789/extraction-test")
                 .withName("Collection 1").build();
 
@@ -4907,75 +4907,75 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(addId);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                    .andExpect(status().isOk())
-                    // testing lookup
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // testing lookup
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
                         is("18926410")))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
                         is("Transfer of peanut allergy from the donor to a lung transplant recipient.")))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
                         is(Matchers.notNullValue())))
-            ;
+        ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
                 .andExpect(status().isOk())
                 // testing lookup
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
-                    is("18926410")))
+                        is("18926410")))
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
-                    is("Transfer of peanut allergy from the donor to a lung transplant recipient.")))
+                        is("Transfer of peanut allergy from the donor to a lung transplant recipient.")))
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
-                    is(Matchers.notNullValue())))
+                        is(Matchers.notNullValue())))
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
-                    is(Matchers.notNullValue())))
+                        is(Matchers.notNullValue())))
                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
-                    is(Matchers.notNullValue())))
-            ;
+                        is(Matchers.notNullValue())))
+        ;
 
         // verify that adding a pmid to a wsitem with already a title metadata will not alter the user input
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem2.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                    .andExpect(status().isOk())
-                    // testing lookup
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // testing lookup
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
                         is("18926410")))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
                         is("This is a test title")))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
                         is(Matchers.notNullValue())))
-            ;
+        ;
 
         // verify that we can remove metadata provided by pubmed
         List<Operation> removeTitle = new ArrayList<Operation>();
         removeTitle.add(new RemoveOperation("/sections/traditionalpageone/dc.title/0"));
         String rmPatchBody = getPatchContent(removeTitle);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem2.getID())
-                .content(rmPatchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                    .andExpect(status().isOk())
-                    // testing lookup
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
+                        .content(rmPatchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // testing lookup
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
                         is("18926410")))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist())
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
                         is(Matchers.notNullValue())))
-            ;
+        ;
         // verify that if we add more values to the listened metadata the lookup is not triggered again
         // (i.e. the title stays empty)
         List<Operation> addId2 = new ArrayList<Operation>();
@@ -4983,41 +4983,41 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         patchBody = getPatchContent(addId2);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem2.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                    .andExpect(status().isOk())
-                    // testing lookup
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                // testing lookup
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
                         is("18926410")))
-                    // second copy of the added identifier
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][1].value",
-                            is("18926410")))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist())
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
+                // second copy of the added identifier
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][1].value",
+                        is("18926410")))
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
                         is(Matchers.notNullValue())))
-                    .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
                         is(Matchers.notNullValue())))
-            ;
+        ;
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem2.getID()))
                 .andExpect(status().isOk())
                 // testing lookup
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][0].value",
-                    is("18926410")))
+                        is("18926410")))
                 // second copy of the added identifier
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.identifier.other'][1].value",
                         is("18926410")))
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.title']").doesNotExist())
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
-                    is(Matchers.notNullValue())))
+                        is(Matchers.notNullValue())))
                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.contributor.author'][0].value",
-                    is(Matchers.notNullValue())))
+                        is(Matchers.notNullValue())))
                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract'][0].value",
-                    is(Matchers.notNullValue())))
-            ;
+                        is(Matchers.notNullValue())))
+        ;
 
     }
 
@@ -5026,11 +5026,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
         //** GIVEN **
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1, "123456789/extraction-test")
                 .withName("Collection 1").build();
         String authToken = getAuthToken(admin.getEmail(), password);
@@ -5045,13 +5045,13 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         InputStream bibtex = getClass().getResourceAsStream("bibtex-test.bib");
         final MockMultipartFile bibtexFile = new MockMultipartFile("file", "/local/path/bibtex-test.bib",
-            "application/x-bibtex", bibtex);
+                "application/x-bibtex", bibtex);
 
         try {
             // adding a bibtex file with a single entry should automatically put the metadata in the bibtex file into
             // the item
             getClient(authToken).perform(multipart("/api/submission/workspaceitems/" + witem.getID())
-                        .file(bibtexFile))
+                            .file(bibtexFile))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
                             is("My Article")))
@@ -5060,15 +5060,15 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
                     .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
                             is("2006")))
                     .andExpect(jsonPath("$.sections.upload.files[0]"
-                         + ".metadata['dc.source'][0].value",
+                                    + ".metadata['dc.source'][0].value",
                             is("/local/path/bibtex-test.bib")))
                     .andExpect(jsonPath("$.sections.upload.files[0]"
-                         + ".metadata['dc.title'][0].value",
+                                    + ".metadata['dc.title'][0].value",
                             is("bibtex-test.bib")));
 
             // do again over a submission that already has a title, the manual input should be preserved
             getClient(authToken).perform(multipart("/api/submission/workspaceitems/" + witem2.getID())
-                        .file(bibtexFile))
+                            .file(bibtexFile))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.sections.traditionalpageone['dc.title'][0].value",
                             is("This is a test title")))
@@ -5077,10 +5077,10 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
                     .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued'][0].value",
                             is("2006")))
                     .andExpect(jsonPath("$.sections.upload.files[0]"
-                         + ".metadata['dc.source'][0].value",
+                                    + ".metadata['dc.source'][0].value",
                             is("/local/path/bibtex-test.bib")))
                     .andExpect(jsonPath("$.sections.upload.files[0]"
-                         + ".metadata['dc.title'][0].value",
+                                    + ".metadata['dc.title'][0].value",
                             is("bibtex-test.bib")));
         } finally {
             bibtex.close();
@@ -5092,22 +5092,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withTitle("Example Title")
-                             .withIssueDate("2019-11-21")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -5121,9 +5121,9 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -5131,22 +5131,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withTitle("Example Title")
-                             .withIssueDate("2019-11-21")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -5160,18 +5160,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         List<Operation> replaceLicenseUrl = new ArrayList<Operation>();
         replaceLicenseUrl.add(new ReplaceOperation("/sections/license/url", "not.existing"));
 
         patchBody = getPatchContent(replaceLicenseUrl);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -5179,22 +5179,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withTitle("Example Title")
-                             .withIssueDate("2019-11-21")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -5208,18 +5208,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(replaceGrant);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         List<Operation> replaceLicenseUrl = new ArrayList<Operation>();
         replaceLicenseUrl.add(new ReplaceOperation("/sections/license/acceptanceDate", "2020-02-14"));
 
         patchBody = getPatchContent(replaceLicenseUrl);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -5227,22 +5227,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                 .withTitle("Test WorkspaceItem")
-                 .withIssueDate("2019-10-25")
-                 .withFulltext("simple-article.pdf", "/local/path/simple-article.pdf", pdf)
-                 .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2019-10-25")
+                .withFulltext("simple-article.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -5255,9 +5255,9 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                            .content(patchBody)
-                            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -5265,14 +5265,14 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
@@ -5292,14 +5292,14 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                            .content(patchBody)
-                            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.bitstream-metadata['dc.date.issued']").doesNotExist())
-                 .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued']").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.bitstream-metadata['dc.date.issued']").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpageone['dc.date.issued']").doesNotExist());
     }
 
     @Test
@@ -5307,14 +5307,14 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
@@ -5336,9 +5336,9 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -5346,14 +5346,14 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
@@ -5375,9 +5375,9 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -5385,14 +5385,14 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
@@ -5414,64 +5414,64 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addOpts);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         addOpts.add(new AddOperation("/sections/upload/files", value));
         patchBody = getPatchContent(addOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     public void patchDeleteSectionTest() throws Exception {
         context.turnOffAuthorisationSystem();
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withTitle("Test WorkspaceItem")
-                             .withIssueDate("2020-01-21")
-                             .withSubject("Subject 1")
-                             .withSubject("Subject 2")
-                             .withAbstract("Test description abstract")
-                             .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2020-01-21")
+                .withSubject("Subject 1")
+                .withSubject("Subject 2")
+                .withAbstract("Test description abstract")
+                .build();
 
         context.restoreAuthSystemState();
 
         String authToken = getAuthToken(eperson.getEmail(), password);
 
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").isNotEmpty())
-                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract']").isNotEmpty());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").isNotEmpty())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract']").isNotEmpty());
 
         List<Operation> operations = new ArrayList<Operation>();
         operations.add(new RemoveOperation("/sections/traditionalpagetwo"));
         String patchBody = getPatchContent(operations);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
-                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract']").doesNotExist());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract']").doesNotExist());
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
-                 .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract']").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.subject']").doesNotExist())
+                .andExpect(jsonPath("$.sections.traditionalpagetwo['dc.description.abstract']").doesNotExist());
     }
 
     @Test
@@ -5479,21 +5479,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
 
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withIssueDate("2020-04-21")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withIssueDate("2020-04-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -5507,28 +5507,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(operations);
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     public void patchDeleteMetadataWrongSectionTest() throws Exception {
         context.turnOffAuthorisationSystem();
         parentCommunity = CommunityBuilder.createCommunity(context)
-                         .withName("Parent Community")
-                         .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                          .withName("Sub Community")
-                          .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1)
-                         .withName("Collection 1")
-                         .build();
+                .withName("Collection 1")
+                .build();
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                             .withTitle("Test title")
-                             .withIssueDate("2019-04-25")
-                             .withSubject("ExtraEntry")
-                             .build();
+                .withTitle("Test title")
+                .withIssueDate("2019-04-25")
+                .withSubject("ExtraEntry")
+                .build();
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
         context.restoreAuthSystemState();
@@ -5539,15 +5539,15 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(operations);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                 .content(patchBody)
-                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$",
-                         Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                                 "Test title", "2019-04-25", "ExtraEntry"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "Test title", "2019-04-25", "ExtraEntry"))));
     }
 
     @Test
@@ -5557,20 +5557,20 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and two collections.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
         //2. a workspace item
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withAuthor("Smith, Donald").withAuthor("Doe, John")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald").withAuthor("Doe, John")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -5578,15 +5578,15 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String epersonToken = getAuthToken(eperson.getEmail(), password);
 
         getClient(adminToken).perform(get("/api/submission/workspaceitems/" + witem.getID())
-                                .param("projection", "full"))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$._embedded.collection._embedded.adminGroup", nullValue()));
+                        .param("projection", "full"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.collection._embedded.adminGroup", nullValue()));
 
 
         getClient(epersonToken).perform(get("/api/submission/workspaceitems/" + witem.getID())
-                                          .param("projection", "full"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$._embedded.collection._embedded.adminGroup").doesNotExist());
+                        .param("projection", "full"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.collection._embedded.adminGroup").doesNotExist());
 
     }
 
@@ -5601,22 +5601,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         // prepare dummy bitstream
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         final MockMultipartFile pdfFile = new MockMultipartFile("file", "/local/path/simple-article.pdf",
-            "application/pdf", pdf);
+                "application/pdf", pdf);
 
         // auth
         String authToken = getAuthToken(eperson.getEmail(), password);
 
         // upload file and verify response
         getClient(authToken)
-            .perform(multipart("/api/submission/workspaceitems/" + wItem.getID()).file(pdfFile))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(multipart("/api/submission/workspaceitems/" + wItem.getID()).file(pdfFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
 
         // verify that access conditions have been persisted
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
     }
 
     @Test
@@ -5626,8 +5626,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5642,23 +5642,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
 
         // verify that access conditions have been persisted
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
     }
 
     @Test
@@ -5668,8 +5668,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5689,23 +5689,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("lease")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", is(endDateStr)));
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("lease")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", is(endDateStr)));
 
         // verify that access conditions have been persisted
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("lease")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", is(endDateStr)));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("lease")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", nullValue()))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", is(endDateStr)));
     }
 
     @Test
@@ -5715,8 +5715,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5738,18 +5738,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isInternalServerError());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isInternalServerError());
 
         // verify that access conditions array is still empty
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
     }
 
     @Test
@@ -5759,8 +5759,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5780,23 +5780,23 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
 
         // verify that access conditions have been persisted
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("embargo")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate", is(startDateStr)))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
     }
 
     @Test
@@ -5806,8 +5806,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5829,18 +5829,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isInternalServerError());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isInternalServerError());
 
         // verify that access conditions have been persisted
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
     }
 
     @Test
@@ -5850,8 +5850,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5871,18 +5871,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isInternalServerError());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isInternalServerError());
 
         // verify that access conditions array is still empty
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
     }
 
     @Test
@@ -5892,8 +5892,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-            .build();
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -5908,18 +5908,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(authToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-            )
-            .andExpect(status().isInternalServerError());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isInternalServerError());
 
         // verify that access conditions array is still empty
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
+                .perform(get("/api/submission/workspaceitems/" + wItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()));
     }
 
     public void deleteWorkspaceItemWithMinRelationshipsTest() throws Exception {
@@ -5928,43 +5928,43 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         //** GIVEN **
         //1. A community with one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity).withName("Collection 1")
-                                           .withEntityType("Person").build();
+                .withEntityType("Person").build();
 
         Item author1 = ItemBuilder.createItem(context, col1)
-                                  .withTitle("Author1")
-                                  .withIssueDate("2017-10-17")
-                                  .withAuthor("Smith, Donald")
-                                  .withPersonIdentifierLastName("Smith")
-                                  .withPersonIdentifierFirstName("Donald")
-                                  .build();
+                .withTitle("Author1")
+                .withIssueDate("2017-10-17")
+                .withAuthor("Smith, Donald")
+                .withPersonIdentifierLastName("Smith")
+                .withPersonIdentifierFirstName("Donald")
+                .build();
 
         Item author2 = ItemBuilder.createItem(context, col1)
-                                  .withTitle("Author2")
-                                  .withIssueDate("2016-02-13")
-                                  .withAuthor("Smith, Maria")
-                                  .build();
+                .withTitle("Author2")
+                .withIssueDate("2016-02-13")
+                .withAuthor("Smith, Maria")
+                .build();
 
         //2. One workspace item.
         WorkspaceItem workspaceItem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                          .withEntityType("Publication")
-                                                          .build();
+                .withEntityType("Publication")
+                .build();
 
         EntityType publication = EntityTypeBuilder.createEntityTypeBuilder(context, "Publication").build();
         EntityType person = EntityTypeBuilder.createEntityTypeBuilder(context, "Person").build();
 
 
         RelationshipType isAuthorOfPublication = RelationshipTypeBuilder
-            .createRelationshipTypeBuilder(context, publication, person, "isAuthorOfPublication",
-                                           "isPublicationOfAuthor", 2, null, 0,
-                                           null).withCopyToLeft(false).withCopyToRight(true).build();
+                .createRelationshipTypeBuilder(context, publication, person, "isAuthorOfPublication",
+                        "isPublicationOfAuthor", 2, null, 0,
+                        null).withCopyToLeft(false).withCopyToRight(true).build();
 
         Relationship relationship1 = RelationshipBuilder
-            .createRelationshipBuilder(context, workspaceItem.getItem(), author1, isAuthorOfPublication).build();
+                .createRelationshipBuilder(context, workspaceItem.getItem(), author1, isAuthorOfPublication).build();
         Relationship relationship2 = RelationshipBuilder
-            .createRelationshipBuilder(context, workspaceItem.getItem(), author2, isAuthorOfPublication).build();
+                .createRelationshipBuilder(context, workspaceItem.getItem(), author2, isAuthorOfPublication).build();
 
         context.restoreAuthSystemState();
 
@@ -5973,7 +5973,7 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         getClient(token).perform(get("/api/core/relationships/" + relationship1.getID()))
                 .andExpect(status().is(200));
         getClient(token).perform(delete("/api/core/relationships/" + relationship1.getID()))
-                        .andExpect(status().is(400));
+                .andExpect(status().is(400));
         //Both relationships still exist
         getClient(token).perform(get("/api/core/relationships/" + relationship1.getID()))
                 .andExpect(status().is(200));
@@ -5982,10 +5982,10 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         //Delete the workspaceitem
         getClient(token).perform(delete("/api/submission/workspaceitems/" + workspaceItem.getID()))
-                        .andExpect(status().is(204));
+                .andExpect(status().is(204));
         //The workspaceitem has been deleted
         getClient(token).perform(get("/api/submission/workspaceitems/" + workspaceItem.getID()))
-                        .andExpect(status().is(404));
+                .andExpect(status().is(404));
         //The relationships have been deleted
         getClient(token).perform(get("/api/core/relationships/" + relationship1.getID()))
                 .andExpect(status().is(404));
@@ -5999,20 +5999,20 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                              .withTitle("Test WorkspaceItem")
-                                              .withIssueDate("2019-10-01")
-                                              .withFulltext("simple-article.pdf", "/local/path/simple-article.pdf", pdf)
-                                              .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2019-10-01")
+                .withFulltext("simple-article.pdf", "/local/path/simple-article.pdf", pdf)
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -6032,17 +6032,17 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String authToken = getAuthToken(eperson.getEmail(), password);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                            .content(getPatchContent(addAccessCondition))
-                            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
-                 .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[1].name", is("administrator")));
+                        .content(getPatchContent(addAccessCondition))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[1].name", is("administrator")));
 
         // verify that the patch changes have been persisted
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
-                 .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[1].name", is("administrator")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name", is("openaccess")))
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[1].name", is("administrator")));
 
     }
 
@@ -6051,15 +6051,15 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .withSubmitterGroup(eperson)
-                                           .withTemplateItem()
-                                           .withEntityType("Person")
-                                           .build();
+                .withName("Collection 1")
+                .withSubmitterGroup(eperson)
+                .withTemplateItem()
+                .withEntityType("Person")
+                .build();
 
         Item templateItem = col.getTemplateItem();
         itemService.addMetadata(context, templateItem, "dspace", "entity", "type", null, "Publication");
@@ -6073,8 +6073,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         try {
             getClient(authToken).perform(multipart("/api/submission/workspaceitems")
-                                .file(pdfFile))
-                                .andExpect(status().is(500));
+                            .file(pdfFile))
+                    .andExpect(status().is(500));
         } finally {
             pdf.close();
         }
@@ -6087,13 +6087,13 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-                                                  .withSubmitter(eperson)
-                                                  .withTitle(
-                                                      "Test Item patchUploadAddAdminRPInstallAndVerifyOnlyAdminCanView")
-                                                  .withIssueDate("2019-03-06")
-                                                  .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                                  .grantLicense()
-                                                  .build();
+                .withSubmitter(eperson)
+                .withTitle(
+                        "Test Item patchUploadAddAdminRPInstallAndVerifyOnlyAdminCanView")
+                .withIssueDate("2019-03-06")
+                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -6109,55 +6109,55 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-                    )
-            .andExpect(status().isOk());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
         Group adminGroup = groupService.findByName(context, Group.ADMIN);
 
         // verify that bitstream of workspace item has this admin RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-            .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
+                )));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken)
-            .perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                .content("/api/submission/workspaceitems/" + wItem.getID())
-                .contentType(textUriContentType))
-            .andExpect(status().isCreated());
+                .perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         Group anonGroup = groupService.findByName(context, Group.ANONYMOUS);
 
         // verify that bitstream of workspace item still has this admin RP and no Anon READ inherited policy
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-            .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
-                                                                                                  )))
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.not(Matchers.hasItems(
-                                 ResourcePolicyMatcher
-                                     .matchResourcePolicyProperties(anonGroup, null, bitstream, null, Constants.READ,
-                                         null)
-                                                                                                               ))));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
+                )))
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.not(Matchers.hasItems(
+                        ResourcePolicyMatcher
+                                .matchResourcePolicyProperties(anonGroup, null, bitstream, null, Constants.READ,
+                                        null)
+                ))));
 
         // Bitstream should NOT be accessible to anon or eperson user, only to admin
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
         getClient(epersonToken).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                               .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
         getClient(adminToken).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                             .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -6167,12 +6167,12 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem =
-            WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
-                                .withTitle("Test Item patchUploadAddOpenAccessRPInstallAndVerifyOnlyAdminCanView")
-                                .withIssueDate("2019-03-06")
-                                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                .grantLicense()
-                                .build();
+                WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
+                        .withTitle("Test Item patchUploadAddOpenAccessRPInstallAndVerifyOnlyAdminCanView")
+                        .withIssueDate("2019-03-06")
+                        .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                        .grantLicense()
+                        .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -6188,43 +6188,43 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-                    )
-            .andExpect(status().isOk());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
 
         // verify that bitstream of workspace item has this open access RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-            .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
+                )));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken)
-            .perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                .content("/api/submission/workspaceitems/" + wItem.getID())
-                .contentType(textUriContentType))
-            .andExpect(status().isCreated());
+                .perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // verify that bitstream of workspace item still has this open access RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-            .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
+                )));
 
         // Bitstream should be accessible to anon
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -6234,12 +6234,12 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem =
-            WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
-                                .withTitle("Test Item patchUploadAddOpenAccessRPInstallAndVerifyOnlyAdminCanView")
-                                .withIssueDate("2019-03-06")
-                                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                .grantLicense()
-                                .build();
+                WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
+                        .withTitle("Test Item patchUploadAddOpenAccessRPInstallAndVerifyOnlyAdminCanView")
+                        .withIssueDate("2019-03-06")
+                        .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                        .grantLicense()
+                        .build();
         context.restoreAuthSystemState();
 
         // auth
@@ -6255,24 +6255,24 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-                    )
-            .andExpect(status().isOk());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
         Group adminGroup = groupService.findByName(context, Group.ADMIN);
 
         // verify that bitstream of workspace item has this admin RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-            .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
+                )));
 
         // prepare patch body
         Map<String, String> accessCondition2 = new HashMap<>();
@@ -6283,32 +6283,32 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken)
-            .perform(
-                patch("/api/submission/workspaceitems/" + wItem.getID())
-                    .content(patchBody2)
-                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
-                    )
-            .andExpect(status().isOk());
+                .perform(
+                        patch("/api/submission/workspaceitems/" + wItem.getID())
+                                .content(patchBody2)
+                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON)
+                )
+                .andExpect(status().isOk());
 
         // verify that bitstream of workspace item has this open access RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-            .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
+                )));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken)
-            .perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                .content("/api/submission/workspaceitems/" + wItem.getID())
-                .contentType(textUriContentType))
-            .andExpect(status().isCreated());
+                .perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // Bitstream should be accessible to anon
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     /**
@@ -6321,19 +6321,19 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         configurationService.setProperty("core.authorization.installitem.inheritance-read.append-mode", true);
         context.turnOffAuthorisationSystem();
         Community community = CommunityBuilder.createCommunity(context)
-                                              .withName("Community")
-                                              .build();
+                .withName("Community")
+                .build();
         Collection collection = CollectionBuilder.createCollection(context, community)
-                                                 .withName("Col")
-                                                 .build();
+                .withName("Col")
+                .build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-                                                  .withSubmitter(eperson)
-                                                  .withTitle("Test wsItem")
-                                                  .withIssueDate("2019-03-06")
-                                                  .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                                  .grantLicense()
-                                                  .build();
+                .withSubmitter(eperson)
+                .withTitle("Test wsItem")
+                .withIssueDate("2019-03-06")
+                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
         context.restoreAuthSystemState();
 
         String epersonToken = getAuthToken(eperson.getEmail(), password);
@@ -6346,48 +6346,48 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String patchBody = getPatchContent(ops);
 
         getClient(epersonToken).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
         Group adminGroup = groupService.findByName(context, Group.ADMIN);
 
         // verify that bitstream of workspace item has this admin RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"))));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"))));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken).perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                               .content("/api/submission/workspaceitems/" + wItem.getID())
-                               .contentType(textUriContentType))
-                               .andExpect(status().isCreated());
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         Group anonGroup = groupService.findByName(context, Group.ANONYMOUS);
 
         // verify that bitstream of workspace item still has this admin RP and no Anon READ inherited policy
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"))))
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.not(Matchers.hasItems(
-                                 ResourcePolicyMatcher
-                                     .matchResourcePolicyProperties(anonGroup, null, bitstream, null, Constants.READ,
-                                         null)))));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"))))
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.not(Matchers.hasItems(
+                        ResourcePolicyMatcher
+                                .matchResourcePolicyProperties(anonGroup, null, bitstream, null, Constants.READ,
+                                        null)))));
 
         // Bitstream should NOT be accessible to anon or eperson user, only to admin
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
         getClient(epersonToken).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                               .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
         getClient(adminToken).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                             .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     /**
@@ -6403,11 +6403,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
-                                                  .withTitle("Test wsItem")
-                                                  .withIssueDate("2019-03-06")
-                                                  .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                                  .grantLicense()
-                                                  .build();
+                .withTitle("Test wsItem")
+                .withIssueDate("2019-03-06")
+                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
         context.restoreAuthSystemState();
 
         String epersonToken = getAuthToken(eperson.getEmail(), password);
@@ -6421,37 +6421,37 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
 
         // verify that bitstream of workspace item has this open access RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess"))));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess"))));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken).perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                               .content("/api/submission/workspaceitems/" + wItem.getID())
-                               .contentType(textUriContentType))
-                               .andExpect(status().isCreated());
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // verify that bitstream of workspace item still has this open access RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess"))));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess"))));
 
         // Bitstream should be accessible to anon
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     /**
@@ -6467,11 +6467,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         Collection collection = CollectionBuilder.createCollection(context, community).withName("Col").build();
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
-                                                  .withTitle("Test wsItem")
-                                                  .withIssueDate("2019-03-06")
-                                                  .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                                  .grantLicense()
-                                                  .build();
+                .withTitle("Test wsItem")
+                .withIssueDate("2019-03-06")
+                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
         context.restoreAuthSystemState();
 
         String epersonToken = getAuthToken(eperson.getEmail(), password);
@@ -6485,21 +6485,21 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
         Group adminGroup = groupService.findByName(context, Group.ADMIN);
 
         // verify that bitstream of workspace item has this admin RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
+                )));
 
         // prepare patch body
         Map<String, String> accessCondition2 = new HashMap<>();
@@ -6510,28 +6510,28 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody2)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody2)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         // verify that bitstream of workspace item has this open access RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "openaccess")
+                )));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken).perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                               .content("/api/submission/workspaceitems/" + wItem.getID())
-                               .contentType(textUriContentType))
-                               .andExpect(status().isCreated());
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // Bitstream should be accessible to anon
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -6550,11 +6550,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
-                                                  .withTitle("Test wsItem")
-                                                  .withIssueDate("2019-03-06")
-                                                  .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                                  .grantLicense()
-                                                  .build();
+                .withTitle("Test wsItem")
+                .withIssueDate("2019-03-06")
+                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
         context.restoreAuthSystemState();
 
         String userToken = getAuthToken(user.getEmail(), password);
@@ -6569,35 +6569,35 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
         Group adminGroup = groupService.findByName(context, Group.ADMIN);
 
         // verify that bitstream of workspace item has this admin RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
+                )));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken).perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                               .content("/api/submission/workspaceitems/" + wItem.getID())
-                               .contentType(textUriContentType))
-                               .andExpect(status().isCreated());
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // Bitstream should be accessible to user
         getClient(userToken).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         // Bitstream should be not accessible to anon
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -6615,11 +6615,11 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection).withSubmitter(eperson)
-                                                  .withTitle("Test wsItem")
-                                                  .withIssueDate("2019-03-06")
-                                                  .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
-                                                  .grantLicense()
-                                                  .build();
+                .withTitle("Test wsItem")
+                .withIssueDate("2019-03-06")
+                .withFulltext("upload2.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
         context.restoreAuthSystemState();
 
         String userToken = getAuthToken(user.getEmail(), password);
@@ -6634,35 +6634,35 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         // submit patch and verify response
         getClient(epersonToken).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         Bitstream bitstream = wItem.getItem().getBundles().get(0).getBitstreams().get(0);
         Group adminGroup = groupService.findByName(context, Group.ADMIN);
 
         // verify that bitstream of workspace item has this admin RP
         getClient(adminToken).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
-                                 ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
-                                     ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
-                                                                                                  )));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.hasItems(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null, bitstream,
+                                ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator")
+                )));
 
         // submit the workspaceitem to complete the deposit (as there is no workflow configured)
         getClient(epersonToken).perform(post(BASE_REST_SERVER_URL + "/api/workflow/workflowitems")
-                               .content("/api/submission/workspaceitems/" + wItem.getID())
-                               .contentType(textUriContentType))
-                               .andExpect(status().isCreated());
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // Bitstream should be accessible to user
         getClient(userToken).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
 
         // Bitstream should be not accessible to anon
         getClient().perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                   .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -6670,8 +6670,8 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
         Community community = CommunityBuilder.createCommunity(context).build();
         Collection collection = CollectionBuilder.createCollection(context, community, "123456789/qualdrop-test")
-            .withName("Test name")
-            .build();
+                .withName("Test name")
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -6681,19 +6681,19 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         MetadataFieldName citationFieldName = new MetadataFieldName("dc", "identifier", "citation");
 
         WorkspaceItem workspaceItem1 = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withTitle("test workspace item 1")
-            .build();
+                .withTitle("test workspace item 1")
+                .build();
         itemService.setMetadataSingleValue(context, workspaceItem1.getItem(), issnFieldName, null, "12");
 
         WorkspaceItem workspaceItem2 = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withTitle("test workspace item 2")
-            .build();
+                .withTitle("test workspace item 2")
+                .build();
         itemService.setMetadataSingleValue(context, workspaceItem2.getItem(), issnFieldName, null, "13");
         itemService.setMetadataSingleValue(context, workspaceItem2.getItem(), isbnFieldName, null, "14");
 
         WorkspaceItem workspaceItem3 = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-            .withTitle("test workspace item 3")
-            .build();
+                .withTitle("test workspace item 3")
+                .build();
         itemService.setMetadataSingleValue(context, workspaceItem3.getItem(),citationFieldName, null, "citation");
 
         context.restoreAuthSystemState();
@@ -6704,20 +6704,20 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         String workspaceItemsUri = "/api/submission/workspaceitems/";
         String errorPath = "$.errors";
         getClient(authToken).perform(get(workspaceItemsUri + workspaceItem1.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(errorPath).doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(errorPath).doesNotExist());
 
         getClient(authToken).perform(get(workspaceItemsUri + workspaceItem2.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(errorPath).doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(errorPath).doesNotExist());
 
         getClient(authToken).perform(get(workspaceItemsUri + workspaceItem3.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
-                contains(
-                    hasJsonPath("$.paths", contains(
-                        hasJsonPath("$", Matchers.is("/sections/qualdroptest/dc.identifier"))
-                    )))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.required')]",
+                        contains(
+                                hasJsonPath("$.paths", contains(
+                                        hasJsonPath("$", Matchers.is("/sections/qualdroptest/dc.identifier"))
+                                )))));
     }
     @Test
     public void patchAccesConditionDiscoverableTest() throws Exception {
@@ -6726,57 +6726,57 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
         witem.getItem().setDiscoverable(false);
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup).withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("administrator")
-                             .build();
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(false)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(false)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> replaceVisibility = new ArrayList<Operation>();
         replaceVisibility.add(new ReplaceOperation("/sections/defaultAC/discoverable", true));
 
         String patchBody = getPatchContent(replaceVisibility);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -6786,43 +6786,43 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
 
         List<Operation> replaceVisibility = new ArrayList<Operation>();
         replaceVisibility.add(new ReplaceOperation("/sections/defaultAC/discoverable", "wrongValue"));
 
         String patchBody = getPatchContent(replaceVisibility);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -6832,51 +6832,51 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity,
-                                                             "123456789/accessCondition-not-discoverable")
-                                           .withName("Collection 1")
-                                           .build();
+                        "123456789/accessCondition-not-discoverable")
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.notDiscoverable.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.notDiscoverable.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[1].name").doesNotExist());
 
         List<Operation> replaceVisibility = new ArrayList<Operation>();
         replaceVisibility.add(new ReplaceOperation("/sections/notDiscoverable/discoverable", false));
 
         String patchBody = getPatchContent(replaceVisibility);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.notDiscoverable.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.notDiscoverable.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.notDiscoverable.accessConditions[1].name").doesNotExist());
     }
 
     @Test
@@ -6886,35 +6886,35 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
 
         List<Operation> addAccessCondition = new ArrayList<Operation>();
         Map<String, String> accessCondition = new HashMap<String, String>();
@@ -6923,18 +6923,18 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addAccessCondition);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -6944,35 +6944,35 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
 
         List<Operation> addAccessCondition = new ArrayList<Operation>();
         Map<String, String> accessCondition = new HashMap<String, String>();
@@ -6981,16 +6981,16 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
 
         String patchBody = getPatchContent(addAccessCondition);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
     }
 
     @Test
@@ -7000,27 +7000,27 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name").doesNotExist());
 
         List<Operation> addAccessCondition = new ArrayList<Operation>();
         List<Map<String, String>> accessConditions = new ArrayList<Map<String,String>>();
@@ -7034,22 +7034,22 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         accessConditions.add(accessCondition2);
 
         addAccessCondition.add(new AddOperation("/sections/defaultAC/accessConditions",
-                               accessConditions));
+                accessConditions));
 
         String patchBody = getPatchContent(addAccessCondition);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -7059,57 +7059,57 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("administrator")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> removeAccessConditions = new ArrayList<Operation>();
         removeAccessConditions.add(new RemoveOperation("/sections/defaultAC/accessConditions"));
 
         String patchBody = getPatchContent(removeAccessConditions);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name").doesNotExist());
     }
 
     @Test
@@ -7119,54 +7119,54 @@ public class WorkspaceItemRestRepositoryIT extends AbstractControllerIntegration
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
-ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
-                     .withDspaceObject(witem.getItem())
-                     .withPolicyType(TYPE_CUSTOM)
-                     .withName("administrator")
-                     .build();
+        ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         LocalDate date = LocalDate.of(2020, 2, 1);
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, embargoedGroup1)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("embargoed")
-                             .withStartDate(date)
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("embargoed")
+                .withStartDate(date)
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name",
-                                              is("embargoed")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[3].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name",
+                        is("embargoed")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[3].name").doesNotExist());
 
         List<Operation> removeAccessConditions = new ArrayList<Operation>();
         // we want to remove the second resource policy
@@ -7174,18 +7174,18 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String patchBody = getPatchContent(removeAccessConditions);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                     is("embargoed")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("embargoed")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -7195,43 +7195,43 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
-ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
-                     .withDspaceObject(witem.getItem())
-                     .withPolicyType(TYPE_CUSTOM)
-                     .withName("administrator")
-                     .build();
+        ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> removeAccessConditions = new ArrayList<Operation>();
         // we want to remove the second resource policy
@@ -7239,16 +7239,16 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String patchBody = getPatchContent(removeAccessConditions);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
     }
 
     @Test
@@ -7258,43 +7258,43 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
-ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
-                     .withDspaceObject(witem.getItem())
-                     .withPolicyType(TYPE_CUSTOM)
-                     .withName("administrator")
-                     .build();
+        ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> removeAccessConditions = new ArrayList<Operation>();
         // we want to remove the second resource policy
@@ -7302,18 +7302,18 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String patchBody = getPatchContent(removeAccessConditions);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                     is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -7323,43 +7323,43 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
-ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
-                     .withDspaceObject(witem.getItem())
-                     .withPolicyType(TYPE_CUSTOM)
-                     .withName("administrator")
-                     .build();
+        ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> removeAccessConditions = new ArrayList<Operation>();
         // we want to remove the second resource policy
@@ -7367,18 +7367,18 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String patchBody = getPatchContent(removeAccessConditions);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                     is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -7388,67 +7388,67 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
-ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
-                     .withDspaceObject(witem.getItem())
-                     .withPolicyType(TYPE_CUSTOM)
-                     .withName("administrator")
-                     .build();
+        ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("administrator")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> replaceAccessCondition = new ArrayList<Operation>();
         Map<String, String> accessCondition = new HashMap<String, String>();
         accessCondition.put("name", "embargo");
         accessCondition.put("startDate", "2021-10-23");
         replaceAccessCondition.add(new ReplaceOperation("/sections/defaultAC/accessConditions/1",
-                               accessCondition));
+                accessCondition));
 
         String patchBody = getPatchContent(replaceAccessCondition);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                     is("embargo")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
-                                     is("2021-10-23")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("embargo")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
+                        is("2021-10-23")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -7458,71 +7458,71 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         LocalDate date = LocalDate.of(2020, 2, 1);
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, embargoedGroup1)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("embargo")
-                             .withStartDate(date)
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("embargo")
+                .withStartDate(date)
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                              is("embargo")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
-                                              is("2020-02-01")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("embargo")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
+                        is("2020-02-01")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
 
         List<Operation> replaceAccessCondition = new ArrayList<Operation>();
         Map<String, String> accessCondition = new HashMap<String, String>();
         accessCondition.put("value", "2021-12-31");
         replaceAccessCondition.add(new ReplaceOperation("/sections/defaultAC/accessConditions/1/startDate",
-                               accessCondition));
+                accessCondition));
 
         String patchBody = getPatchContent(replaceAccessCondition);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                     is("embargo")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
-                                     is("2021-12-31")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("embargo")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
+                        is("2021-12-31")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist());
     }
 
     @Test
@@ -7532,54 +7532,54 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         ResourcePolicyBuilder.createResourcePolicy(context, null, anonymousGroup)
-                             .withDspaceObject(witem.getItem())
-                             .withPolicyType(TYPE_CUSTOM)
-                             .withName("openaccess")
-                             .build();
+                .withDspaceObject(witem.getItem())
+                .withPolicyType(TYPE_CUSTOM)
+                .withName("openaccess")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                              is("openaccess")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("openaccess")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
 
         List<Operation> replaceAccessCondition = new ArrayList<Operation>();
         Map<String, String> accessCondition = new HashMap<String, String>();
         accessCondition.put("value", "administrator");
         replaceAccessCondition.add(new ReplaceOperation("/sections/defaultAC/accessConditions/0/name",
-                               accessCondition));
+                accessCondition));
 
         String patchBody = getPatchContent(replaceAccessCondition);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                     is("administrator")))
-                             .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
     }
 
     @Test
@@ -7587,17 +7587,17 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         EPerson submitter = EPersonBuilder.createEPerson(context)
-                                          .withEmail("submitter@example.com")
-                                          .withPassword(password)
-                                          .build();
+                .withEmail("submitter@example.com")
+                .withPassword(password)
+                .build();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection collection1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                                  .withName("Collection 1")
-                                                  .build();
+                .withName("Collection 1")
+                .build();
 
         Bitstream bitstream = null;
         WorkspaceItem witem = null;
@@ -7608,15 +7608,15 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
             context.setCurrentUser(submitter);
             witem = WorkspaceItemBuilder.createWorkspaceItem(context, collection1)
-                                        .withTitle("Test WorkspaceItem")
-                                        .withIssueDate("2019-10-01")
-                                        .build();
+                    .withTitle("Test WorkspaceItem")
+                    .withIssueDate("2019-10-01")
+                    .build();
 
             bitstream = BitstreamBuilder.createBitstream(context, witem.getItem(), is)
-                                        .withName("Test bitstream")
-                                        .withDescription("This is a bitstream to test range requests")
-                                        .withMimeType("text/plain")
-                                        .build();
+                    .withName("Test bitstream")
+                    .withDescription("This is a bitstream to test range requests")
+                    .withMimeType("text/plain")
+                    .build();
 
             context.restoreAuthSystemState();
 
@@ -7625,15 +7625,15 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
             // submitter can download the bitstream
             getClient(tokenSubmitter).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                                     .andExpect(status().isOk())
-                                     .andExpect(header().string("Accept-Ranges", "bytes"))
-                                     .andExpect(header().string("ETag", "\"" + bitstream.getChecksum() + "\""))
-                                     .andExpect(content().contentType("text/plain;charset=UTF-8"))
-                                     .andExpect(content().bytes(bitstreamContent.getBytes()));
+                    .andExpect(status().isOk())
+                    .andExpect(header().string("Accept-Ranges", "bytes"))
+                    .andExpect(header().string("ETag", "\"" + bitstream.getChecksum() + "\""))
+                    .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                    .andExpect(content().bytes(bitstreamContent.getBytes()));
 
             // others can't download the bitstream
             getClient(tokenEPerson).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                                   .andExpect(status().isForbidden());
+                    .andExpect(status().isForbidden());
 
             // create a list of values to use in add operation
             List<Operation> addAccessCondition = new ArrayList<>();
@@ -7647,31 +7647,31 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
             String patchBody = getPatchContent(addAccessCondition);
             getClient(tokenSubmitter).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                     .content(patchBody)
-                                     .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                                     .andExpect(status().isOk())
-                         .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name",is("administrator")))
-                         .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate",nullValue()))
-                         .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                            .content(patchBody)
+                            .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name",is("administrator")))
+                    .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate",nullValue()))
+                    .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
 
             // verify that the patch changes have been persisted
             getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                                     .andExpect(status().isOk())
-                         .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name",is("administrator")))
-                         .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate",nullValue()))
-                         .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].name",is("administrator")))
+                    .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].startDate",nullValue()))
+                    .andExpect(jsonPath("$.sections.upload.files[0].accessConditions[0].endDate", nullValue()));
 
             // submitter can download the bitstream jet
             getClient(tokenSubmitter).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                                     .andExpect(status().isOk())
-                                     .andExpect(header().string("Accept-Ranges", "bytes"))
-                                     .andExpect(header().string("ETag", "\"" + bitstream.getChecksum() + "\""))
-                                     .andExpect(content().contentType("text/plain;charset=UTF-8"))
-                                     .andExpect(content().bytes(bitstreamContent.getBytes()));
+                    .andExpect(status().isOk())
+                    .andExpect(header().string("Accept-Ranges", "bytes"))
+                    .andExpect(header().string("ETag", "\"" + bitstream.getChecksum() + "\""))
+                    .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                    .andExpect(content().bytes(bitstreamContent.getBytes()));
 
             // others can't download the bitstream
             getClient(tokenEPerson).perform(get("/api/core/bitstreams/" + bitstream.getID() + "/content"))
-                                   .andExpect(status().isForbidden());
+                    .andExpect(status().isForbidden());
         }
     }
 
@@ -7682,24 +7682,24 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         EPerson submitter = EPersonBuilder.createEPerson(context)
-                                          .withEmail("submitter@example.com")
-                                          .withPassword(password)
-                                          .build();
+                .withEmail("submitter@example.com")
+                .withPassword(password)
+                .build();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         context.setCurrentUser(submitter);
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Example Title")
-                                                  .withIssueDate("2019-11-21")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Example Title")
+                .withIssueDate("2019-11-21")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -7708,19 +7708,19 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // submitter can see the item
         getClient(tokenSubmitter).perform(get("/api/core/items/" + witem.getItem().getID()))
-                                 .andExpect(status().isOk())
-                                 .andExpect(jsonPath("$",  ItemMatcher.matchItemWithTitleAndDateIssued(witem.getItem(),
-                                         "Example Title", "2019-11-21")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",  ItemMatcher.matchItemWithTitleAndDateIssued(witem.getItem(),
+                        "Example Title", "2019-11-21")));
 
         // others can't see the item
         getClient(tokenEPerson).perform(get("/api/core/items/" + witem.getItem().getID()))
-                               .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
 
         getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                               .andExpect(status().isOk())
-                               .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name")
-                               .doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name")
+                        .doesNotExist());
 
         List<Operation> addAccessCondition = new ArrayList<Operation>();
         List<Map<String, String>> accessConditions = new ArrayList<Map<String,String>>();
@@ -7730,27 +7730,27 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         accessConditions.add(accessCondition2);
 
         addAccessCondition.add(new AddOperation("/sections/defaultAC/accessConditions",
-                               accessConditions));
+                accessConditions));
 
         String patchBody = getPatchContent(addAccessCondition);
         getClient(tokenSubmitter).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                 .content(patchBody)
-                                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                                 .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                              .andExpect(status().isOk())
-                              .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                              .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name", is("administrator")))
-                              .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name", is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name").doesNotExist());
 
         getClient(tokenSubmitter).perform(get("/api/core/items/" + witem.getItem().getID()))
-                                 .andExpect(status().isOk())
-                                 .andExpect(jsonPath("$",  ItemMatcher.matchItemWithTitleAndDateIssued(witem.getItem(),
-                                         "Example Title", "2019-11-21")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",  ItemMatcher.matchItemWithTitleAndDateIssued(witem.getItem(),
+                        "Example Title", "2019-11-21")));
 
         getClient(tokenEPerson).perform(get("/api/core/items/" + witem.getItem().getID()))
-                               .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -7758,29 +7758,29 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         Group anonymousGroup = EPersonServiceFactory.getInstance().getGroupService()
-                                                    .findByName(context, Group.ANONYMOUS);
+                .findByName(context, Group.ANONYMOUS);
         Group adminGroup = EPersonServiceFactory.getInstance().getGroupService()
-                                                .findByName(context, Group.ADMIN);
+                .findByName(context, Group.ADMIN);
 
         Community community = CommunityBuilder.createCommunity(context)
-                                              .withName("Com")
-                                              .build();
+                .withName("Com")
+                .build();
         Collection collection = CollectionBuilder.createCollection(context, community)
-                                                 .withName("Col")
-                                                 .build();
+                .withName("Col")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         InputStream xml = getClass().getResourceAsStream("pubmed-test.xml");
 
         final MockMultipartFile xmlFile = new MockMultipartFile("file", "/local/path/pubmed-test.xml",
-                                                                "application/xml", xml);
+                "application/xml", xml);
 
         WorkspaceItem wItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-                             .withTitle("My Article")
-                             .withIssueDate("2019-03-16")
-                             .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
-                             .grantLicense()
-                             .build();
+                .withTitle("My Article")
+                .withIssueDate("2019-03-16")
+                .withFulltext("upload.pdf", "/local/path/simple-article.pdf", pdf)
+                .grantLicense()
+                .build();
 
         Bundle bundle = wItem.getItem().getBundles().get(0);
         Bitstream bitstream = bundle.getBitstreams().get(0);
@@ -7803,30 +7803,30 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         accessConditions.add(accessCondition2);
 
         addAccessCondition.add(new AddOperation("/sections/defaultAC/accessConditions",
-                               accessConditions));
+                accessConditions));
 
         String patchBody = getPatchContent(addAccessCondition);
         // add access conditions
         getClient(tokenEPerson).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenEPerson).perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-                               .andExpect(status().isOk())
-                               .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                                is("administrator")))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                                is("embargo")))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist())
-                               .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()))
-                               .andExpect(jsonPath("$.sections.upload.files[1]").doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("embargo")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()))
+                .andExpect(jsonPath("$.sections.upload.files[1]").doesNotExist());
 
         // upload second file
         getClient(tokenEPerson).perform(multipart("/api/submission/workspaceitems/" + wItem.getID())
-                               .file(xmlFile))
-                               .andExpect(status().isCreated());
+                        .file(xmlFile))
+                .andExpect(status().isCreated());
 
         // prepare patch body with accessCondition for second file
         List<Operation> ops = new ArrayList<>();
@@ -7838,81 +7838,81 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // submit patch
         getClient(tokenEPerson).perform(patch("/api/submission/workspaceitems/" + wItem.getID())
-                               .content(patchBody)
-                               .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                               .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         // verify if the access conditions have been applied correctly
         getClient(tokenEPerson).perform(get("/api/submission/workspaceitems/" + wItem.getID()))
-                               .andExpect(status().isOk())
-                               .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
-                                                is("administrator")))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
-                                                is("embargo")))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
-                                                is("2022-01-31")))
-                               .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist())
-                               .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()))
-                               .andExpect(jsonPath("$.sections.upload.files[1].accessConditions[0].name",
-                                                is("embargo")))
-                               .andExpect(jsonPath("$.sections.upload.files[1].accessConditions[0].startDate",
-                                                is("2022-03-22")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.defaultAC.discoverable", is(true)))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[0].name",
+                        is("administrator")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].name",
+                        is("embargo")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[1].startDate",
+                        is("2022-01-31")))
+                .andExpect(jsonPath("$.sections.defaultAC.accessConditions[2].name").doesNotExist())
+                .andExpect(jsonPath("$.sections.upload.files[0].accessConditions", empty()))
+                .andExpect(jsonPath("$.sections.upload.files[1].accessConditions[0].name",
+                        is("embargo")))
+                .andExpect(jsonPath("$.sections.upload.files[1].accessConditions[0].startDate",
+                        is("2022-03-22")));
 
         // submit the workspaceitem to complete the deposit
         getClient(tokenAdmin).perform(post("/api/workflow/workflowitems")
-                             .content("/api/submission/workspaceitems/" + wItem.getID())
-                             .contentType(textUriContentType))
-                             .andExpect(status().isCreated());
+                        .content("/api/submission/workspaceitems/" + wItem.getID())
+                        .contentType(textUriContentType))
+                .andExpect(status().isCreated());
 
         // verify bundle policies
         getClient(tokenAdmin).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bundle.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.containsInAnyOrder(
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null,
-                                             bundle, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"),
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
-                                             bundle, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
-                              )))
-                             .andExpect(jsonPath("$.page.totalElements", is(2)));
+                        .param("uuid", bundle.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.containsInAnyOrder(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null,
+                                bundle, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"),
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
+                                bundle, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
+                )))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
 
         // verify bitstream policies
         getClient(tokenAdmin).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.containsInAnyOrder(
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null,
-                                             bitstream, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"),
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
-                                             bitstream, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
-                              )))
-                             .andExpect(jsonPath("$.page.totalElements", is(2)));
+                        .param("uuid", bitstream.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.containsInAnyOrder(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null,
+                                bitstream, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"),
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
+                                bitstream, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
+                )))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
 
         // verify item policies
         getClient(tokenAdmin).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", wItem.getItem().getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.containsInAnyOrder(
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null,
-                                          wItem.getItem(), ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"),
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
-                                          wItem.getItem(), ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
-                              )))
-                             .andExpect(jsonPath("$.page.totalElements", is(2)));
+                        .param("uuid", wItem.getItem().getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", Matchers.containsInAnyOrder(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(adminGroup, null,
+                                wItem.getItem(), ResourcePolicy.TYPE_CUSTOM, Constants.READ, "administrator"),
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
+                                wItem.getItem(), ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
+                )))
+                .andExpect(jsonPath("$.page.totalElements", is(2)));
 
         bundle = context.reloadEntity(bundle);
         Bitstream bitstream2 =  bundle.getBitstreams().get(1);
 
         // verify bitstream2 policies
         getClient(tokenAdmin).perform(get("/api/authz/resourcepolicies/search/resource")
-                             .param("uuid", bitstream2.getID().toString()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$._embedded.resourcepolicies", contains(
-                                     ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
-                                             bitstream2, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
-                              )))
-                             .andExpect(jsonPath("$.page.totalElements", is(1)));
+                        .param("uuid", bitstream2.getID().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.resourcepolicies", contains(
+                        ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
+                                bitstream2, ResourcePolicy.TYPE_CUSTOM, Constants.READ, "embargo")
+                )))
+                .andExpect(jsonPath("$.page.totalElements", is(1)));
     }
 
     @Test
@@ -7920,48 +7920,48 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         Community community = CommunityBuilder.createCommunity(context)
-            .withName("community")
-            .build();
+                .withName("community")
+                .build();
 
         Collection collection1 = CollectionBuilder.createCollection(context, community)
-            .withName("Collection 1")
-            // NOTE: has non-empty entity type
-            .withEntityType("Person")
-            .build();
+                .withName("Collection 1")
+                // NOTE: has non-empty entity type
+                .withEntityType("Person")
+                .build();
 
         Collection collection2 = CollectionBuilder.createCollection(context, community)
-            .withName("Collection 2")
-            // NOTE: has empty entity type, this is by default the case when a collection is created in the GUI
-            .withEntityType("")
-            .build();
+                .withName("Collection 2")
+                // NOTE: has empty entity type, this is by default the case when a collection is created in the GUI
+                .withEntityType("")
+                .build();
 
         // expect that this item has dspace.entity.type = Person
         Item item1 = ItemBuilder.createItem(context, collection1)
-            .withTitle("item 1")
-            .build();
+                .withTitle("item 1")
+                .build();
 
         // expect that this item does not have dspace.entity.type at all
         Item item2 = ItemBuilder.createItem(context, collection2)
-            .withTitle("item 2")
-            .build();
+                .withTitle("item 2")
+                .build();
 
         context.restoreAuthSystemState();
 
         // test item 1
         getClient().perform(get("/api/core/items/" + item1.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.metadata", allOf(
-                matchMetadata("dc.title", "item 1"),
-                matchMetadata("dspace.entity.type", "Person")
-            )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.metadata", allOf(
+                        matchMetadata("dc.title", "item 1"),
+                        matchMetadata("dspace.entity.type", "Person")
+                )));
 
         // test item 2
         getClient().perform(get("/api/core/items/" + item2.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.metadata", allOf(
-                matchMetadata("dc.title", "item 2"),
-                matchMetadataDoesNotExist("dspace.entity.type")
-            )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.metadata", allOf(
+                        matchMetadata("dc.title", "item 2"),
+                        matchMetadataDoesNotExist("dspace.entity.type")
+                )));
     }
 
     public void verifyBitstreamPolicyNotDuplicatedTest() throws Exception {
@@ -8001,20 +8001,20 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String patchBody = getPatchContent(addAccessCondition);
         getClient(adminToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
                 .andExpect(status().isOk());
 
         // Deposit the item
         getClient(adminToken).perform(post("/api/workflow/workflowitems")
-                .content("/api/submission/workspaceitems/" + witem.getID())
-                .contentType(textUriContentType))
+                        .content("/api/submission/workspaceitems/" + witem.getID())
+                        .contentType(textUriContentType))
                 .andExpect(status().isCreated());
 
         // Bitstream access policies are as expected and there are no duplicates
         getClient(adminToken)
                 .perform(get("/api/authz/resourcepolicies/search/resource")
-                .param("uuid", bitstream.getID().toString()))
+                        .param("uuid", bitstream.getID().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.resourcepolicies",
                         Matchers.hasItems(ResourcePolicyMatcher.matchResourcePolicyProperties(anonymousGroup, null,
@@ -8061,8 +8061,8 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         // Entity is unprocessable
         String patchBody = getPatchContent(addAccessCondition);
         getClient(adminToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
 
@@ -8105,8 +8105,8 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         // Entity is unprocessable
         String patchBody = getPatchContent(addAccessCondition);
         getClient(adminToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                .content(patchBody)
-                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
 
@@ -8115,18 +8115,18 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2021-11-21")
-                                                  .withAuthor("Smith, Donald")
-                                                  .withIssn("2731-0582")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2021-11-21")
+                .withAuthor("Smith, Donald")
+                .withIssn("2731-0582")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8135,33 +8135,33 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
-                                         is("Nature Synthesis")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
-                                         is("2731-0582")))))
-                        .andDo(result -> retrievalTime.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
+                                is("Nature Synthesis")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
+                                is("2731-0582")))))
+                .andDo(result -> retrievalTime.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         Instant date = Instant.parse(retrievalTime.get());
 
         // reload page, to verify that the retrievalTime is not changed
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
-                                         is("Nature Synthesis")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
-                                         is("2731-0582")))))
-                        .andDo(result -> retrievalTime2.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
+                                is("Nature Synthesis")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
+                                is("2731-0582")))))
+                .andDo(result -> retrievalTime2.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         Instant date2 = Instant.parse(retrievalTime2.get());
 
@@ -8176,17 +8176,17 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         getClient(token).perform(patch("/api/submission/workspaceitems/" + witem.getID())
                         .content(patchBody)
                         .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
-                                         is("Nature Synthesis")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
-                                         is("2731-0582")))))
-                        .andDo(result -> retrievalTime.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
+                                is("Nature Synthesis")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
+                                is("2731-0582")))))
+                .andDo(result -> retrievalTime.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         date = Instant.parse(retrievalTime.get());
 
@@ -8194,17 +8194,17 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // reload page, to verify that the retrievalTime is not changed
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
-                                         is("Nature Synthesis")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
-                                         is("2731-0582")))))
-                        .andDo(result -> retrievalTime2.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(false)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].titles[0]",
+                                is("Nature Synthesis")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals[0].issns[0]",
+                                is("2731-0582")))))
+                .andDo(result -> retrievalTime2.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         date2 = Instant.parse(retrievalTime2.get());
         assertTrue(date.equals(date2));
@@ -8215,18 +8215,18 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Workspace Item 1")
-                                                  .withIssueDate("2021-11-21")
-                                                  .withAuthor("Smith, Donald")
-                                                  .withIssn("0000-0000")
-                                                  .withSubject("ExtraEntry")
-                                                  .build();
+                .withTitle("Workspace Item 1")
+                .withIssueDate("2021-11-21")
+                .withAuthor("Smith, Donald")
+                .withIssn("0000-0000")
+                .withSubject("ExtraEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8235,29 +8235,29 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String token = getAuthToken(eperson.getEmail(), password);
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                              hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
-                        .andDo(result -> retrievalTime.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
+                .andDo(result -> retrievalTime.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         Instant date = Instant.parse(retrievalTime.get());
 
         // reload page, to verify that the retrievalTime is not changed
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                              hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
-                        .andDo(result -> retrievalTime2.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
+                .andDo(result -> retrievalTime2.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         Instant date2 = Instant.parse(retrievalTime2.get());
 
@@ -8272,15 +8272,15 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         getClient(token).perform(patch("/api/submission/workspaceitems/" + witem.getID())
                         .content(patchBody)
                         .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                              hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
-                        .andDo(result -> retrievalTime.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
+                .andDo(result -> retrievalTime.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         date = Instant.parse(retrievalTime.get());
 
@@ -8288,15 +8288,15 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // reload page, to verify that the retrievalTime is not changed
         getClient(token).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                              hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
-                        .andExpect(jsonPath("$", Matchers.allOf(
-                                hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
-                        .andDo(result -> retrievalTime2.set(read(
-                               result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.error", is(true)))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.message", is("No results found")))))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        hasJsonPath("$.sections.sherpaPolicies.sherpaResponse.journals", nullValue()))))
+                .andDo(result -> retrievalTime2.set(read(
+                        result.getResponse().getContentAsString(), "$.sections.sherpaPolicies.retrievalTime")));
 
         date2 = Instant.parse(retrievalTime2.get());
         assertTrue(date.equals(date2));
@@ -8308,33 +8308,33 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity =
-            CommunityBuilder.createCommunity(context)
-                            .withName("Parent Community")
-                            .build();
+                CommunityBuilder.createCommunity(context)
+                        .withName("Parent Community")
+                        .build();
 
         Collection col1 =
-            CollectionBuilder.createCollection(context, parentCommunity)
-                             .withName("Collection 1")
-                             .build();
+                CollectionBuilder.createCollection(context, parentCommunity)
+                        .withName("Collection 1")
+                        .build();
 
         WorkspaceItem witem =
-            WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                .withTitle("Workspace Item 1")
-                                .withIssueDate("2022-12-12")
-                                .withAuthor("Eskander, Mohamed")
-                                .withSubject("ExtraEntry")
-                                .grantLicense()
-                                .build();
+                WorkspaceItemBuilder.createWorkspaceItem(context, col1)
+                        .withTitle("Workspace Item 1")
+                        .withIssueDate("2022-12-12")
+                        .withAuthor("Eskander, Mohamed")
+                        .withSubject("ExtraEntry")
+                        .grantLicense()
+                        .build();
 
         Group group =
-            GroupBuilder.createGroup(context)
+                GroupBuilder.createGroup(context)
                         .withName("group A")
                         .addMember(admin)
                         .build();
 
         SupervisionOrder supervisionOrderOne = SupervisionOrderBuilder
-            .createSupervisionOrder(context, witem.getItem(), group)
-            .build();
+                .createSupervisionOrder(context, witem.getItem(), group)
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -8343,13 +8343,13 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String adminToken = getAuthToken(admin.getEmail(), password);
 
         getClient(adminToken)
-            .perform(get("/api/submission/workspaceitems/" + witem.getID())).andExpect(status().isOk())
-            .andExpect(jsonPath("$",
-                Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
-                    "Workspace Item 1", "2022-12-12", "ExtraEntry"))))
-            .andExpect(jsonPath("$._links.supervisionOrders.href", containsString(
-                "/api/submission/workspaceitems/" + witem.getID() + "/supervisionOrders")
-            ));
+                .perform(get("/api/submission/workspaceitems/" + witem.getID())).andExpect(status().isOk())
+                .andExpect(jsonPath("$",
+                        Matchers.is(WorkspaceItemMatcher.matchItemWithTitleAndDateIssuedAndSubject(witem,
+                                "Workspace Item 1", "2022-12-12", "ExtraEntry"))))
+                .andExpect(jsonPath("$._links.supervisionOrders.href", containsString(
+                        "/api/submission/workspaceitems/" + witem.getID() + "/supervisionOrders")
+                ));
     }
 
     @Test
@@ -8358,50 +8358,50 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity =
-            CommunityBuilder.createCommunity(context)
-                            .withName("Parent Community")
-                            .build();
+                CommunityBuilder.createCommunity(context)
+                        .withName("Parent Community")
+                        .build();
 
         Collection col1 =
-            CollectionBuilder.createCollection(context, parentCommunity)
-                             .withName("Collection 1")
-                             .build();
+                CollectionBuilder.createCollection(context, parentCommunity)
+                        .withName("Collection 1")
+                        .build();
 
         WorkspaceItem witemOne =
-            WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                .withTitle("Test item -- supervision orders")
-                                .withIssueDate("2022-12-12")
-                                .withAuthor("Eskander, Mohamed")
-                                .grantLicense()
-                                .build();
+                WorkspaceItemBuilder.createWorkspaceItem(context, col1)
+                        .withTitle("Test item -- supervision orders")
+                        .withIssueDate("2022-12-12")
+                        .withAuthor("Eskander, Mohamed")
+                        .grantLicense()
+                        .build();
 
         WorkspaceItem witemTwo =
-            WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                .withTitle("Test item -- no supervision orders")
-                                .withIssueDate("2022-12-12")
-                                .withAuthor("Eskander")
-                                .grantLicense()
-                                .build();
+                WorkspaceItemBuilder.createWorkspaceItem(context, col1)
+                        .withTitle("Test item -- no supervision orders")
+                        .withIssueDate("2022-12-12")
+                        .withAuthor("Eskander")
+                        .grantLicense()
+                        .build();
 
         Group groupA =
-            GroupBuilder.createGroup(context)
+                GroupBuilder.createGroup(context)
                         .withName("group A")
                         .addMember(admin)
                         .build();
 
         Group groupB =
-            GroupBuilder.createGroup(context)
+                GroupBuilder.createGroup(context)
                         .withName("group B")
                         .addMember(eperson)
                         .build();
 
         SupervisionOrder supervisionOrderOne = SupervisionOrderBuilder
-            .createSupervisionOrder(context, witemOne.getItem(), groupA)
-            .build();
+                .createSupervisionOrder(context, witemOne.getItem(), groupA)
+                .build();
 
         SupervisionOrder supervisionOrderTwo = SupervisionOrderBuilder
-            .createSupervisionOrder(context, witemOne.getItem(), groupB)
-            .build();
+                .createSupervisionOrder(context, witemOne.getItem(), groupB)
+                .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
@@ -8412,31 +8412,31 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // Item's supervision orders endpoint of itemOne by not admin
         getClient(authToken)
-            .perform(get("/api/submission/workspaceitems/" + witemOne.getID() + "/supervisionOrders"))
-            .andExpect(status().isForbidden());
+                .perform(get("/api/submission/workspaceitems/" + witemOne.getID() + "/supervisionOrders"))
+                .andExpect(status().isForbidden());
 
         // Item's supervision orders endpoint of itemOne by admin
         getClient(adminToken)
-            .perform(get("/api/submission/workspaceitems/" + witemOne.getID() + "/supervisionOrders"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.page.totalElements", is(2)))
-            .andExpect(jsonPath("$._embedded.supervisionOrders", containsInAnyOrder(
-                matchSuperVisionOrder(supervisionOrderOne),
-                matchSuperVisionOrder(supervisionOrderTwo)
-            )))
-            .andExpect(jsonPath("$._links.self.href", containsString(
-                "/api/submission/workspaceitems/" + witemOne.getID() + "/supervisionOrders")
-            ));
+                .perform(get("/api/submission/workspaceitems/" + witemOne.getID() + "/supervisionOrders"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.page.totalElements", is(2)))
+                .andExpect(jsonPath("$._embedded.supervisionOrders", containsInAnyOrder(
+                        matchSuperVisionOrder(supervisionOrderOne),
+                        matchSuperVisionOrder(supervisionOrderTwo)
+                )))
+                .andExpect(jsonPath("$._links.self.href", containsString(
+                        "/api/submission/workspaceitems/" + witemOne.getID() + "/supervisionOrders")
+                ));
 
         // Item's supervision orders endpoint of itemTwo by admin
         getClient(adminToken)
-            .perform(get("/api/submission/workspaceitems/" + witemTwo.getID() + "/supervisionOrders"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.page.totalElements", is(0)))
-            .andExpect(jsonPath("$._embedded.supervisionOrders", empty()))
-            .andExpect(jsonPath("$._links.self.href", containsString(
-                "/api/submission/workspaceitems/" + witemTwo.getID() + "/supervisionOrders")
-            ));
+                .perform(get("/api/submission/workspaceitems/" + witemTwo.getID() + "/supervisionOrders"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.page.totalElements", is(0)))
+                .andExpect(jsonPath("$._embedded.supervisionOrders", empty()))
+                .andExpect(jsonPath("$._links.self.href", containsString(
+                        "/api/submission/workspaceitems/" + witemTwo.getID() + "/supervisionOrders")
+                ));
     }
 
     @Test
@@ -8444,83 +8444,83 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         EPerson userA =
-            EPersonBuilder.createEPerson(context)
-                          .withCanLogin(true)
-                          .withEmail("userA@test.com")
-                          .withPassword(password)
-                          .build();
+                EPersonBuilder.createEPerson(context)
+                        .withCanLogin(true)
+                        .withEmail("userA@test.com")
+                        .withPassword(password)
+                        .build();
 
         EPerson userB =
-            EPersonBuilder.createEPerson(context)
-                          .withCanLogin(true)
-                          .withEmail("userB@test.com")
-                          .withPassword(password)
-                          .build();
+                EPersonBuilder.createEPerson(context)
+                        .withCanLogin(true)
+                        .withEmail("userB@test.com")
+                        .withPassword(password)
+                        .build();
 
         EPerson userC =
-            EPersonBuilder.createEPerson(context)
-                          .withCanLogin(true)
-                          .withEmail("userC@test.com")
-                          .withPassword(password)
-                          .build();
+                EPersonBuilder.createEPerson(context)
+                        .withCanLogin(true)
+                        .withEmail("userC@test.com")
+                        .withPassword(password)
+                        .build();
 
         parentCommunity =
-            CommunityBuilder.createCommunity(context)
-                            .withName("Parent Community")
-                            .build();
+                CommunityBuilder.createCommunity(context)
+                        .withName("Parent Community")
+                        .build();
 
         Collection publications =
-            CollectionBuilder.createCollection(context, parentCommunity)
-                             .withName("Publications")
-                             .withEntityType("Publication")
-                             .build();
+                CollectionBuilder.createCollection(context, parentCommunity)
+                        .withName("Publications")
+                        .withEntityType("Publication")
+                        .build();
 
         Group groupA =
-            GroupBuilder.createGroup(context)
+                GroupBuilder.createGroup(context)
                         .withName("group A")
                         .addMember(userA)
                         .build();
 
         Group groupB =
-            GroupBuilder.createGroup(context)
+                GroupBuilder.createGroup(context)
                         .withName("group B")
                         .addMember(userB)
                         .build();
 
         WorkspaceItem witem =
-            WorkspaceItemBuilder.createWorkspaceItem(context, publications)
-                                .withTitle("Workspace Item 1")
-                                .withIssueDate("2017-10-17")
-                                .withSubject("ExtraEntry")
-                                .grantLicense()
-                                .build();
+                WorkspaceItemBuilder.createWorkspaceItem(context, publications)
+                        .withTitle("Workspace Item 1")
+                        .withIssueDate("2017-10-17")
+                        .withSubject("ExtraEntry")
+                        .grantLicense()
+                        .build();
 
         //disable file upload mandatory
         configurationService.setProperty("webui.submit.upload.required", false);
         context.restoreAuthSystemState();
 
         getClient(getAuthToken(admin.getEmail(), password))
-            .perform(post("/api/core/supervisionorders/")
-                .param("uuid", witem.getItem().getID().toString())
-                .param("group", groupA.getID().toString())
-                .param("type", "EDITOR")
-                .contentType(contentType))
-            .andExpect(status().isCreated());
+                .perform(post("/api/core/supervisionorders/")
+                        .param("uuid", witem.getItem().getID().toString())
+                        .param("group", groupA.getID().toString())
+                        .param("type", "EDITOR")
+                        .contentType(contentType))
+                .andExpect(status().isCreated());
 
         getClient(getAuthToken(admin.getEmail(), password))
-            .perform(post("/api/core/supervisionorders/")
-                .param("uuid", witem.getItem().getID().toString())
-                .param("group", groupB.getID().toString())
-                .param("type", "OBSERVER")
-                .contentType(contentType))
-            .andExpect(status().isCreated());
+                .perform(post("/api/core/supervisionorders/")
+                        .param("uuid", witem.getItem().getID().toString())
+                        .param("group", groupB.getID().toString())
+                        .param("type", "OBSERVER")
+                        .contentType(contentType))
+                .andExpect(status().isCreated());
 
         String authTokenA = getAuthToken(userA.getEmail(), password);
         String authTokenB = getAuthToken(userB.getEmail(), password);
         String authTokenC = getAuthToken(userC.getEmail(), password);
 
         getClient(authTokenC).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
 
         // a simple patch to update an existent metadata
         List<Operation> updateTitle = new ArrayList<>();
@@ -8530,46 +8530,46 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String patchBody = getPatchContent(updateTitle);
 
         getClient(authTokenB).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isForbidden());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         getClient(authTokenA).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.errors").doesNotExist())
-                            .andExpect(jsonPath("$",
-                                // check the new title and untouched values
-                                Matchers.is(WorkspaceItemMatcher
-                                    .matchItemWithTitleAndDateIssuedAndSubject(
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        // check the new title and untouched values
+                        Matchers.is(WorkspaceItemMatcher
+                                .matchItemWithTitleAndDateIssuedAndSubject(
                                         witem,
                                         "New Title", "2017-10-17",
                                         "ExtraEntry"))));
 
         getClient(authTokenA).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.errors").doesNotExist())
-                             .andExpect(jsonPath("$",
-                                 Matchers.is(
-                                     WorkspaceItemMatcher
-                                         .matchItemWithTitleAndDateIssuedAndSubject(
-                                             witem,
-                                             "New Title", "2017-10-17",
-                                             "ExtraEntry")
-                                 )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        Matchers.is(
+                                WorkspaceItemMatcher
+                                        .matchItemWithTitleAndDateIssuedAndSubject(
+                                                witem,
+                                                "New Title", "2017-10-17",
+                                                "ExtraEntry")
+                        )));
 
         getClient(authTokenB).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.errors").doesNotExist())
-                             .andExpect(jsonPath("$",
-                                 Matchers.is(
-                                     WorkspaceItemMatcher
-                                         .matchItemWithTitleAndDateIssuedAndSubject(
-                                             witem,
-                                             "New Title", "2017-10-17",
-                                             "ExtraEntry")
-                                 )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors").doesNotExist())
+                .andExpect(jsonPath("$",
+                        Matchers.is(
+                                WorkspaceItemMatcher
+                                        .matchItemWithTitleAndDateIssuedAndSubject(
+                                                witem,
+                                                "New Title", "2017-10-17",
+                                                "ExtraEntry")
+                        )));
     }
 
     @Test
@@ -8578,34 +8578,34 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity, "123456789/test-hidden")
-                                                 .withName("Collection 1")
-                                                 .build();
+                .withName("Collection 1")
+                .build();
 
         WorkspaceItem workspaceItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-                                                          .withTitle("Workspace Item")
-                                                          .withIssueDate("2023-01-01")
-                                                          .withType("book")
-                                                          .build();
+                .withTitle("Workspace Item")
+                .withIssueDate("2023-01-01")
+                .withType("book")
+                .build();
 
         context.restoreAuthSystemState();
         String adminToken = getAuthToken(admin.getEmail(), password);
 
         getClient(adminToken)
-            .perform(get("/api/submission/workspaceitems/" + workspaceItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.test-outside-workflow-hidden").doesNotExist())
-            .andExpect(jsonPath("$.sections.test-outside-submission-hidden").exists())
-            .andExpect(jsonPath("$.sections.test-never-hidden").exists())
-            .andExpect(jsonPath("$.sections.test-always-hidden").doesNotExist());
+                .perform(get("/api/submission/workspaceitems/" + workspaceItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.test-outside-workflow-hidden").doesNotExist())
+                .andExpect(jsonPath("$.sections.test-outside-submission-hidden").exists())
+                .andExpect(jsonPath("$.sections.test-never-hidden").exists())
+                .andExpect(jsonPath("$.sections.test-always-hidden").doesNotExist());
 
         // Deposit the item
         getClient(adminToken).perform(post("/api/workflow/workflowitems")
-                .content("/api/submission/workspaceitems/" + workspaceItem.getID())
-                .contentType(textUriContentType))
+                        .content("/api/submission/workspaceitems/" + workspaceItem.getID())
+                        .contentType(textUriContentType))
                 .andExpect(status().isCreated());
     }
 
@@ -8616,49 +8616,49 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection collection = CollectionBuilder.createCollection(context, parentCommunity)
-                                                 .withName("Collection 1")
-                                                 .build();
+                .withName("Collection 1")
+                .build();
 
         // create three notify services
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceThree =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
-                                .withLdnUrl("https://service3.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
+                        .withLdnUrl("https://service3.ldn.org/inbox")
+                        .build();
 
         // append the three services to the workspace item with different patterns
         WorkspaceItem workspaceItem = WorkspaceItemBuilder.createWorkspaceItem(context, collection)
-                  .withTitle("Workspace Item")
-                  .withIssueDate("2024-10-10")
-                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                  .withCOARNotifyService(notifyServiceTwo, "request-endorsement")
-                  .withCOARNotifyService(notifyServiceThree, "request-endorsement")
-                  .build();
+                .withTitle("Workspace Item")
+                .withIssueDate("2024-10-10")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .withCOARNotifyService(notifyServiceTwo, "request-endorsement")
+                .withCOARNotifyService(notifyServiceThree, "request-endorsement")
+                .build();
 
         context.restoreAuthSystemState();
         String adminToken = getAuthToken(admin.getEmail(), password);
 
         // check coarnotify section data
         getClient(adminToken)
-            .perform(get("/api/submission/workspaceitems/" + workspaceItem.getID()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sections.coarnotify.request-endorsement", contains(
-                notifyServiceTwo.getID(), notifyServiceThree.getID())))
-            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                notifyServiceOne.getID())));
+                .perform(get("/api/submission/workspaceitems/" + workspaceItem.getID()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-endorsement", contains(
+                        notifyServiceTwo.getID(), notifyServiceThree.getID())))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceOne.getID())));
     }
 
     @Test
@@ -8668,52 +8668,52 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceThree =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
-                                .withLdnUrl("https://service3.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
+                        .withLdnUrl("https://service3.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceOne)
-                                          .withPattern("request-review")
-                                          .withConstraint("itemFilterA")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("itemFilterA")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceTwo)
-                                          .withPattern("request-review")
-                                          .withConstraint("itemFilterA")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("itemFilterA")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceThree)
-                                          .withPattern("request-review")
-                                          .withConstraint("itemFilterA")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("itemFilterA")
+                .isAutomatic(false)
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8722,20 +8722,20 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         // try to add new service of review pattern to witem
         List<Operation> addOpts = new ArrayList<Operation>();
         addOpts.add(new AddOperation("/sections/coarnotify/request-review/-",
-            List.of(notifyServiceTwo.getID(), notifyServiceThree.getID())));
+                List.of(notifyServiceTwo.getID(), notifyServiceThree.getID())));
 
         String patchBody = getPatchContent(addOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(3)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review",contains(
-                                notifyServiceOne.getID(),
-                                notifyServiceTwo.getID(),
-                                notifyServiceThree.getID()
-                            )));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(3)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review",contains(
+                        notifyServiceOne.getID(),
+                        notifyServiceTwo.getID(),
+                        notifyServiceThree.getID()
+                )));
 
     }
 
@@ -8746,34 +8746,34 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceThree =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
-                                .withLdnUrl("https://service3.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
+                        .withLdnUrl("https://service3.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8781,23 +8781,23 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(1)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceOne.getID()
-                            )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(1)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceOne.getID()
+                )));
 
         // try to add new service of review pattern to witem
         List<Operation> addOpts = new ArrayList<Operation>();
         addOpts.add(new AddOperation("/sections/coarnotify/request-review/-",
-            List.of(notifyServiceTwo.getID(), notifyServiceThree.getID())));
+                List.of(notifyServiceTwo.getID(), notifyServiceThree.getID())));
 
         String patchBody = getPatchContent(addOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
     }
 
@@ -8808,23 +8808,23 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8837,9 +8837,9 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String patchBody = getPatchContent(addOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
     }
 
@@ -8850,24 +8850,24 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8875,10 +8875,10 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceOne.getID()
-                            )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceOne.getID()
+                )));
 
         // try to add new service of review pattern to witem but service not exist
         List<Operation> addOpts = new ArrayList<Operation>();
@@ -8887,9 +8887,9 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String patchBody = getPatchContent(addOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
     }
 
@@ -8900,53 +8900,53 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceThree =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
-                                .withLdnUrl("https://service3.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
+                        .withLdnUrl("https://service3.ldn.org/inbox")
+                        .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceOne)
-                                          .withPattern("request-review")
-                                          .withConstraint("itemFilterA")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("itemFilterA")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceTwo)
-                                          .withPattern("request-review")
-                                          .withConstraint("demo_filter")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("demo_filter")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceThree)
-                                          .withPattern("request-review")
-                                          .withConstraint("demo_filter")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("demo_filter")
+                .isAutomatic(false)
+                .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .withCOARNotifyService(notifyServiceTwo, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .withCOARNotifyService(notifyServiceTwo, "request-review")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -8954,11 +8954,11 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceOne.getID(),
-                                notifyServiceTwo.getID())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceOne.getID(),
+                        notifyServiceTwo.getID())));
 
         // try to replace the notifyServiceOne of witem with notifyServiceThree of review pattern
         List<Operation> replaceOpts = new ArrayList<Operation>();
@@ -8967,13 +8967,13 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String patchBody = getPatchContent(replaceOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceThree.getID(), notifyServiceTwo.getID()
-                            )));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceThree.getID(), notifyServiceTwo.getID()
+                )));
 
     }
 
@@ -8984,35 +8984,35 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceThree =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
-                                .withLdnUrl("https://service3.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
+                        .withLdnUrl("https://service3.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .withCOARNotifyService(notifyServiceTwo, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .withCOARNotifyService(notifyServiceTwo, "request-review")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9020,11 +9020,11 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceOne.getID(),
-                                notifyServiceTwo.getID())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceOne.getID(),
+                        notifyServiceTwo.getID())));
 
         // try to replace the notifyServiceOne of witem with notifyServiceThree of review pattern
         List<Operation> replaceOpts = new ArrayList<Operation>();
@@ -9033,9 +9033,9 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String patchBody = getPatchContent(replaceOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
     }
 
@@ -9046,30 +9046,30 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .withCOARNotifyService(notifyServiceTwo, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .withCOARNotifyService(notifyServiceTwo, "request-review")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9077,11 +9077,11 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceOne.getID(), notifyServiceTwo.getID()
-                            )));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceOne.getID(), notifyServiceTwo.getID()
+                )));
 
         // try to remove the notifyServiceOne of witem
         List<Operation> removeOpts = new ArrayList<Operation>();
@@ -9090,12 +9090,12 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         String patchBody = getPatchContent(removeOpts);
 
         getClient(authToken).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                .content(patchBody)
-                                .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(1)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review",contains(
-                                notifyServiceTwo.getID())));
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(1)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review",contains(
+                        notifyServiceTwo.getID())));
 
     }
 
@@ -9106,55 +9106,55 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceTwo =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
-                                .withLdnUrl("https://service2.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name two")
+                        .withLdnUrl("https://service2.ldn.org/inbox")
+                        .build();
 
         NotifyServiceEntity notifyServiceThree =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
-                                .withLdnUrl("https://service3.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name three")
+                        .withLdnUrl("https://service3.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withType("Journal Article")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-endorsement")
-                                                  .withCOARNotifyService(notifyServiceTwo, "request-review")
-                                                  .withCOARNotifyService(notifyServiceThree, "request-review")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withType("Journal Article")
+                .withCOARNotifyService(notifyServiceOne, "request-endorsement")
+                .withCOARNotifyService(notifyServiceTwo, "request-review")
+                .withCOARNotifyService(notifyServiceThree, "request-review")
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceOne)
-                                          .withPattern("request-endorsement")
-                                          .withConstraint("fakeFilterA")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-endorsement")
+                .withConstraint("fakeFilterA")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceTwo)
-                                          .withPattern("request-review")
-                                          .withConstraint("type_filter")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("type_filter")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceThree)
-                                          .withPattern("request-review")
-                                          .withConstraint("fakeFilterA")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("fakeFilterA")
+                .isAutomatic(false)
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9162,17 +9162,17 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem also check the errors
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
-                                notifyServiceTwo.getID(),
-                                notifyServiceThree.getID())))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-endorsement", hasSize(1)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-endorsement", contains(
-                                notifyServiceOne.getID())))
-                            .andExpect(jsonPath("$.errors[?(@.message=='error.validation.coarnotify.invalidfilter')]",
-                                Matchers.contains(
-                                    hasJsonPath("$.paths", Matchers.containsInAnyOrder(
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(2)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", contains(
+                        notifyServiceTwo.getID(),
+                        notifyServiceThree.getID())))
+                .andExpect(jsonPath("$.sections.coarnotify.request-endorsement", hasSize(1)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-endorsement", contains(
+                        notifyServiceOne.getID())))
+                .andExpect(jsonPath("$.errors[?(@.message=='error.validation.coarnotify.invalidfilter')]",
+                        Matchers.contains(
+                                hasJsonPath("$.paths", Matchers.containsInAnyOrder(
                                         "/sections/coarnotify/request-review/1",
                                         "/sections/coarnotify/request-endorsement/0")))));
 
@@ -9185,38 +9185,38 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         //** GIVEN **
         //1. A community-collection structure with one parent community with sub-community and one collection.
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
         Community child1 = CommunityBuilder.createSubCommunity(context, parentCommunity)
-                                           .withName("Sub Community")
-                                           .build();
+                .withName("Sub Community")
+                .build();
         Collection col1 = CollectionBuilder.createCollection(context, child1).withName("Collection 1").build();
 
 
         NotifyServiceEntity notifyServiceOne =
-            NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
-                                .withLdnUrl("https://service.ldn.org/inbox")
-                                .build();
+                NotifyServiceBuilder.createNotifyServiceBuilder(context, "service name one")
+                        .withLdnUrl("https://service.ldn.org/inbox")
+                        .build();
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("Test WorkspaceItem")
-                                                  .withIssueDate("2017-10-17")
-                                                  .withType("Journal Article")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-review")
-                                                  .withCOARNotifyService(notifyServiceOne, "request-endorsement")
-                                                  .build();
+                .withTitle("Test WorkspaceItem")
+                .withIssueDate("2017-10-17")
+                .withType("Journal Article")
+                .withCOARNotifyService(notifyServiceOne, "request-review")
+                .withCOARNotifyService(notifyServiceOne, "request-endorsement")
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceOne)
-                                          .withPattern("request-endorsement")
-                                          .withConstraint("type_filter")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-endorsement")
+                .withConstraint("type_filter")
+                .isAutomatic(false)
+                .build();
 
         NotifyServiceInboundPatternBuilder.createNotifyServiceInboundPatternBuilder(context, notifyServiceOne)
-                                          .withPattern("request-review")
-                                          .withConstraint("type_filter")
-                                          .isAutomatic(false)
-                                          .build();
+                .withPattern("request-review")
+                .withConstraint("type_filter")
+                .isAutomatic(false)
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9224,13 +9224,13 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // check the coar notify services of witem also check the errors
         getClient(authToken).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                            .andExpect(status().isOk())
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(1)))
-                            .andExpect(jsonPath("$.sections.coarnotify.request-review",
-                                contains(notifyServiceOne.getID())))
-                            .andExpect(jsonPath(
-                                "$.errors[?(@.message=='error.validation.coarnotify.invalidfilter')]")
-                                    .doesNotExist());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.coarnotify.request-review", hasSize(1)))
+                .andExpect(jsonPath("$.sections.coarnotify.request-review",
+                        contains(notifyServiceOne.getID())))
+                .andExpect(jsonPath(
+                        "$.errors[?(@.message=='error.validation.coarnotify.invalidfilter')]")
+                        .doesNotExist());
     }
 
     @Test
@@ -9238,22 +9238,22 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9261,23 +9261,23 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                             .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                                    "$.sections.upload.files[0].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")));
 
         List<Operation> addPrimaryOps = new ArrayList<Operation>();
         addPrimaryOps.add(new AddOperation("/sections/upload/primary", idRef.get()));
 
         String patchBody = getPatchContent(addPrimaryOps);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idRef.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idRef.get())));
     }
 
     @Test
@@ -9285,23 +9285,23 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         context.setCurrentUser(eperson);
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9309,23 +9309,23 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenSubmitter = getAuthToken(eperson.getEmail(), password);
         getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                                 .andExpect(status().isOk())
-                                 .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                                 .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                                        "$.sections.upload.files[0].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")));
 
         List<Operation> addPrimaryOps = new ArrayList<Operation>();
         addPrimaryOps.add(new AddOperation("/sections/upload/primary", idRef.get()));
 
         String patchBody = getPatchContent(addPrimaryOps);
         getClient(tokenSubmitter).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                 .content(patchBody)
-                                 .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                                 .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                                 .andExpect(status().isOk())
-                                 .andExpect(jsonPath("$.sections.upload.primary", is(idRef.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idRef.get())));
     }
 
     @Test
@@ -9333,28 +9333,28 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         EPerson submitter = EPersonBuilder.createEPerson(context)
-                                          .withEmail("test-email@mail.com")
-                                          .withPassword(password)
-                                          .build();
+                .withEmail("test-email@mail.com")
+                .withPassword(password)
+                .build();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         context.setCurrentUser(submitter);
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9362,10 +9362,10 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenSubmitter = getAuthToken(submitter.getEmail(), password);
         getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                                 .andExpect(status().isOk())
-                                 .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                                 .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                                        "$.sections.upload.files[0].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")));
 
         List<Operation> addPrimaryOps = new ArrayList<Operation>();
         addPrimaryOps.add(new AddOperation("/sections/upload/primary", idRef.get()));
@@ -9374,19 +9374,19 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         // non submitter cannot add primary bitstream
         getClient(tokenNotSubmitter).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                                    .content(getPatchContent(addPrimaryOps))
-                                    .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                                    .andExpect(status().isForbidden());
+                        .content(getPatchContent(addPrimaryOps))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isForbidden());
 
         // even anonymous users cannot add primary bitstream
         getClient().perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                   .content(getPatchContent(addPrimaryOps))
-                   .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                   .andExpect(status().isUnauthorized());
+                        .content(getPatchContent(addPrimaryOps))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnauthorized());
 
         getClient(tokenSubmitter).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                                 .andExpect(status().isOk())
-                                 .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
     }
 
     @Test
@@ -9394,25 +9394,25 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         InputStream pdf2 = getClass().getResourceAsStream("bibtex-test.bib");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withFulltext("bibtex-test.bib",
-                                                                "/local/path/bibtex-test.bib", pdf2)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withFulltext("bibtex-test.bib",
+                        "/local/path/bibtex-test.bib", pdf2)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9421,37 +9421,37 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                             .andDo(result -> idFirstPdf.set(read(result.getResponse().getContentAsString(),
-                                    "$.sections.upload.files[0].uuid")))
-                             .andDo(result -> idSecondPdf.set(read(result.getResponse().getContentAsString(),
-                                     "$.sections.upload.files[1].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idFirstPdf.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")))
+                .andDo(result -> idSecondPdf.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[1].uuid")));
 
         List<Operation> addPrimaryOps = new ArrayList<Operation>();
         addPrimaryOps.add(new AddOperation("/sections/upload/primary", idFirstPdf.get()));
 
         String patchBody = getPatchContent(addPrimaryOps);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
 
         List<Operation> addPrimaryOps2 = new ArrayList<Operation>();
         addPrimaryOps2.add(new AddOperation("/sections/upload/primary", idSecondPdf.get()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(addPrimaryOps2))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(getPatchContent(addPrimaryOps2))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idSecondPdf.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idSecondPdf.get())));
     }
 
     @Test
@@ -9459,42 +9459,42 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
 
         List<Operation> addOperations = new ArrayList<Operation>();
         addOperations.add(new AddOperation("/sections/upload/primary", UUID.randomUUID()));
 
         String patchBody = getPatchContent(addOperations);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
     }
 
     @Test
@@ -9502,42 +9502,42 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
 
         List<Operation> addOperations = new ArrayList<Operation>();
         addOperations.add(new AddOperation("/sections/upload/primary", "wrong-uuid"));
 
         String patchBody = getPatchContent(addOperations);
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(patchBody)
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(patchBody)
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
     }
 
     @Test
@@ -9545,22 +9545,22 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
         context.turnOffAuthorisationSystem();
 
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9568,59 +9568,59 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                             .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
-                                    "$.sections.upload.files[0].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idRef.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")));
 
         List<Operation> addOperations = new ArrayList<Operation>();
         addOperations.add(new AddOperation("/sections/upload/primary", idRef.get()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(addOperations))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(getPatchContent(addOperations))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idRef.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idRef.get())));
 
         List<Operation> removeOps = new ArrayList<Operation>();
         removeOps.add(new RemoveOperation("/sections/upload/primary"));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(removeOps))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(getPatchContent(removeOps))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
     }
 
     @Test
     public void patchReplacePrimaryTest() throws Exception {
         context.turnOffAuthorisationSystem();
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         InputStream pdf2 = getClass().getResourceAsStream("bibtex-test.bib");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withFulltext("bibtex-test.bib",
-                                                                "/local/path/bibtex-test.bib", pdf2)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withFulltext("bibtex-test.bib",
+                        "/local/path/bibtex-test.bib", pdf2)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9629,59 +9629,59 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                             .andDo(result -> idFirstPdf.set(read(result.getResponse().getContentAsString(),
-                                    "$.sections.upload.files[0].uuid")))
-                             .andDo(result -> idSecondPdf.set(read(result.getResponse().getContentAsString(),
-                                     "$.sections.upload.files[1].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idFirstPdf.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")))
+                .andDo(result -> idSecondPdf.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[1].uuid")));
 
         List<Operation> addOperations = new ArrayList<Operation>();
         addOperations.add(new AddOperation("/sections/upload/primary", idFirstPdf.get()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(addOperations))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(getPatchContent(addOperations))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
 
         List<Operation> replaceOperations = new ArrayList<Operation>();
         replaceOperations.add(new ReplaceOperation("/sections/upload/primary", idSecondPdf.get()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(replaceOperations))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(getPatchContent(replaceOperations))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idSecondPdf.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idSecondPdf.get())));
     }
 
     @Test
     public void patchReplacePrimaryWhenPrimariIsUnsetTest() throws Exception {
         context.turnOffAuthorisationSystem();
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
         InputStream pdf2 = getClass().getResourceAsStream("bibtex-test.bib");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .withSubject("testEntry")
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .withSubject("testEntry")
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9689,43 +9689,43 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                             .andDo(result -> idPdf.set(read(result.getResponse().getContentAsString(),
-                                    "$.sections.upload.files[0].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idPdf.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")));
 
         List<Operation> replaceOperations = new ArrayList<Operation>();
         replaceOperations.add(new ReplaceOperation("/sections/upload/primary", idPdf.get()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(replaceOperations))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(getPatchContent(replaceOperations))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()));
     }
 
     @Test
     public void patchReplaceProvidingWrongPrimaryTest() throws Exception {
         context.turnOffAuthorisationSystem();
         parentCommunity = CommunityBuilder.createCommunity(context)
-                                          .withName("Parent Community")
-                                          .build();
+                .withName("Parent Community")
+                .build();
 
         Collection col1 = CollectionBuilder.createCollection(context, parentCommunity)
-                                           .withName("Collection 1")
-                                           .build();
+                .withName("Collection 1")
+                .build();
 
         InputStream pdf = getClass().getResourceAsStream("simple-article.pdf");
 
         WorkspaceItem witem = WorkspaceItemBuilder.createWorkspaceItem(context, col1)
-                                                  .withTitle("TITLE test")
-                                                  .withIssueDate("2023-10-18")
-                                                  .withFulltext("simple-article.pdf",
-                                                                "/local/path/simple-article.pdf", pdf)
-                                                  .build();
+                .withTitle("TITLE test")
+                .withIssueDate("2023-10-18")
+                .withFulltext("simple-article.pdf",
+                        "/local/path/simple-article.pdf", pdf)
+                .build();
 
         context.restoreAuthSystemState();
 
@@ -9733,34 +9733,34 @@ ResourcePolicyBuilder.createResourcePolicy(context, null, adminGroup)
 
         String tokenAdmin = getAuthToken(admin.getEmail(), password);
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
-                             .andDo(result -> idFirstPdf.set(read(result.getResponse().getContentAsString(),
-                                    "$.sections.upload.files[0].uuid")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", nullValue()))
+                .andDo(result -> idFirstPdf.set(read(result.getResponse().getContentAsString(),
+                        "$.sections.upload.files[0].uuid")));
 
         List<Operation> addOperations = new ArrayList<Operation>();
         addOperations.add(new AddOperation("/sections/upload/primary", idFirstPdf.get()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(addOperations))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isOk());
+                        .content(getPatchContent(addOperations))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isOk());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
 
         List<Operation> replaceOperations = new ArrayList<Operation>();
         replaceOperations.add(new ReplaceOperation("/sections/upload/primary", UUID.randomUUID()));
 
         getClient(tokenAdmin).perform(patch("/api/submission/workspaceitems/" + witem.getID())
-                             .content(getPatchContent(replaceOperations))
-                             .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
-                             .andExpect(status().isUnprocessableEntity());
+                        .content(getPatchContent(replaceOperations))
+                        .contentType(MediaType.APPLICATION_JSON_PATCH_JSON))
+                .andExpect(status().isUnprocessableEntity());
 
         getClient(tokenAdmin).perform(get("/api/submission/workspaceitems/" + witem.getID()))
-                             .andExpect(status().isOk())
-                             .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sections.upload.primary", is(idFirstPdf.get())));
     }
 
     @Test

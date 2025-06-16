@@ -7,7 +7,6 @@
  */
 package org.dspace.discovery;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -81,11 +80,11 @@ public class FullTextContentStreamsTest {
         when(textBitstream3.getSizeBytes()).thenReturn(3L);
 
         when(bitstreamService.retrieve(null, textBitstream1))
-            .thenReturn(new ByteArrayInputStream("This is text 1".getBytes(StandardCharsets.UTF_8)));
+                .thenReturn(new ByteArrayInputStream("This is text 1".getBytes(StandardCharsets.UTF_8)));
         when(bitstreamService.retrieve(null, textBitstream2))
-            .thenReturn(new ByteArrayInputStream("This is text 2".getBytes(StandardCharsets.UTF_8)));
+                .thenReturn(new ByteArrayInputStream("This is text 2".getBytes(StandardCharsets.UTF_8)));
         when(bitstreamService.retrieve(null, textBitstream3))
-            .thenReturn(new ByteArrayInputStream("This is text 3".getBytes(StandardCharsets.UTF_8)));
+                .thenReturn(new ByteArrayInputStream("This is text 3".getBytes(StandardCharsets.UTF_8)));
 
         streams.bitstreamService = bitstreamService;
     }
@@ -96,14 +95,14 @@ public class FullTextContentStreamsTest {
 
         streams.init(item);
 
-        assertEquals("Source info should give you the handle", HANDLE, streams.getSourceInfo());
-        assertEquals("Content type should be plain text", CONTENT_TYPE, streams.getContentType());
-        assertEquals("The name should be empty", "", streams.getName());
+        assertEquals(HANDLE, streams.getSourceInfo(), "Source info should give you the handle");
+        assertEquals(CONTENT_TYPE, streams.getContentType(), "Content type should be plain text");
+        assertEquals("", streams.getName(), "The name should be empty");
         assertEquals((Long) 0L, streams.getSize(), "The size of the streams should be zero");
         assertTrue(streams.isEmpty(), "Content stream should be empty");
         InputStream inputStream = streams.getStream();
         assertNotNull(inputStream);
-        assertEquals(-1, inputStream.read(),"Input stream should be empty");
+        assertEquals(-1, inputStream.read(), "Input stream should be empty");
     }
 
     @Test
@@ -112,9 +111,9 @@ public class FullTextContentStreamsTest {
 
         streams.init(item);
 
-        assertEquals("Source info should give you the handle", HANDLE, streams.getSourceInfo());
-        assertEquals("Content type should be plain text", CONTENT_TYPE, streams.getContentType());
-        assertEquals("The name should be empty", "", streams.getName());
+        assertEquals(HANDLE, streams.getSourceInfo(), "Source info should give you the handle");
+        assertEquals(CONTENT_TYPE, streams.getContentType(), "Content type should be plain text");
+        assertEquals("", streams.getName(), "The name should be empty");
         assertEquals((Long) 0L, streams.getSize(), "The size of the streams should be zero");
         assertTrue(streams.isEmpty(), "Content stream should be empty");
         InputStream inputStream = streams.getStream();
@@ -129,9 +128,9 @@ public class FullTextContentStreamsTest {
 
         streams.init(item);
 
-        assertEquals("Source info should give you the handle", HANDLE, streams.getSourceInfo());
-        assertEquals("Content type should be plain text", CONTENT_TYPE, streams.getContentType());
-        assertEquals("The name should be empty", "", streams.getName());
+        assertEquals(HANDLE, streams.getSourceInfo(), "Source info should give you the handle");
+        assertEquals(CONTENT_TYPE, streams.getContentType(), "Content type should be plain text");
+        assertEquals("", streams.getName(), "The name should be empty");
         assertEquals((Long) 0L, streams.getSize(), "The size of the streams should be zero");
         assertTrue(streams.isEmpty(), "Content stream should be empty");
         InputStream inputStream = streams.getStream();
@@ -146,15 +145,16 @@ public class FullTextContentStreamsTest {
 
         streams.init(item);
 
-        assertEquals("Source info should give you the handle", HANDLE, streams.getSourceInfo());
-        assertEquals("Content type should be plain text", CONTENT_TYPE, streams.getContentType());
-        assertEquals("The name should match the name of the bitstream", "Full Text 1", streams.getName());
+        assertEquals(HANDLE, streams.getSourceInfo(), "Source info should give you the handle");
+        assertEquals(CONTENT_TYPE, streams.getContentType(), "Content type should be plain text");
+        assertEquals("Full Text 1", streams.getName(), "The name should match the name of the bitstream");
         assertEquals((Long) 1L, streams.getSize(), "The size of the streams should match the size of bitstream 1");
         assertFalse(streams.isEmpty(), "Content stream should not be empty");
         InputStream inputStream = streams.getStream();
         assertNotNull(inputStream);
-        assertEquals("The data in the input stream should match the text of the bitstream", "\nThis is text 1",
-                     IOUtils.toString(inputStream, StandardCharsets.UTF_8));
+        assertEquals("\nThis is text 1",
+                IOUtils.toString(inputStream, StandardCharsets.UTF_8),
+                "The data in the input stream should match the text of the bitstream");
     }
 
     @Test
@@ -164,17 +164,15 @@ public class FullTextContentStreamsTest {
 
         streams.init(item);
 
-        assertEquals("Source info should give you the handle", HANDLE, streams.getSourceInfo());
-        assertEquals("Content type should be plain text", CONTENT_TYPE, streams.getContentType());
-        assertEquals("The name should match the concatenation of the names of the bitstreams",
-                     "Full Text 1;Full Text 2;Full Text 3", streams.getName());
+        assertEquals(HANDLE, streams.getSourceInfo(), "Source info should give you the handle");
+        assertEquals(CONTENT_TYPE, streams.getContentType(), "Content type should be plain text");
+        assertEquals("Full Text 1;Full Text 2;Full Text 3", streams.getName(), "The name should match the concatenation of the names of the bitstreams");
         assertEquals((Long) 6L, streams.getSize(), "The size of the streams should be the sum of the bitstream sizes");
         assertFalse(streams.isEmpty(), "Content stream should not be empty");
         InputStream inputStream = streams.getStream();
         assertNotNull(inputStream);
-        assertEquals("The data in the input stream should match 'This is text 1'",
-                "\nThis is text 1" +
-            "\nThis is text 2\nThis is text 3", IOUtils.toString(inputStream, StandardCharsets.UTF_8));
+        assertEquals("\nThis is text 1" +
+                "\nThis is text 2\nThis is text 3", IOUtils.toString(inputStream, StandardCharsets.UTF_8), "The data in the input stream should match 'This is text 1'");
     }
 
     @Test
@@ -185,12 +183,10 @@ public class FullTextContentStreamsTest {
 
         streams.init(item);
 
-        assertEquals("Source info should give you the handle", HANDLE, streams.getSourceInfo());
-        assertEquals("Content type should be plain text", CONTENT_TYPE, streams.getContentType());
-        assertEquals("The name should match the concatenation of the names of the bitstreams",
-                     "Full Text 1;Full Text 2;Full Text 3", streams.getName());
-        assertEquals((Long) 6L, streams.getSize(),
-                "The size of the streams should be the sum of the bitstream sizes");
+        assertEquals(HANDLE, streams.getSourceInfo(), "Source info should give you the handle");
+        assertEquals(CONTENT_TYPE, streams.getContentType(), "Content type should be plain text");
+        assertEquals("Full Text 1;Full Text 2;Full Text 3", streams.getName(), "The name should match the concatenation of the names of the bitstreams");
+        assertEquals((Long) 6L, streams.getSize(), "The size of the streams should be the sum of the bitstream sizes");
         assertFalse(streams.isEmpty(), "Content stream should not be empty");
         InputStream inputStream = streams.getStream();
         assertNotNull(inputStream);
@@ -203,7 +199,8 @@ public class FullTextContentStreamsTest {
                 "The data should contain data of the third bitstream that is not corrupt");
         assertTrue(content.contains("java.io.IOException"),
                 "The data should contain data on the exception that occurred");
-        assertTrue(content.contains("NOTFOUND"), "The data should contain data on the exception that occurred");
+        assertTrue(content.contains("NOTFOUND"),
+                "The data should contain data on the exception that occurred");
     }
 
 }

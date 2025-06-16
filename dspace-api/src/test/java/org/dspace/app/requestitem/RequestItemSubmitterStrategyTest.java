@@ -7,8 +7,6 @@
  */
 package org.dspace.app.requestitem;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,6 +25,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
@@ -84,6 +84,6 @@ public class RequestItemSubmitterStrategyTest
             throws Exception {
         RequestItemSubmitterStrategy instance = new RequestItemSubmitterStrategy();
         List<RequestItemAuthor> author = instance.getRequestItemAuthor(context, item);
-        assertEquals("Wrong author address", AUTHOR_ADDRESS, author.get(0).getEmail());
+        assertEquals(AUTHOR_ADDRESS, author.get(0).getEmail(), "Wrong author address");
     }
 }

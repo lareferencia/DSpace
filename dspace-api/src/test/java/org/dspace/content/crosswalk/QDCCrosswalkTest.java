@@ -119,7 +119,7 @@ public class QDCCrosswalkTest
                 IngestionCrosswalk.class, PLUGIN_NAME);
         String schemaLocation = instance.getSchemaLocation();
         System.out.println(schemaLocation);
-        assertEquals("SchemaLocation did not match.", SCHEMALOCATION, schemaLocation);
+        assertEquals(SCHEMALOCATION, schemaLocation, "SchemaLocation did not match.");
     }
 
     /**

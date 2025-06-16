@@ -7,8 +7,6 @@
  */
 package org.dspace.checker.dao.impl;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -28,6 +26,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author mwood
@@ -119,17 +119,17 @@ public class ChecksumHistoryDAOImplTest
 
         qry.setParameter("id", matchId);
         count = (Long) qry.getSingleResult();
-        assertEquals("Should find no row at matchDate", 0, count);
+        assertEquals(0, count, "Should find no row at matchDate");
 
         // See if nonmatching old row is still present.
         qry.setParameter("id", noMatchId);
         count = (Long) qry.getSingleResult();
-        assertEquals("Should find one row at noMatchDate", 1, count);
+        assertEquals(1, count, "Should find one row at noMatchDate");
 
         // See if future date row is still present.
         qry.setParameter("id", futureMatchId);
         count = (Long) qry.getSingleResult();
-        assertEquals("Should find one row at futureDate", 1, count);
+        assertEquals(1, count, "Should find one row at futureDate");
     }
 
     /**

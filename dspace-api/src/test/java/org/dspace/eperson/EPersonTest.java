@@ -7,6 +7,12 @@
  */
 package org.dspace.eperson;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -42,10 +48,9 @@ import org.dspace.workflow.WorkflowItem;
 import org.dspace.workflow.WorkflowItemService;
 import org.dspace.workflow.WorkflowService;
 import org.dspace.workflow.factory.WorkflowServiceFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author mwood
@@ -61,7 +66,7 @@ public class EPersonTest extends AbstractUnitTest {
     protected WorkflowItemService workflowItemService = WorkflowServiceFactory.getInstance().getWorkflowItemService();
     protected WorkflowService workflowService = WorkflowServiceFactory.getInstance().getWorkflowService();
     protected WorkspaceItemService workspaceItemService = ContentServiceFactory.getInstance()
-                                                          .getWorkspaceItemService();
+            .getWorkspaceItemService();
 
     private Community community = null;
     private Collection collection = null;
@@ -109,6 +114,7 @@ public class EPersonTest extends AbstractUnitTest {
         }
     }
 
+    @AfterEach
     @Override
     public void destroy() {
         context.turnOffAuthorisationSystem();
@@ -160,25 +166,25 @@ public class EPersonTest extends AbstractUnitTest {
     public void testPreferences() throws Exception {
 
         String cookies =
-            "{" +
-                "\"token_item\":true," +
-                "\"impersonation\":true," +
-                "\"redirect\":true," +
-                "\"language\":true," +
-                "\"klaro\":true," +
-                "\"google-analytics\":false" +
-                "}";
+                "{" +
+                        "\"token_item\":true," +
+                        "\"impersonation\":true," +
+                        "\"redirect\":true," +
+                        "\"language\":true," +
+                        "\"klaro\":true," +
+                        "\"google-analytics\":false" +
+                        "}";
 
         ePersonService.addMetadata(context, eperson, "dspace", "agreements", "cookies", null, cookies);
         ePersonService.addMetadata(context, eperson, "dspace", "agreements", "end-user", null, "true");
         ePersonService.update(context, eperson);
 
         assertEquals(
-            cookies,
-            ePersonService.getMetadataFirstValue(eperson, "dspace", "agreements", "cookies", null)
+                cookies,
+                ePersonService.getMetadataFirstValue(eperson, "dspace", "agreements", "cookies", null)
         );
         assertEquals(
-            "true",
+                "true",
                 ePersonService.getMetadataFirstValue(eperson, "dspace", "agreements", "end-user", null)
         );
     }
@@ -370,11 +376,11 @@ public class EPersonTest extends AbstractUnitTest {
             // Verify searching "Doe" with Group 2 *excludes* the one which is already a member
             List<EPerson> allNonMemberDoes = Arrays.asList(eperson1, eperson5);
             List<EPerson> searchNonMemberDoeResults = ePersonService.searchNonMembers(context, "Doe", testGroup2,
-                                                                                      -1, -1);
+                    -1, -1);
             assertTrue(searchNonMemberDoeResults.containsAll(allNonMemberDoes));
             assertFalse(searchNonMemberDoeResults.contains(eperson3));
             assertEquals(searchNonMemberDoeResults.size(), ePersonService.searchNonMembersCount(context, "Doe",
-                                                                                                testGroup2));
+                    testGroup2));
 
             // Verify searching "Doe" with Group 1 *excludes* the one which is already a member
             allNonMemberDoes = Arrays.asList(eperson3, eperson5);
@@ -382,65 +388,65 @@ public class EPersonTest extends AbstractUnitTest {
             assertTrue(searchNonMemberDoeResults.containsAll(allNonMemberDoes));
             assertFalse(searchNonMemberDoeResults.contains(eperson1));
             assertEquals(searchNonMemberDoeResults.size(), ePersonService.searchNonMembersCount(context, "Doe",
-                                                                                                testGroup1));
+                    testGroup1));
 
             // SECOND, test search by first name
             // Verify all Johns match a nonMember search of Group3 (which is an empty group)
             List<EPerson> allJohns = Arrays.asList(eperson2, eperson3, eperson4);
             List<EPerson> searchJohnResults = ePersonService.searchNonMembers(context, "John",
-                                                                               testGroup3, -1, -1);
+                    testGroup3, -1, -1);
             assertTrue(searchJohnResults.containsAll(allJohns));
             assertEquals(searchJohnResults.size(), ePersonService.searchNonMembersCount(context, "John",
-                                                                                         testGroup3));
+                    testGroup3));
 
             // Verify searching "John" with Group 2 *excludes* the two who are already a member
             List<EPerson> allNonMemberJohns = Arrays.asList(eperson4);
             List<EPerson> searchNonMemberJohnResults = ePersonService.searchNonMembers(context, "John",
-                                                                                        testGroup2, -1, -1);
+                    testGroup2, -1, -1);
             assertTrue(searchNonMemberJohnResults.containsAll(allNonMemberJohns));
             assertFalse(searchNonMemberJohnResults.contains(eperson2));
             assertFalse(searchNonMemberJohnResults.contains(eperson3));
             assertEquals(searchNonMemberJohnResults.size(), ePersonService.searchNonMembersCount(context, "John",
-                                                                                                   testGroup2));
+                    testGroup2));
 
             // FINALLY, test search by email
             // Assert search on example.com excluding Group 1 returns just those not in that group
             List<EPerson> exampleNonMembers = Arrays.asList(eperson3, eperson4);
             List<EPerson> searchEmailResults = ePersonService.searchNonMembers(context, "example.com",
-                                                                               testGroup1, -1, -1);
+                    testGroup1, -1, -1);
             assertTrue(searchEmailResults.containsAll(exampleNonMembers));
             assertFalse(searchEmailResults.contains(eperson1));
             assertFalse(searchEmailResults.contains(eperson2));
             assertEquals(searchEmailResults.size(), ePersonService.searchNonMembersCount(context, "example.com",
-                                                                                         testGroup1));
+                    testGroup1));
 
             // Assert exact email search returns just one (if not in group)
             List<EPerson> exactEmailResults = ePersonService.searchNonMembers(context, "eperson1@example.com",
-                                                                              testGroup2, -1, -1);
+                    testGroup2, -1, -1);
             assertTrue(exactEmailResults.contains(eperson1));
             assertEquals(exactEmailResults.size(), ePersonService.searchNonMembersCount(context, "eperson1@example.com",
-                                                                                        testGroup2));
+                    testGroup2));
             // But, change the group to one they are a member of, and they won't be included
             exactEmailResults = ePersonService.searchNonMembers(context, "eperson1@example.com",
-                                                                testGroup1, -1, -1);
+                    testGroup1, -1, -1);
             assertFalse(exactEmailResults.contains(eperson1));
             assertEquals(exactEmailResults.size(), ePersonService.searchNonMembersCount(context, "eperson1@example.com",
-                                                                                        testGroup1));
+                    testGroup1));
 
             // Assert UUID search returns exact match (if not in group)
             List<EPerson> uuidResults = ePersonService.searchNonMembers(context, eperson3.getID().toString(),
-                                                                        testGroup1, -1, -1);
+                    testGroup1, -1, -1);
             assertTrue(uuidResults.contains(eperson3));
             assertEquals(1, uuidResults.size());
             assertEquals(uuidResults.size(), ePersonService.searchNonMembersCount(context, eperson3.getID().toString(),
-                                                                              testGroup1));
+                    testGroup1));
             // But, change the group to one they are a member of, and you'll get no results
             uuidResults = ePersonService.searchNonMembers(context, eperson3.getID().toString(),
-                                                          testGroup2, -1, -1);
+                    testGroup2, -1, -1);
             assertFalse(uuidResults.contains(eperson3));
             assertEquals(0, uuidResults.size());
             assertEquals(uuidResults.size(), ePersonService.searchNonMembersCount(context, eperson3.getID().toString(),
-                                                                                  testGroup2));
+                    testGroup2));
 
         } finally {
             // Remove all Groups & EPersons we added for this test
@@ -950,7 +956,7 @@ public class EPersonTest extends AbstractUnitTest {
         } catch (AuthorizeException | IOException ex) {
             log.error("Cannot delete EPersion, caught " + ex.getClass().getName() + ":", ex);
             fail("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() +
-                 ": " + ex.getMessage());
+                    ": " + ex.getMessage());
         }
         context.restoreAuthSystemState();
         context.commit();
@@ -972,7 +978,7 @@ public class EPersonTest extends AbstractUnitTest {
         } catch (SQLException | AuthorizeException | IOException ex) {
             log.error("Caught an Exception while initializing an Item. " + ex.getClass().getName() + ": ", ex);
             fail("Caught an Exception while initializing an Item. " + ex.getClass().getName() +
-                 ": " + ex.getMessage());
+                    ": " + ex.getMessage());
         }
 
         context.turnOffAuthorisationSystem();
@@ -1006,7 +1012,7 @@ public class EPersonTest extends AbstractUnitTest {
         } catch (SQLException | AuthorizeException | IOException ex) {
             log.error("Caught an Exception while initializing an Item. " + ex.getClass().getName() + ": ", ex);
             fail("Caught an Exception while initializing an Item. " + ex.getClass().getName() +
-                 ": " + ex.getMessage());
+                    ": " + ex.getMessage());
         }
         assertNotNull(item);
         context.turnOffAuthorisationSystem();
@@ -1015,11 +1021,11 @@ public class EPersonTest extends AbstractUnitTest {
         } catch (SQLException | IOException | AuthorizeException ex) {
             if (ex.getCause() instanceof EPersonDeletionException) {
                 fail("Caught an EPersonDeletionException while trying to cascading delete an EPerson: " +
-                      ex.getMessage());
+                        ex.getMessage());
             } else {
                 log.error("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() + ": ", ex);
                 fail("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() +
-                     ": " + ex.getMessage());
+                        ": " + ex.getMessage());
             }
         }
         item = itemService.find(context, item.getID());
@@ -1055,12 +1061,12 @@ public class EPersonTest extends AbstractUnitTest {
         } catch (SQLException | IOException | AuthorizeException ex) {
             if (ex.getCause() instanceof EPersonDeletionException) {
                 fail("Caught an EPersonDeletionException while trying to cascading delete an EPerson: " +
-                     ex.getMessage());
+                        ex.getMessage());
             } else {
                 log.error("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() +
-                          ": ", ex);
+                        ": ", ex);
                 fail("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() +
-                     ": " + ex.getMessage());
+                        ": " + ex.getMessage());
             }
         }
 
@@ -1098,9 +1104,9 @@ public class EPersonTest extends AbstractUnitTest {
             wsi = prepareWorkspaceItem(ep);
         } catch (SQLException | AuthorizeException | IOException ex) {
             log.error("Caught an Exception while initializing an WorkspaceItem. " + ex.getClass().getName() +
-                      ": ", ex);
+                    ": ", ex);
             fail("Caught an Exception while initializing an WorkspaceItem. " + ex.getClass().getName() +
-                 ": " + ex.getMessage());
+                    ": " + ex.getMessage());
         }
         assertNotNull(wsi);
         context.turnOffAuthorisationSystem();
@@ -1132,12 +1138,12 @@ public class EPersonTest extends AbstractUnitTest {
         } catch (SQLException | IOException | AuthorizeException ex) {
             if (ex.getCause() instanceof EPersonDeletionException) {
                 fail("Caught an EPersonDeletionException while trying to cascading delete an EPerson: " +
-                     ex.getMessage());
+                        ex.getMessage());
             } else {
                 log.error("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() +
-                          ": ", ex);
+                        ": ", ex);
                 fail("Caught an Exception while deleting an EPerson. " + ex.getClass().getName() +
-                     ": " + ex.getMessage());
+                        ": " + ex.getMessage());
             }
         }
 
@@ -1170,8 +1176,8 @@ public class EPersonTest extends AbstractUnitTest {
             // NOTE: isEqualCollection() must be used for comparison because Hibernate's "PersistentBag" cannot be
             // compared directly to a List. See https://stackoverflow.com/a/57399383/3750035
             assertTrue(
-                CollectionUtils.isEqualCollection(group.getMembers(),
-                                                  ePersonService.findByGroups(context, Set.of(group), -1, -1)));
+                    CollectionUtils.isEqualCollection(group.getMembers(),
+                            ePersonService.findByGroups(context, Set.of(group), -1, -1)));
             // Assert countByGroups is the same as the size of members
             assertEquals(group.getMembers().size(), ePersonService.countByGroups(context, Set.of(group)));
 
@@ -1216,7 +1222,7 @@ public class EPersonTest extends AbstractUnitTest {
      * @throws IOException
      */
     private Item prepareItem(EPerson submitter)
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         context.turnOffAuthorisationSystem();
         WorkspaceItem wsi = prepareWorkspaceItem(submitter);
         item = installItemService.installItem(context, wsi);
@@ -1238,7 +1244,7 @@ public class EPersonTest extends AbstractUnitTest {
      * @throws IOException
      */
     private WorkspaceItem prepareWorkspaceItem(EPerson submitter)
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         context.turnOffAuthorisationSystem();
         // create a community, a collection and a WorkspaceItem
 
@@ -1270,7 +1276,7 @@ public class EPersonTest extends AbstractUnitTest {
     }
 
     protected EPerson createEPersonAndAddToGroup(String email, String firstname, String lastname, Group group)
-        throws SQLException, AuthorizeException {
+            throws SQLException, AuthorizeException {
         context.turnOffAuthorisationSystem();
         EPerson ePerson = createEPerson(email, firstname, lastname);
         groupService.addMember(context, group, ePerson);
@@ -1289,7 +1295,7 @@ public class EPersonTest extends AbstractUnitTest {
         return ePerson;
     }
     protected EPerson createEPerson(String email, String firstname, String lastname)
-        throws SQLException, AuthorizeException {
+            throws SQLException, AuthorizeException {
         context.turnOffAuthorisationSystem();
         EPerson ePerson = ePersonService.create(context);
         ePerson.setEmail(email);

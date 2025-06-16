@@ -7,7 +7,8 @@
  */
 package org.dspace.servicemanager.config;
 
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -15,10 +16,6 @@ import org.dspace.services.ConfigurationService;
 import org.dspace.test.DSpaceAbstractKernelTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
-
 
 /**
  * Testing the org.apache.commons.configuration2.spring.ConfigurationPropertiesFactoryBean to ensure it performs
@@ -31,7 +28,7 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
  * @author Tim Donohue
  */
 public class DSpaceConfigurationBeanTest
-    extends DSpaceAbstractKernelTest {
+        extends DSpaceAbstractKernelTest {
 
     // Path to our main test config file (local.properties)
     private String propertyFilePath;
@@ -40,7 +37,7 @@ public class DSpaceConfigurationBeanTest
     public void init() {
         // Save the path to our main test configuration file
         propertyFilePath = new DSpaceConfigurationService().getDSpaceHome(null) + File.separatorChar
-            + DSpaceConfigurationService.DEFAULT_CONFIG_DIR + File.separatorChar + "local.properties";
+                + DSpaceConfigurationService.DEFAULT_CONFIG_DIR + File.separatorChar + "local.properties";
     }
 
     /**
@@ -53,21 +50,22 @@ public class DSpaceConfigurationBeanTest
 
         // Load configs from files
         ConfigurationService cfg = getKernel().getConfigurationService();
-        assertNotNull("ConfigurationService returned null", cfg);
-        assertNotNull("test config returned null", cfg.getProperty("testDynamicBean.property"));
+        assertNotNull(cfg, "ConfigurationService returned null");
+        assertNotNull(cfg.getProperty("testDynamicBean.property"), "test config returned null");
 
         //Load example service which is configured using a dynamic property (which is specified in a config file)
         // See spring-test-beans.xml
         TestDynamicPropertyBean bean = getKernel().getServiceManager().getServiceByName("dynamicPropertyBean",
-                                                                                        TestDynamicPropertyBean.class);
+                TestDynamicPropertyBean.class);
 
-        assertNotNull("Bean returned null", bean);
-        assertNotNull("Bean.name() returned null", bean.getProperty());
+        assertNotNull(bean, "Bean returned null");
+        assertNotNull(bean.getProperty(), "Bean.name() returned null");
 
         // The bean's getProperty() method should return the same value as "testDynamicBean.property" in DSpace's
         // configuration. This is cause bean's property is set to ${testDynamicBean.property} in spring-test-beans.xml
-        assertEquals("Bean.getProperty() does not match configuration", cfg.getProperty("testDynamicBean.property"),
-                     bean.getProperty());
+        assertEquals(cfg.getProperty("testDynamicBean.property"),
+                bean.getProperty(),
+                "Bean.getProperty() does not match configuration");
     }
 
     /**
@@ -79,22 +77,23 @@ public class DSpaceConfigurationBeanTest
     public void testGetPropertySourceFromConfigurationService() {
         // Load configs from files
         ConfigurationService cfg = getKernel().getConfigurationService();
-        assertNotNull("ConfigurationService returned null", cfg);
-        assertNotNull("test config returned null", cfg.getProperty("testDynamicBean.property"));
+        assertNotNull(cfg, "ConfigurationService returned null");
+        assertNotNull(cfg.getProperty("testDynamicBean.property"), "test config returned null");
 
         // Load test bean which is defined by TestDynamicAnnotationConfiguration
         TestDynamicPropertyBean bean = getKernel().getServiceManager().getServiceByName("propertyBeanUsingAnnotation",
-                                                                                        TestDynamicPropertyBean.class);
+                TestDynamicPropertyBean.class);
 
         // The Test bean's property should be automatically set (see TestDynamicAnnotationConfiguration)
         String configValue = bean.getProperty();
 
-        assertNotNull("PropertySource config returned null", configValue);
+        assertNotNull(configValue, "PropertySource config returned null");
 
         // The value of "configValue" should be equal to "testDynamicBean.property" in our configuration.
         // This is because configValue is set via an @Value annotation in TestDynamicAnnotationConfiguration
-        assertEquals("PropertySource config does not match configuration", cfg.getProperty("testDynamicBean.property"),
-                     configValue);
+        assertEquals(cfg.getProperty("testDynamicBean.property"),
+                configValue,
+                "PropertySource config does not match configuration");
     }
 
     /**

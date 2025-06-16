@@ -9,9 +9,7 @@ package org.dspace.content;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,9 +29,7 @@ import org.dspace.content.service.ItemService;
 import org.dspace.content.service.WorkspaceItemService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * Unit Tests for class InstallItem
@@ -56,12 +52,6 @@ public class InstallItemTest extends AbstractUnitTest {
      * log4j category
      */
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(InstallItemTest.class);
-
-    /**
-     * Used to check/verify thrown exceptions in below tests
-     **/
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
 
     @BeforeEach
@@ -188,7 +178,7 @@ public class InstallItemTest extends AbstractUnitTest {
             .getMetadata(result, "dc", "description", "provenance", Item.ANY);
         int i = 1;
         for (MetadataValue val : provMsgValues) {
-            assertFalse("testRestoreItem " + i, val.getValue().startsWith(provDescriptionBegins));
+            assertFalse(val.getValue().startsWith(provDescriptionBegins), "testRestoreItem " + i);
             i++;
         }
     }

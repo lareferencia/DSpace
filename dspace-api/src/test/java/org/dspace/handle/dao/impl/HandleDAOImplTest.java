@@ -7,9 +7,6 @@
  */
 package org.dspace.handle.dao.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -37,6 +34,9 @@ import org.dspace.versioning.service.VersioningService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test class for the Handle DAO

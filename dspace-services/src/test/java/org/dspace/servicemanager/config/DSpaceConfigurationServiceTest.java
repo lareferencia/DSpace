@@ -7,7 +7,12 @@
  */
 package org.dspace.servicemanager.config;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +55,7 @@ public class DSpaceConfigurationServiceTest {
 
         // Save the path to our main test configuration file
         propertyFilePath = configurationService.getDSpaceHome(null) + File.separatorChar
-            + DSpaceConfigurationService.DEFAULT_CONFIG_DIR + File.separatorChar + "local.properties";
+                + DSpaceConfigurationService.DEFAULT_CONFIG_DIR + File.separatorChar + "local.properties";
 
         // clear out default configs (leaves us with an empty Configuration)
         configurationService.clear();
@@ -470,8 +475,8 @@ public class DSpaceConfigurationServiceTest {
         assertEquals(2, children.size());
 
         List<String> childPropertyNames = children.stream()
-            .map(node -> node.getRootElementName())
-            .collect(Collectors.toList());
+                .map(node -> node.getRootElementName())
+                .collect(Collectors.toList());
 
         assertEquals(2, childPropertyNames.size());
         assertEquals("key1", childPropertyNames.get(0));
@@ -484,7 +489,7 @@ public class DSpaceConfigurationServiceTest {
     @Test
     public void testGetChildrenNonExistentKey() {
         List<HierarchicalConfiguration<ImmutableNode>> children =
-            configurationService.getChildren("thisKeyDoesNotExist");
+                configurationService.getChildren("thisKeyDoesNotExist");
 
         assertNotNull(children);
         assertEquals(0, children.size());
@@ -501,8 +506,8 @@ public class DSpaceConfigurationServiceTest {
         assertEquals(2, children.size());
 
         List<String> childPropertyNames = children.stream()
-            .map(node -> node.getRootElementName())
-            .collect(Collectors.toList());
+                .map(node -> node.getRootElementName())
+                .collect(Collectors.toList());
 
         assertEquals(2, childPropertyNames.size());
         assertEquals("foo", childPropertyNames.get(0));
@@ -612,7 +617,7 @@ public class DSpaceConfigurationServiceTest {
 
         // Now, change the value of that Property in the file itself (using a separate builder instance)
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new Configurations()
-            .propertiesBuilder(propertyFilePath);
+                .propertiesBuilder(propertyFilePath);
         PropertiesConfiguration config = builder.getConfiguration();
         // Clear out current value. Add in a new value
         config.clearProperty("prop.to.auto.reload");
@@ -698,7 +703,7 @@ public class DSpaceConfigurationServiceTest {
         when(spy.isValidDSpaceHome("/mydspace")).thenReturn(true);
 
         // Assert Home is the same as System Property
-        assertEquals("System property set", "/mydspace", spy.getDSpaceHome(null));
+        assertEquals("/mydspace", spy.getDSpaceHome(null), "System property set");
 
         // reset DSPACE_HOME to previous value
         System.setProperty(DSpaceConfigurationService.DSPACE_HOME, previousValue);
@@ -717,7 +722,7 @@ public class DSpaceConfigurationServiceTest {
         when(spy.isValidDSpaceHome("/mydspace")).thenReturn(true);
 
         // Assert System Property overrides the value passed in, if it is valid
-        assertEquals("System property override", "/mydspace", spy.getDSpaceHome("/myotherdspace"));
+        assertEquals("/mydspace", spy.getDSpaceHome("/myotherdspace"), "System property override");
 
         // reset DSPACE_HOME to previous value
         System.setProperty(DSpaceConfigurationService.DSPACE_HOME, previousValue);
@@ -736,7 +741,7 @@ public class DSpaceConfigurationServiceTest {
         when(spy.isValidDSpaceHome("/mydspace")).thenReturn(true);
 
         // Assert provided home is used
-        assertEquals("Home based on passed in value", "/mydspace", spy.getDSpaceHome("/mydspace"));
+        assertEquals("/mydspace", spy.getDSpaceHome("/mydspace"), "Home based on passed in value");
 
         // reset DSPACE_HOME to previous value
         System.setProperty(DSpaceConfigurationService.DSPACE_HOME, previousValue);

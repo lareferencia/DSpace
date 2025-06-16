@@ -10,7 +10,7 @@ package org.dspace.content;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -424,7 +424,7 @@ public class DCDateTest {
     public void testGetCurrent() {
         ZonedDateTime todayDateTimeUTC = ZonedDateTime.now(ZoneId.of("UTC"));
         LocalDate today = todayDateTimeUTC.toLocalDate();
-        assertEquals("testGetCurrent 0", DCDate.getCurrent().toDate().toLocalDate(), today);
+        assertEquals(DCDate.getCurrent().toDate().toLocalDate(), today, "testGetCurrent 0");
     }
 
 

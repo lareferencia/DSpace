@@ -48,7 +48,7 @@ public class PubmedImportMetadataSourceServiceIT extends AbstractLiveImportInteg
         CloseableHttpClient originalHttpClient = liveImportClientImpl.getHttpClient();
         CloseableHttpClient httpClient = Mockito.mock(CloseableHttpClient.class);
         try (InputStream fetchFile = getClass().getResourceAsStream("pubmedimport-fetch-test.xml");
-                InputStream searchFile = getClass().getResourceAsStream("pubmedimport-search-test.xml")) {
+             InputStream searchFile = getClass().getResourceAsStream("pubmedimport-search-test.xml")) {
             liveImportClientImpl.setHttpClient(httpClient);
 
             CloseableHttpResponse fetchResponse = mockResponse(
@@ -75,7 +75,7 @@ public class PubmedImportMetadataSourceServiceIT extends AbstractLiveImportInteg
         CloseableHttpClient originalHttpClient = liveImportClientImpl.getHttpClient();
         CloseableHttpClient httpClient = Mockito.mock(CloseableHttpClient.class);
         try (InputStream fetchFile = getClass().getResourceAsStream("pubmedimport-fetch-test2.xml");
-                InputStream searchFile = getClass().getResourceAsStream("pubmedimport-search-test2.xml")) {
+             InputStream searchFile = getClass().getResourceAsStream("pubmedimport-search-test2.xml")) {
             liveImportClientImpl.setHttpClient(httpClient);
 
             CloseableHttpResponse fetchResponse = mockResponse(
@@ -209,5 +209,4 @@ public class PubmedImportMetadataSourceServiceIT extends AbstractLiveImportInteg
         records.add(record);
         return records;
     }
-
 }

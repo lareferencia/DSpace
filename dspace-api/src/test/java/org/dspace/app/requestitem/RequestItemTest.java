@@ -155,7 +155,7 @@ public class RequestItemTest extends AbstractUnitTest {
 
         // Since we are under the threshold, the token should be null and
         // the item will be sent via email attachment
-        assertNull("Request token should be null", request.getAccess_token());
+        assertNull( request.getAccess_token(), "Request token should be null");
     }
 
     @Test

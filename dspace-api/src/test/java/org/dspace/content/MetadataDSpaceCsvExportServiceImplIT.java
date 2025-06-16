@@ -7,8 +7,6 @@
  */
 package org.dspace.content;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +23,9 @@ import org.dspace.scripts.handler.DSpaceRunnableHandler;
 import org.dspace.utils.DSpace;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  *
@@ -113,7 +114,6 @@ public class MetadataDSpaceCsvExportServiceImplIT
 
         // Examine the result.
         List<DSpaceCSVLine> csvLines = result.getCSVLines();
-        assertEquals("One item mapped twice should produce one line",
-                1, csvLines.size());
+        assertEquals(1, csvLines.size(), "One item mapped twice should produce one line");
     }
 }
