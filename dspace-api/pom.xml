@@ -25,6 +25,13 @@
        Runtime and Compile Time dependencies for DSpace.
     -->
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.0</version>
+            </extension>
+        </extensions>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -849,6 +856,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- Apache OpenDAL Assetstorage Support -->
+            <dependency>
+                <groupId>org.apache.opendal</groupId>
+                <artifactId>opendal</artifactId>
+                <version>${opendal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.opendal</groupId>
+                <artifactId>opendal</artifactId>
+                <version>${opendal.version}</version>
+                <classifier>${os.detected.classifier}</classifier>
+            </dependency>
 
         <!-- JClouds Assetstorage Support -->
         <dependency>

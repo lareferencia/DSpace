@@ -62,6 +62,7 @@
         <jena.version>4.10.0</jena.version>
         <!-- JClouds is used by dspace-api -->
         <jclouds.version>2.7.0</jclouds.version>
+        <opendal.version>0.48.0</opendal.version>
 
         <!--=== MAVEN SETTINGS ===-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
